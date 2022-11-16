@@ -1,0 +1,37 @@
+import 'package:reflect_gui_builder/app/person/service/person_service.dart' as i1;
+import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor.dart';
+
+import '../core/property_factory/property_widget_factory.dart';
+import '../core/reflect_gui/reflect_gui_config.dart';
+
+class MyApplicationConfig extends ReflectGuiConfig {
+  /// Returns the [PropertyWidgetFactory]s that are to be used in the application.
+  /// The order is the order of processing (order of importance)!
+  /// This must be a literal [List] without logic.
+  /// e.g.: [StringWidgetFactory, IntWidgetFactory]
+  /// TODO: Move to [ReflectGuiConfig]
+  List<Type> propertyWidgetFactories = [
+    StringWidgetFactory,
+    IntWidgetFactory,
+  ];
+
+  /// Returns the [ActionMethodParameterProcessor]s that are to be used in the application.
+  /// The order is the order of processing (order of importance)!
+  /// This must be a literal [List] without logic.
+  /// e.g.: [StringWidgetFactory, IntWidgetFactory]
+  /// TODO: Move to [ReflectGuiConfig]
+  List<Type> actionMethodParameterProcessors = [
+    EditDomainObjectParameterInForm,
+  ];
+
+  /// Define the [ServiceClass]es that are to be used in the application.
+  /// This must be a literal [List] without logic.
+  /// e.g.: [ProductService, ShoppingCartService]
+  /// TODO: Move to [ReflectGuiConfig]
+  List<Type> serviceClasses = [
+    i1.PersonService,
+  ];
+//TODO 1 can we use analyzer to find the PersonService class and what if it is in another package or returns a DelagatingList?
+//TODO 2  what if it is in another package
+// TODO 3 what if it  returns a Delegating List?
+}

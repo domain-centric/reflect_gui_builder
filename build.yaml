@@ -1,0 +1,19 @@
+targets:
+  $default:
+    builders:
+      reflect_gui_builder|reflectGuiConfigBuilder:
+        generate_for:
+          - lib/**.dart
+        enabled: True
+
+
+builders:
+  reflectGuiConfigBuilder:
+    import: 'package:reflect_gui_builder/builder/builder_factory.dart'
+    builder_factories: ['reflectGuiConfigBuilder']
+    build_extensions:
+      .dart:
+        - .json
+    build_to: source
+    auto_apply: root_package
+ 

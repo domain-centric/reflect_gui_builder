@@ -1,0 +1,45 @@
+import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/core/documentation.dart';
+import 'package:reflect_gui_builder/core/type/type.dart';
+
+import '../reflect_gui/reflection_factory.dart';
+
+/// TODO See: https://github.com/reflect-framework/reflect-framework/wiki/02-The-Domain-Layer#TheDomainLayer_DomainObjects
+class DomainClass implements ConceptDocumentation {}
+
+/// Contains information on a [DomainClass]
+class DomainClassReflection extends ClassReflection {
+
+  DomainClassReflection({required super.name, required super.libraryUri});
+}
+
+/// Creates a [DomainClassReflection]s by using the
+/// analyzer package
+class DomainClassReflectionFactory extends ReflectionFactory {
+
+  DomainClassReflection? createFrom(
+      ClassElement reflectGuiConfigElement) {
+
+
+    return null; //TODO
+  }
+
+  void _validateDomainClassElement(FieldElement field, Element domainClass) {
+    if (domainClass is! ClassElement) {
+      throw ('${field.asUri}: $domainClass must be a class.');
+    }
+    if (!domainClass.isPublic) {
+      throw ('${field.asUri}: $domainClass must be public.');
+    }
+    if (domainClass.isAbstract) {
+      throw ('${field.asUri}: $domainClass may not be abstract.');
+    }
+    if (!hasNamelessConstructorWithoutParameters(domainClass)) {
+      throw ('${field.asUri}: $domainClass does not have a nameless constructor without parameters.');
+    }
+
+    //TODO _validateIfHasAtLeastOneProperty;
+
+  }
+
+}
