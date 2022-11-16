@@ -6,7 +6,7 @@ import 'package:reflect_gui_builder/core/type/type.dart';
 
 
 extension FieldElementExtension on FieldElement {
-  String get asUri => '${library.source.uri}/${enclosingElement.name}.$name';
+  String get asLibraryMemberPath => '${library.source.uri}/${enclosingElement.name}.$name';
 }
 
 // TODO all subclasses exceptions with reference to a class mus show the fullUri
@@ -86,21 +86,21 @@ abstract class ReflectionFactory {
     var expression = (declaration as VariableDeclaration).initializer;
     if (expression.runtimeType.toString() != 'ListLiteralImpl') {
       throw Exception(
-          '${field.asUri}: Must return a literal list, e.g. [ProductService, ShoppingCartService]');
+          '${field.asLibraryMemberPath}: Must return a literal list, e.g. [ProductService, ShoppingCartService]');
     }
     var listLiteral = expression as ListLiteral;
     for (var listElement in listLiteral.elements) {
       if (!['SimpleIdentifierImpl', 'PrefixedIdentifierImpl']
           .contains(listElement.runtimeType.toString())) {
         throw Exception(
-            '${field.asUri}: The list must contain identifiers, e.g. [ProductService, ShoppingCartService]');
+            '${field.asLibraryMemberPath}: The list must contain identifiers, e.g. [ProductService, ShoppingCartService]');
       }
       var identifier = listElement as Identifier;
       var element = _findElementInLibraryOrImportedLibraries(
           field.library, identifier.name);
       if (element == null) {
         throw Exception(
-            '${field.asUri}: Could not find the type of $identifier');
+            '${field.asLibraryMemberPath}: Could not find the type of $identifier');
       }
       foundElements.add(element);
     }

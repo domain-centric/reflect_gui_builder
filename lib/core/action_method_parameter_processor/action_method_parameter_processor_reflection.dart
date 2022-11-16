@@ -15,7 +15,7 @@ class ActionMethodParameterProcessorReflection extends ClassReflection {
   @override
   String toString() {
     return ToStringBuilder(runtimeType.toString())
-        .add('fullUri', fullUri)
+        .add('libraryMemberUri', libraryMemberUri)
         .add('genericType', genericType)
         .add('parameterType', parameterType)
         .toString();
@@ -45,11 +45,11 @@ class ActionMethodParameterProcessorReflectionFactory extends ReflectionFactory 
           actionMethodParameterProcessorLibraryUri, actionMethodParameterProcessorName);
       var types = superClass!.typeArguments;
       if (types.isEmpty) {
-        throw ('${field.asUri}: $element must have a generic type.');
+        throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
       var genericElement = types.first.element;
       if (genericElement == null) {
-        throw ('${field.asUri}: $element must have a generic type.');
+        throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
       var classReflection = createClassReflection(element);
       var parameterType =
@@ -62,7 +62,7 @@ class ActionMethodParameterProcessorReflectionFactory extends ReflectionFactory 
     }
 
     if (reflections.isEmpty) {
-      throw Exception('${field.asUri}: No PropertyWidgetFactories found.');
+      throw Exception('${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }
 
     return reflections;
@@ -71,24 +71,24 @@ class ActionMethodParameterProcessorReflectionFactory extends ReflectionFactory 
   void _validatePropertyWidgetFactoryElement(
       FieldElement field, Element propertyWidgetFactory) {
     if (propertyWidgetFactory is! ClassElement) {
-      throw ('${field.asUri}: $propertyWidgetFactory must be a class.');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory must be a class.');
     }
     if (!propertyWidgetFactory.isPublic) {
-      throw ('${field.asUri}: $propertyWidgetFactory must be public.');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory must be public.');
     }
     if (propertyWidgetFactory.isAbstract) {
-      throw ('${field.asUri}: $propertyWidgetFactory may not be abstract.');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory may not be abstract.');
     }
     if (!hasNamelessConstructorWithoutParameters(propertyWidgetFactory)) {
-      throw ('${field.asUri}: $propertyWidgetFactory does not have a nameless constructor without parameters.');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory does not have a nameless constructor without parameters.');
     }
     if (!hasConstNamelessConstructorWithoutParameters(propertyWidgetFactory)) {
-      throw ('${field.asUri}: $propertyWidgetFactory must be immutable and therefore must have a constant constructor.');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory must be immutable and therefore must have a constant constructor.');
     }
 
     if (!hasSuperClass(propertyWidgetFactory, actionMethodParameterProcessorLibraryUri,
         actionMethodParameterProcessorName)) {
-      throw ('${field.asUri}: $propertyWidgetFactory must extend $actionMethodParameterProcessorName');
+      throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory must extend $actionMethodParameterProcessorName');
     }
 
   }

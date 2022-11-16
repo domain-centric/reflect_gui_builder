@@ -31,7 +31,7 @@ class ServiceClassReflectionFactory extends ReflectionFactory {
     }
 
     if (reflections.isEmpty) {
-      throw Exception('${field.asUri}: No service classes found.');
+      throw Exception('${field.asLibraryMemberPath}: No service classes found.');
     }
 
     return reflections;
@@ -39,19 +39,19 @@ class ServiceClassReflectionFactory extends ReflectionFactory {
 
   void _validateServiceClassElement(FieldElement field, Element serviceClass) {
     if (serviceClass is! ClassElement) {
-      throw ('${field.asUri}: $serviceClass must be a class.');
+      throw ('${field.asLibraryMemberPath}: $serviceClass must be a class.');
     }
     if (!serviceClass.isPublic) {
-      throw ('${field.asUri}: $serviceClass must be public.');
+      throw ('${field.asLibraryMemberPath}: $serviceClass must be public.');
     }
     if (serviceClass.isAbstract) {
-      throw ('${field.asUri}: $serviceClass may not be abstract.');
+      throw ('${field.asLibraryMemberPath}: $serviceClass may not be abstract.');
     }
     if (!hasNamelessConstructorWithoutParameters(serviceClass)) {
-      throw ('${field.asUri}: $serviceClass does not have a nameless constructor without parameters.');
+      throw ('${field.asLibraryMemberPath}: $serviceClass does not have a nameless constructor without parameters.');
     }
     if (!hasConstNamelessConstructorWithoutParameters(serviceClass)) {
-      throw ('${field.asUri}: $serviceClass must be immutable and therefore must have a constant constructor.');
+      throw ('${field.asLibraryMemberPath}: $serviceClass must be immutable and therefore must have a constant constructor.');
     }
 
     //TODO _validateIfHasActionMethods(serviceClassElement);

@@ -23,24 +23,24 @@ class LibraryMemberReflection {
   /// Examples:
   /// * dart:core/String
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
-  final Uri fullUri;
+  final Uri libraryMemberUri;
 
   LibraryMemberReflection({required this.name, required this.libraryUri})
-      : fullUri = Uri.parse('$libraryUri/$name');
+      : libraryMemberUri = Uri.parse('$libraryUri/$name');
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LibraryMemberReflection &&
           runtimeType == other.runtimeType &&
-          fullUri == other.fullUri;
+          libraryMemberUri == other.libraryMemberUri;
 
   @override
   int get hashCode => name.hashCode ^ libraryUri.hashCode;
 
   @override
   String toString() {
-    return '$runtimeType{fullUri: $fullUri}';
+    return '$runtimeType{fullUri: $libraryMemberUri}';
   }
 }
 
@@ -67,7 +67,7 @@ class ClassReflection extends LibraryMemberReflection {
   @override
   String toString() {
     return ToStringBuilder(runtimeType.toString())
-        .add('fullUri', fullUri)
+        .add('libraryMemberUri', libraryMemberUri)
         .add('genericType', genericType)
         .toString();
   }

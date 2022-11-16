@@ -26,16 +26,16 @@ class DomainClassReflectionFactory extends ReflectionFactory {
 
   void _validateDomainClassElement(FieldElement field, Element domainClass) {
     if (domainClass is! ClassElement) {
-      throw ('${field.asUri}: $domainClass must be a class.');
+      throw ('${field.asLibraryMemberPath}: $domainClass must be a class.');
     }
     if (!domainClass.isPublic) {
-      throw ('${field.asUri}: $domainClass must be public.');
+      throw ('${field.asLibraryMemberPath}: $domainClass must be public.');
     }
     if (domainClass.isAbstract) {
-      throw ('${field.asUri}: $domainClass may not be abstract.');
+      throw ('${field.asLibraryMemberPath}: $domainClass may not be abstract.');
     }
     if (!hasNamelessConstructorWithoutParameters(domainClass)) {
-      throw ('${field.asUri}: $domainClass does not have a nameless constructor without parameters.');
+      throw ('${field.asLibraryMemberPath}: $domainClass does not have a nameless constructor without parameters.');
     }
 
     //TODO _validateIfHasAtLeastOneProperty;
