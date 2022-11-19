@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 
-import '../core/reflect_gui/reflect_gui_reflection.dart';
+import '../core/reflect_gui/reflect_gui_source.dart';
 
 
 
@@ -20,7 +20,7 @@ class ReflectGuiConfigBuilder extends Builder {
       // Get the `LibraryElement` for the primary input.
       var library = await buildStep.inputLibrary;
 
-      var reflectGuiReflectFactory = ReflectGuiReflectionFactory();
+      var reflectGuiReflectFactory = ReflectGuiConfigSourceFactory();
 
       for (var topElement in library.topLevelElements) {
         if (reflectGuiReflectFactory.isValidReflectGuiConfigElement(topElement)) {

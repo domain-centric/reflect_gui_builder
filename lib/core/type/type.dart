@@ -1,9 +1,11 @@
 import 'package:reflect_gui_builder/core/type/to_string.dart';
 
-/// Provides meta data on a library member
-class LibraryMemberReflection {
+/// Contains information on a library member from its source code.
+/// Implementations are normally created by [SourceFactory] that converts
+/// an source code [Element] from the analyzer package to
+/// a [LibraryMemberSource]
+class LibraryMemberSource {
   /// Name of the library member.
-  /// [libraryUri] combined with [name] uniquely identifies each member
   /// Examples:
   /// * myConstant
   /// * myFunction
@@ -13,25 +15,24 @@ class LibraryMemberReflection {
   final String name;
 
   /// A [Uri] to the library
-  /// [libraryUri] combined with [name] uniquely identifies each member
   /// Examples:
   /// * dart:core
   /// * package:my_package/by_directory/my_lib.dart
   final Uri libraryUri;
 
-  /// A full [Uri] to the library member ([libraryUri]/[name])
+  /// A full [Uri] to the library member: ([libraryUri]/[name])
   /// Examples:
   /// * dart:core/String
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
   final Uri libraryMemberUri;
 
-  LibraryMemberReflection({required this.name, required this.libraryUri})
+  LibraryMemberSource({required this.name, required this.libraryUri})
       : libraryMemberUri = Uri.parse('$libraryUri/$name');
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LibraryMemberReflection &&
+      other is LibraryMemberSource &&
           runtimeType == other.runtimeType &&
           libraryMemberUri == other.libraryMemberUri;
 
@@ -44,17 +45,20 @@ class LibraryMemberReflection {
   }
 }
 
-/// Provides meta data on Class or Interface (abstract class)
-class ClassReflection extends LibraryMemberReflection {
-  ClassReflection? genericType;
+/// Contains information on a class from its source code.
+/// Implementations are normally created by [SourceFactory] that converts
+/// an source code [Element] from the analyzer package to
+/// a [LibraryMemberSource]
+class ClassSource extends LibraryMemberSource {
+  ClassSource? genericType;
 
-  ClassReflection(
+  ClassSource(
       {required super.libraryUri, required super.name, this.genericType});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ClassReflection &&
+      other is ClassSource &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           libraryUri == other.libraryUri &&

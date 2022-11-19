@@ -4,16 +4,41 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
+extension ElementExtension on Element {
+  String get asLibraryMemberPath =>
+      library == null ? memberPath : '${library!.source.uri}/$memberPath';
 
-extension FieldElementExtension on FieldElement {
-  String get asLibraryMemberPath => '${library.source.uri}/${enclosingElement.name}.$name';
+
+  String get memberPath {
+    var parentPath=_parentPath;
+    if (parentPath.isEmpty) {
+      return name??'';
+    } else {
+      return '$parentPath.${name??''}';
+    }
+  }
+
+  String get _parentPath {
+    if (enclosingElement==null) {
+      return '';
+    }
+    if (enclosingElement is PropertyInducingElement) {
+      return (enclosingElement! as PropertyInducingElement).memberPath;
+    } else {
+      return enclosingElement!.name??'';
+    }
+  }
+
+
+
+
 }
 
-// TODO all subclasses exceptions with reference to a class mus show the fullUri
+/// TODO all subclasses exceptions with reference to a class mus show the [FieldElementExtension.asLibraryMemberPath]
 
 /// Class to create Reflection Objects.
 /// It contains methods that are used by its implementations.
-abstract class ReflectionFactory {
+abstract class SourceFactory {
   bool hasSuperClass(
       ClassElement classElement, String libraryUriToFind, String nameToFind) {
     var superTypes = classElement.allSupertypes;
@@ -21,6 +46,7 @@ abstract class ReflectionFactory {
       String name = superType
           .getDisplayString(withNullability: false)
           .replaceFirst(RegExp('<.*>'), '');
+
       String libraryUri = superType.element.library.source.uri.toString();
       if (name == nameToFind && libraryUri == libraryUriToFind) {
         return true;
@@ -59,7 +85,9 @@ abstract class ReflectionFactory {
   bool hasConstNamelessConstructorWithoutParameters(ClassElement classElement) {
     var constructors = classElement.constructors;
     for (var constructor in constructors) {
-      if (constructor.name.isEmpty && constructor.parameters.isEmpty && constructor.isConst) {
+      if (constructor.name.isEmpty &&
+          constructor.parameters.isEmpty &&
+          constructor.isConst) {
         return true;
       }
     }
@@ -67,7 +95,6 @@ abstract class ReflectionFactory {
     //     'A default constructor or a nameless constructor without parameters was expected for $classElement in library ${classElement.library.source.uri}');
     return false;
   }
-
 
   FieldElement findField(
       ClassElement reflectGuiConfigClass, String fieldNameToFind) {
@@ -157,17 +184,17 @@ abstract class ReflectionFactory {
     }
   }
 
-  ClassReflection createClassReflection(InterfaceElement element,
+  ClassSource createClassReflection(InterfaceElement element,
       [InterfaceElement? genericElement]) {
     var name = element.thisType.getDisplayString(withNullability: false);
     var libraryUri = element.library.source.uri;
-    ClassReflection? genericType;
+    ClassSource? genericType;
     if (genericElement != null) {
       genericType = createClassReflection(genericElement);
 
       /// TODO recursive call for [genericElement.typeArguments]
     }
-    return ClassReflection(
+    return ClassSource(
         name: name, libraryUri: libraryUri, genericType: genericType);
   }
 
@@ -183,7 +210,4 @@ abstract class ReflectionFactory {
     }
     return fieldElements;
   }
-
-
 }
-

@@ -7,17 +7,17 @@ import '../reflect_gui/reflection_factory.dart';
 /// TODO See: https://github.com/reflect-framework/reflect-framework/wiki/02-The-Domain-Layer#TheDomainLayer_DomainObjects
 class DomainClass implements ConceptDocumentation {}
 
-/// Contains information on a [DomainClass]
-class DomainClassReflection extends ClassReflection {
+/// Contains information on a [DomainClass]s source code.
+class DomainClassSource extends ClassSource {
 
-  DomainClassReflection({required super.name, required super.libraryUri});
+  DomainClassSource({required super.name, required super.libraryUri});
 }
 
-/// Creates a [DomainClassReflection]s by using the
+/// Creates a [DomainClassSource]s by using the
 /// analyzer package
-class DomainClassReflectionFactory extends ReflectionFactory {
+class DomainClassSourceFactory extends SourceFactory {
 
-  DomainClassReflection? createFrom(
+  DomainClassSource? createFrom(
       ClassElement reflectGuiConfigElement) {
 
 

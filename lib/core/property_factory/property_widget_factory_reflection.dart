@@ -3,12 +3,14 @@ import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
-/// Contains information on a [PropertyWidgetFactory]
-class PropertyWidgetFactoryReflection extends ClassReflection {
-  final ClassReflection propertyType;
 
-  PropertyWidgetFactoryReflection(
-      ClassReflection classReflection, this.propertyType)
+/// Contains information from an [ActionMethodReflection]s source code.
+/// It is created by the [ActionMethodSourceFactory].
+class PropertyWidgetFactorySource extends ClassSource {
+  final ClassSource propertyType;
+
+  PropertyWidgetFactorySource(
+      ClassSource classReflection, this.propertyType)
       : super(
             libraryUri: classReflection.libraryUri, name: classReflection.name);
 
@@ -23,21 +25,21 @@ class PropertyWidgetFactoryReflection extends ClassReflection {
 }
 
 
-/// Creates a list of [PropertyWidgetFactoryReflection]s by using the
+/// Creates a list of [PropertyWidgetFactorySource]s by using the
 /// analyzer package
-class PropertyWidgetFactoryReflectionFactory extends ReflectionFactory {
+class PropertyWidgetFactorySourceFactory extends SourceFactory {
   static const propertyWidgetFactoriesFieldName = 'propertyWidgetFactories';
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/core/property_factory/property_widget_factory.dart';
 
-  List<PropertyWidgetFactoryReflection> createFrom(
+  List<PropertyWidgetFactorySource> createFrom(
       ClassElement reflectGuiConfigElement) {
     var field =
     findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
-    List<PropertyWidgetFactoryReflection> reflections = [];
+    List<PropertyWidgetFactorySource> sources = [];
     for (var element in elements) {
       _validatePropertyWidgetFactoryElement(field, element);
 
@@ -55,17 +57,17 @@ class PropertyWidgetFactoryReflectionFactory extends ReflectionFactory {
       var propertyType =
       createClassReflection(genericElement as InterfaceElement);
 
-      var reflection =
-      PropertyWidgetFactoryReflection(classReflection, propertyType);
+      var source =
+      PropertyWidgetFactorySource(classReflection, propertyType);
 
-      reflections.add(reflection);
+      sources.add(source);
     }
 
-    if (reflections.isEmpty) {
+    if (sources.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }
 
-    return reflections;
+    return sources;
   }
 
   void _validatePropertyWidgetFactoryElement(

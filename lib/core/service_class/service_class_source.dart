@@ -7,25 +7,28 @@ import '../reflect_gui/reflection_factory.dart';
 /// TODO, for inspiration see https://github.com/reflect-framework/reflect-framework/wiki/03-The-Service-Layer#service-objects
 class ServiceClass implements ConceptDocumentation {}
 
-/// Contains information on a [ServiceClass]
-class ServiceClassReflection extends ClassReflection {
-  ServiceClassReflection({required super.name, required super.libraryUri});
+/// Contains information on a [ServiceClass]s source code.
+/// It is created by the [ServiceClassSourceFactory].
+/// It is later converted to generated Dart code
+/// that implements [ServiceClassReflection].
+class ServiceClassSource extends ClassSource {
+  ServiceClassSource({required super.name, required super.libraryUri});
 }
 
-/// Creates a list of [ServiceClassReflection]s by using the
+/// Creates a list of [ServiceClassSource]s by using the
 /// analyzer package
-class ServiceClassReflectionFactory extends ReflectionFactory {
+class ServiceClassSourceFactory extends SourceFactory {
   static const serviceClassesFieldName = 'serviceClasses';
 
-  List<ServiceClassReflection> createFrom(
+  List<ServiceClassSource> createFrom(
       ClassElement reflectGuiConfigElement) {
     var field = findField(reflectGuiConfigElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
-    List<ServiceClassReflection> reflections = [];
+    List<ServiceClassSource> reflections = [];
     for (var element in elements) {
       _validateServiceClassElement(field, element);
-      var reflection = ServiceClassReflection(
+      var reflection = ServiceClassSource(
           name: element.displayName, libraryUri: element.library!.source.uri);
       reflections.add(reflection);
     }
