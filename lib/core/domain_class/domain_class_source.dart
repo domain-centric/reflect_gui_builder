@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:reflect_gui_builder/core/documentation.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflection_factory.dart';
