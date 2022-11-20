@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor_reflection.dart';
+import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
 
-import '../action_method_result_processor/action_method_result_processor_reflection.dart';
-import '../property_factory/property_widget_factory_reflection.dart';
+import '../action_method_result_processor/action_method_result_processor_source.dart';
+import '../property_factory/property_widget_factory_source.dart';
 import '../service_class/service_class_source.dart';
 import '../type/to_string.dart';
 

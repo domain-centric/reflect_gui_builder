@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:reflect_gui_builder/core/item/item.dart';
 
-import '../domain_class/domain_class_reflection.dart';
+import '../domain_class/domain_class_source.dart';
 
 /// Implementations of a [ActionMethodReflection] class are
 /// generated classes that contain [ActionMethod] information for the

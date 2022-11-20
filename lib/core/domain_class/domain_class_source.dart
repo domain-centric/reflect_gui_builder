@@ -4,23 +4,15 @@ import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflection_factory.dart';
 
-/// TODO See: https://github.com/reflect-framework/reflect-framework/wiki/02-The-Domain-Layer#TheDomainLayer_DomainObjects
-class DomainClass implements ConceptDocumentation {}
-
 /// Contains information on a [DomainClass]s source code.
 class DomainClassSource extends ClassSource {
-
-  DomainClassSource({required super.name, required super.libraryUri});
+  DomainClassSource({required super.libraryUri, required super.name});
 }
 
 /// Creates a [DomainClassSource]s by using the
 /// analyzer package
 class DomainClassSourceFactory extends SourceFactory {
-
-  DomainClassSource? createFrom(
-      ClassElement reflectGuiConfigElement) {
-
-
+  DomainClassSource? createFrom(ClassElement reflectGuiConfigElement) {
     return null; //TODO
   }
 
@@ -39,7 +31,5 @@ class DomainClassSourceFactory extends SourceFactory {
     }
 
     //TODO _validateIfHasAtLeastOneProperty;
-
   }
-
 }

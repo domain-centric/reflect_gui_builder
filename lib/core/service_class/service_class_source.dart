@@ -1,18 +1,15 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
-import '../documentation.dart';
 import '../reflect_gui/reflection_factory.dart';
 
-/// TODO, for inspiration see https://github.com/reflect-framework/reflect-framework/wiki/03-The-Service-Layer#service-objects
-class ServiceClass implements ConceptDocumentation {}
 
 /// Contains information on a [ServiceClass]s source code.
 /// It is created by the [ServiceClassSourceFactory].
 /// It is later converted to generated Dart code
 /// that implements [ServiceClassReflection].
 class ServiceClassSource extends ClassSource {
-  ServiceClassSource({required super.name, required super.libraryUri});
+  ServiceClassSource({ required super.libraryUri, required super.name});
 }
 
 /// Creates a list of [ServiceClassSource]s by using the

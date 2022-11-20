@@ -10,9 +10,10 @@ class PropertyWidgetFactorySource extends ClassSource {
   final ClassSource propertyType;
 
   PropertyWidgetFactorySource(
-      ClassSource classReflection, this.propertyType)
+      ClassSource propertyWidgetFactoryType, this.propertyType)
       : super(
-            libraryUri: classReflection.libraryUri, name: classReflection.name);
+            libraryUri: propertyWidgetFactoryType.libraryUri,
+            name: propertyWidgetFactoryType.name);
 
   @override
   String toString() {
@@ -23,7 +24,6 @@ class PropertyWidgetFactorySource extends ClassSource {
         .toString();
   }
 }
-
 
 /// Creates a list of [PropertyWidgetFactorySource]s by using the
 /// analyzer package
@@ -36,7 +36,7 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
   List<PropertyWidgetFactorySource> createFrom(
       ClassElement reflectGuiConfigElement) {
     var field =
-    findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
+        findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
     List<PropertyWidgetFactorySource> sources = [];
@@ -55,16 +55,16 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
       }
       var classReflection = createClassReflection(element);
       var propertyType =
-      createClassReflection(genericElement as InterfaceElement);
+          createClassReflection(genericElement as InterfaceElement);
 
-      var source =
-      PropertyWidgetFactorySource(classReflection, propertyType);
+      var source = PropertyWidgetFactorySource(classReflection, propertyType);
 
       sources.add(source);
     }
 
     if (sources.isEmpty) {
-      throw Exception('${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
+      throw Exception(
+          '${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }
 
     return sources;
@@ -92,6 +92,5 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
         propertyWidgetFactoryName)) {
       throw ('${field.asLibraryMemberPath}: $propertyWidgetFactory must extend $propertyWidgetFactoryName');
     }
-
   }
 }
