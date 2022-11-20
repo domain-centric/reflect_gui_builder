@@ -22,19 +22,19 @@ class ServiceClassSourceFactory extends SourceFactory {
     var field = findField(reflectGuiConfigElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
-    List<ServiceClassSource> reflections = [];
+    List<ServiceClassSource> sources = [];
     for (var element in elements) {
       _validateServiceClassElement(field, element);
-      var reflection = ServiceClassSource(
+      var source = ServiceClassSource(
           name: element.displayName, libraryUri: element.library!.source.uri);
-      reflections.add(reflection);
+      sources.add(source);
     }
 
-    if (reflections.isEmpty) {
+    if (sources.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: No service classes found.');
     }
 
-    return reflections;
+    return sources;
   }
 
   void _validateServiceClassElement(FieldElement field, Element serviceClass) {
