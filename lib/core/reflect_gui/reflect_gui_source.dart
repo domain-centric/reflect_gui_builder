@@ -53,8 +53,6 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
   /// creates a [ReflectGuiConfigSource] using a [ClassElement]
   /// that passed [isReflectGuiConfigClass]
   ReflectGuiConfigSource createFrom(ClassElement reflectGuiConfigClassElement) {
-    var serviceClassReflections =
-        ServiceClassSourceFactory().createFrom(reflectGuiConfigClassElement);
     var propertyWidgetFactorySources = PropertyWidgetFactorySourceFactory()
         .createFrom(reflectGuiConfigClassElement);
     var actionMethodParameterProcessorSources =
@@ -63,11 +61,16 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
     var actionMethodResultProcessorSources =
         ActionMethodResultProcessorSourceFactory()
             .createFrom(reflectGuiConfigClassElement);
-    return ReflectGuiConfigSource(
+    var reflectGuiConfigSource = ReflectGuiConfigSource(
         propertyWidgetFactorySources: propertyWidgetFactorySources,
         actionMethodParameterProcessorSources:
             actionMethodParameterProcessorSources,
         actionMethodResultProcessorSources: actionMethodResultProcessorSources,
-        serviceClassSources: serviceClassReflections);
+        serviceClassSources: []);
+
+    ServiceClassSourceFactory(reflectGuiConfigSource)
+        .populateWith(reflectGuiConfigClassElement);
+
+    return reflectGuiConfigSource;
   }
 }
