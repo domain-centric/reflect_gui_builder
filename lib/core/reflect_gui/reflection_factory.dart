@@ -2,7 +2,6 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:reflect_gui_builder/core/type/type.dart';
 
 extension ElementExtension on Element {
   String get asLibraryMemberPath =>
@@ -184,19 +183,7 @@ abstract class SourceFactory {
     }
   }
 
-  ClassSource createClassReflection(InterfaceElement element,
-      [InterfaceElement? genericElement]) {
-    var name = element.thisType.getDisplayString(withNullability: false);
-    var libraryUri = element.library.source.uri;
-    ClassSource? genericType;
-    if (genericElement != null) {
-      genericType = createClassReflection(genericElement);
 
-      /// TODO recursive call for [genericElement.typeArguments]
-    }
-    return ClassSource(
-        name: name, libraryUri: libraryUri, genericType: genericType);
-  }
 
   /// Finds all fields within the object, its super types and all its mixins.
   List<FieldElement> findAllFields(ClassElement classElement) {

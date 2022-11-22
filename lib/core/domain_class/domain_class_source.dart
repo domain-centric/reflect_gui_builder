@@ -5,7 +5,7 @@ import '../reflect_gui/reflection_factory.dart';
 
 /// Contains information on a [DomainClass]s source code.
 class DomainClassSource extends ClassSource {
-  DomainClassSource({required super.libraryUri, required super.name});
+  DomainClassSource({required super.libraryUri, required super.libraryMemberPath});
 }
 
 /// Creates a [DomainClassSource]s by using the

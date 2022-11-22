@@ -16,7 +16,7 @@ class ServiceClassSource extends ClassSource {
 
   ServiceClassSource(
       {required super.libraryUri,
-      required super.name,
+      required super.libraryMemberPath,
       required this.actionMethodSources});
 
   @override
@@ -49,8 +49,8 @@ class ServiceClassSourceFactory extends SourceFactory {
       _validateServiceClassActionMethodSources(
           field, element, actionMethodSources);
       var serviceClassSource = ServiceClassSource(
-          name: element.displayName,
           libraryUri: element.library!.source.uri,
+          libraryMemberPath: element.displayName,
           actionMethodSources: actionMethodSources);
       reflectGuiConfigSource.serviceClassSources.add(serviceClassSource);
     }
@@ -62,19 +62,20 @@ class ServiceClassSourceFactory extends SourceFactory {
 
   void _validateServiceClassElement(FieldElement field, Element serviceClass) {
     if (serviceClass is! ClassElement) {
-      throw ('${field.asLibraryMemberPath}: $serviceClass must be a class.');
+      throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must be a class.');
     }
     if (!serviceClass.isPublic) {
-      throw ('${field.asLibraryMemberPath}: $serviceClass must be public.');
+      throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must be public.');
     }
     if (serviceClass.isAbstract) {
-      throw ('${field.asLibraryMemberPath}: $serviceClass may not be abstract.');
+      throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} may not be abstract.');
     }
+    /// TODO would be nice if we could allow an single constructor with parameters, e.g. to inject infrastructure classes such as repositories, http clients or their test mocks
     if (!hasNamelessConstructorWithoutParameters(serviceClass)) {
-      throw ('${field.asLibraryMemberPath}: $serviceClass does not have a nameless constructor without parameters.');
+      throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} does not have a nameless constructor without parameters.');
     }
     if (!hasConstNamelessConstructorWithoutParameters(serviceClass)) {
-      throw ('${field.asLibraryMemberPath}: $serviceClass must be immutable and therefore must have a constant constructor.');
+      throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must be immutable and therefore must have a constant constructor.');
     }
   }
 
@@ -82,15 +83,7 @@ class ServiceClassSourceFactory extends SourceFactory {
     var classElement = element as ClassElement;
     var methodElements = classElement.methods;
     var factory = ActionMethodSourceFactory(reflectGuiConfigSource);
-    var sources = <ActionMethodSource>[];
-    for (var methodElement in methodElements) {
-      if (factory.isActionMethod(methodElement)) {
-        var source = factory.create(methodElement);
-        sources.add(source);
-      }
-    }
-    return sources;
-    //
+    return factory.createAll(methodElements);
   }
 
   void _validateServiceClassActionMethodSources(FieldElement field,

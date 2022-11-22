@@ -14,24 +14,25 @@ import '../type/to_string.dart';
 class ActionMethodSource extends LibraryMemberSource {
   final String className;
   final String methodName;
-  final ActionMethodParameterProcessorSource
-      actionMethodParameterProcessorSource;
-  final ActionMethodResultProcessorSource actionMethodResultProcessorSource;
+  final ActionMethodParameterProcessorSource parameterProcessorSource;
+  final ActionMethodResultProcessorSource resultProcessorSource;
 
   ActionMethodSource(
       {required Uri libraryUri,
       required this.className,
       required this.methodName,
-      required this.actionMethodParameterProcessorSource,
-      required this.actionMethodResultProcessorSource})
-      : super(libraryUri: libraryUri, name: '$className.$methodName');
+      required this.parameterProcessorSource,
+      required this.resultProcessorSource})
+      : super(
+            libraryUri: libraryUri,
+            libraryMemberPath: '$className.$methodName');
 
   @override
   String toString() {
     return ToStringBuilder('$ActionMethodSource')
         .add('libraryMemberUri', libraryMemberUri)
-        .add('actionMethodParameterProcessorSource', actionMethodParameterProcessorSource)
-        .add('actionMethodResultProcessorSource', actionMethodResultProcessorSource)
+        .add('actionMethodParameterProcessorSource', parameterProcessorSource)
+        .add('actionMethodResultProcessorSource', resultProcessorSource)
         .toString();
   }
 }
@@ -43,16 +44,87 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodSourceFactory(this.reflectGuiConfigSource);
 
-  bool isActionMethod(MethodElement methodElement) => true;
+  List<ActionMethodSource> createAll(List<MethodElement> methodElements) {
+    var sources = <ActionMethodSource>[];
+    for (var methodElement in methodElements) {
+      var source = _create(methodElement);
+      if (source != null) {
+        sources.add(source);
+      }
+    }
+    return sources;
+  }
 
-  ActionMethodSource create(MethodElement methodElement) => ActionMethodSource(
-      libraryUri: methodElement.library.source.uri,
-      className: methodElement.enclosingElement.name!,
-      methodName: methodElement.name,
-      actionMethodParameterProcessorSource:
-          reflectGuiConfigSource.actionMethodParameterProcessorSources.first,
-      //TODO
-      actionMethodResultProcessorSource:
-          reflectGuiConfigSource.actionMethodResultProcessorSources.first //TODO
-      );
+  ActionMethodSource? _create(MethodElement methodElement) {
+    if (methodElement.isPrivate) {
+      return null;
+    }
+    if (methodElement.parameters.length > 1) {
+      return null;
+    }
+
+    var parameterProcessorSource = _findParameterProcessor(methodElement);
+    if (parameterProcessorSource == null) {
+      return null;
+    }
+
+    var resultProcessorSource = _findResultProcessor(methodElement);
+    if (resultProcessorSource == null) {
+      return null;
+    }
+
+    return ActionMethodSource(
+        libraryUri: methodElement.library.source.uri,
+        className: methodElement.enclosingElement.name!,
+        methodName: methodElement.name,
+        parameterProcessorSource: parameterProcessorSource,
+        resultProcessorSource: resultProcessorSource);
+  }
+
+  ActionMethodParameterProcessorSource? _findParameterProcessor(
+      MethodElement methodElement) {
+    ClassSource? parameterType = _createParameterType(methodElement);
+    for (var parameterProcessor
+        in reflectGuiConfigSource.actionMethodParameterProcessorSources) {
+      if (_parameterProcessorSupports(parameterProcessor, parameterType)) {
+        return parameterProcessor;
+      }
+    }
+    return null;
+  }
+
+  ActionMethodResultProcessorSource? _findResultProcessor(
+      MethodElement methodElement) {
+    ClassSource? resultType = _createResultType(methodElement);
+    for (var resultProcessor
+        in reflectGuiConfigSource.actionMethodResultProcessorSources) {
+      if (_resultProcessorSupports(resultProcessor, resultType)) {
+        return resultProcessor;
+      }
+    }
+    return null;
+  }
+
+  ClassSource? _createParameterType(MethodElement methodElement) {
+    if (methodElement.parameters.length == 1) {
+      return ClassSource.fromInterfaceElement(
+          methodElement.parameters.first as InterfaceElement);
+    } else {
+      return null;
+    }
+  }
+
+  ClassSource? _createResultType(MethodElement methodElement) =>
+      ClassSource.fromInterfaceElement(
+          methodElement.returnType.element as InterfaceElement);
+
+  bool _parameterProcessorSupports(
+          ActionMethodParameterProcessorSource parameterProcessor,
+          ClassSource? parameterType) =>
+      true; //TODO
+
+  bool _resultProcessorSupports(
+          ActionMethodResultProcessorSource resultProcessor,
+          ClassSource? resultType) =>
+      true; //TODO
 }

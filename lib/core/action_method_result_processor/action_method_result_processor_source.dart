@@ -14,7 +14,7 @@ class ActionMethodResultProcessorSource extends ClassSource {
       {required ClassSource actionMethodResultProcessorType, this.resultType})
       : super(
             libraryUri: actionMethodResultProcessorType.libraryUri,
-            name: actionMethodResultProcessorType.name);
+      libraryMemberPath: actionMethodResultProcessorType.libraryMemberPath);
 
   @override
   String toString() {
@@ -46,7 +46,7 @@ class ActionMethodResultProcessorSourceFactory extends SourceFactory {
 
       var source = ActionMethodResultProcessorSource(
           actionMethodResultProcessorType:
-              createClassReflection(element as ClassElement),
+              ClassSource.fromInterfaceElement(element as ClassElement),
           resultType: _createResultType(element, field));
 
       sources.add(source);
@@ -71,7 +71,7 @@ class ActionMethodResultProcessorSourceFactory extends SourceFactory {
     if (genericElement == null) {
       return null;
     }
-    var resultType = createClassReflection(genericElement as InterfaceElement);
+    var resultType = ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
     return resultType;
   }
 

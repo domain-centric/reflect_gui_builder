@@ -31,8 +31,8 @@ class ReflectGuiConfigBuilder extends Builder {
         }
       }
       //TODO throw an error when no ReflectGuiConfiguration implementations are found
-    } catch(e, stacktrace) {
-      log.severe('Failed', e, stacktrace);
+    } catch(e, stackTrace) {
+      log.severe('Failed\n$e\n$stackTrace');
     }
   }
 

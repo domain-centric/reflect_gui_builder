@@ -13,7 +13,7 @@ class PropertyWidgetFactorySource extends ClassSource {
       ClassSource propertyWidgetFactoryType, this.propertyType)
       : super(
             libraryUri: propertyWidgetFactoryType.libraryUri,
-            name: propertyWidgetFactoryType.name);
+      libraryMemberPath: propertyWidgetFactoryType.libraryMemberPath);
 
   @override
   String toString() {
@@ -53,9 +53,8 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
       if (genericElement == null) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
-      var classReflection = createClassReflection(element);
-      var propertyType =
-          createClassReflection(genericElement as InterfaceElement);
+      var classReflection = ClassSource.fromInterfaceElement(element);
+      var propertyType =ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
 
       var source = PropertyWidgetFactorySource(classReflection, propertyType);
 

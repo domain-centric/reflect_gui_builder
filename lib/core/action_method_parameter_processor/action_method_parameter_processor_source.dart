@@ -15,7 +15,7 @@ class ActionMethodParameterProcessorSource extends ClassSource {
       this.parameterType})
       : super(
             libraryUri: actionMethodParameterProcessorType.libraryUri,
-            name: actionMethodParameterProcessorType.name);
+            libraryMemberPath: actionMethodParameterProcessorType.libraryMemberPath);
 
   @override
   String toString() {
@@ -48,7 +48,7 @@ class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
 
       var source = ActionMethodParameterProcessorSource(
           actionMethodParameterProcessorType:
-          createClassReflection(element as ClassElement),
+          ClassSource.fromInterfaceElement(element as ClassElement),
           parameterType: _createParameterType(element, field));
 
       sources.add(source);
@@ -76,7 +76,7 @@ class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
       return null;
     }
     var parameterType =
-        createClassReflection(genericElement as InterfaceElement);
+        ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
     return parameterType;
   }
 
