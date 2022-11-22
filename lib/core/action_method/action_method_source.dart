@@ -94,12 +94,12 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodParameterProcessorSource? _findParameterProcessorFor(
           ClassSource? parameterType) =>
-      reflectGuiConfigSource.actionMethodParameterProcessorSources
+      reflectGuiConfigSource.actionMethodParameterProcessors
           .firstWhereOrNull((processor) => processor.supports(parameterType));
 
   ActionMethodResultProcessorSource? _findResultProcessorFor(
           ClassSource? resultType) =>
-      reflectGuiConfigSource.actionMethodResultProcessorSources
+      reflectGuiConfigSource.actionMethodResultProcessors
           .firstWhereOrNull((processor) => processor.supports(resultType));
 
   ClassSource? _createParameterType(MethodElement methodElement) {

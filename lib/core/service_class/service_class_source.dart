@@ -52,10 +52,10 @@ class ServiceClassSourceFactory extends SourceFactory {
           libraryUri: element.library!.source.uri,
           libraryMemberPath: element.displayName,
           actionMethodSources: actionMethodSources);
-      reflectGuiConfigSource.serviceClassSources.add(serviceClassSource);
+      reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }
 
-    if (reflectGuiConfigSource.serviceClassSources.isEmpty) {
+    if (reflectGuiConfigSource.serviceClasses.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: may not be empty!');
     }
   }

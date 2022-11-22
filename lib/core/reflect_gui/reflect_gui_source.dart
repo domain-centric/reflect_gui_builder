@@ -12,29 +12,26 @@ import '../type/to_string.dart';
 /// It is later converted to generated Dart code
 /// that implements [ReflectGuiConfigReflection].
 class ReflectGuiConfigSource {
-  final List<ServiceClassSource> serviceClassSources;
-  final List<PropertyWidgetFactorySource> propertyWidgetFactorySources;
+  final List<ServiceClassSource> serviceClasses;
+  final List<PropertyWidgetFactorySource> propertyWidgetFactories;
   final List<ActionMethodParameterProcessorSource>
-      actionMethodParameterProcessorSources;
-  final List<ActionMethodResultProcessorSource>
-      actionMethodResultProcessorSources;
+      actionMethodParameterProcessors;
+  final List<ActionMethodResultProcessorSource> actionMethodResultProcessors;
 
   ReflectGuiConfigSource({
-    required this.propertyWidgetFactorySources,
-    required this.actionMethodParameterProcessorSources,
-    required this.actionMethodResultProcessorSources,
-    required this.serviceClassSources,
+    required this.propertyWidgetFactories,
+    required this.actionMethodParameterProcessors,
+    required this.actionMethodResultProcessors,
+    required this.serviceClasses,
   });
 
   @override
   String toString() {
     return ToStringBuilder('$ReflectGuiConfigSource')
-        .add('propertyWidgetFactorySources', propertyWidgetFactorySources)
-        .add('actionMethodParameterProcessorSources',
-            actionMethodParameterProcessorSources)
-        .add('actionMethodResultProcessorSources',
-            actionMethodResultProcessorSources)
-        .add('serviceClassSources', serviceClassSources)
+        .add('propertyWidgetFactories', propertyWidgetFactories)
+        .add('actionMethodParameterProcessors', actionMethodParameterProcessors)
+        .add('actionMethodResultProcessors', actionMethodResultProcessors)
+        .add('serviceClasses', serviceClasses)
         .toString();
   }
 }
@@ -62,11 +59,10 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
         ActionMethodResultProcessorSourceFactory()
             .createFrom(reflectGuiConfigClassElement);
     var reflectGuiConfigSource = ReflectGuiConfigSource(
-        propertyWidgetFactorySources: propertyWidgetFactorySources,
-        actionMethodParameterProcessorSources:
-            actionMethodParameterProcessorSources,
-        actionMethodResultProcessorSources: actionMethodResultProcessorSources,
-        serviceClassSources: []);
+        propertyWidgetFactories: propertyWidgetFactorySources,
+        actionMethodParameterProcessors: actionMethodParameterProcessorSources,
+        actionMethodResultProcessors: actionMethodResultProcessorSources,
+        serviceClasses: []);
 
     ServiceClassSourceFactory(reflectGuiConfigSource)
         .populateWith(reflectGuiConfigClassElement);
