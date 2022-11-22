@@ -28,7 +28,8 @@ class LibraryMemberSource {
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
   final Uri libraryMemberUri;
 
-  LibraryMemberSource({required this.libraryMemberPath, required this.libraryUri})
+  LibraryMemberSource(
+      {required this.libraryMemberPath, required this.libraryUri})
       : libraryMemberUri = Uri.parse('$libraryUri/$libraryMemberPath');
 
   @override
@@ -55,13 +56,21 @@ class ClassSource extends LibraryMemberSource {
   ClassSource? genericType;
 
   ClassSource(
-      {required super.libraryUri, required super.libraryMemberPath, this.genericType});
+      {required super.libraryUri,
+      required super.libraryMemberPath,
+      this.genericType});
 
   factory ClassSource.fromInterfaceElement(InterfaceElement element) {
-      return ClassSource(
-          libraryMemberPath: element.thisType.getDisplayString(withNullability: false), libraryUri: element.library.source.uri);
-    }
+    return ClassSource(
+        libraryMemberPath: _className(element),
+        libraryUri: element.library.source.uri);
+  }
 
+  static final noneLetterSuffix = RegExp('[^a-zA-Z].*\$');
+
+  static String _className(InterfaceElement element) => element.thisType
+      .getDisplayString(withNullability: false)
+      .replaceFirst(noneLetterSuffix, '');
 
 // factory ClassSource.fromInterfaceElementWithGenericType(InterfaceElement element) {
 // var name = element.thisType.getDisplayString(withNullability: false);
@@ -75,7 +84,6 @@ class ClassSource extends LibraryMemberSource {
 // return ClassSource(
 // name: name, libraryUri: libraryUri, genericType: genericType);
 // }
-
 
   @override
   bool operator ==(Object other) =>
@@ -97,6 +105,4 @@ class ClassSource extends LibraryMemberSource {
         .add('genericType', genericType)
         .toString();
   }
-
-
 }
