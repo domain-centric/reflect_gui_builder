@@ -19,6 +19,16 @@ class ServiceClassSource extends ClassSource {
       required super.libraryMemberPath,
       required this.actionMethods});
 
+  /// Finds all the [DomainClass]es that are used in all the [ActionMethod]s.
+  /// See [ActionMethodSource.domainClasses]!
+  Set<DomainClassSource> get domainClasses {
+    var domainClasses=<DomainClassSource>{};
+    for (var actionMethod in actionMethods) {
+      domainClasses.addAll(actionMethod.domainClasses);
+    }
+    return domainClasses;
+  }
+
   @override
   String toString() {
     return ToStringBuilder('$ServiceClassSource')
@@ -45,13 +55,13 @@ class ServiceClassSourceFactory extends SourceFactory {
     var elements = findInitializerElements(field);
     for (var element in elements) {
       _validateServiceClassElement(field, element);
-      var actionMethodSources = _createActionMethodSources(element);
-      _validateServiceClassActionMethodSources(
-          field, element, actionMethodSources);
+      var actionMethods = _createActionMethods(element);
+      _validateServiceClassActionMethods(
+          field, element, actionMethods);
       var serviceClassSource = ServiceClassSource(
           libraryUri: element.library!.source.uri,
           libraryMemberPath: element.displayName,
-          actionMethods: actionMethodSources);
+          actionMethods: actionMethods);
       reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }
 
@@ -79,14 +89,14 @@ class ServiceClassSourceFactory extends SourceFactory {
     }
   }
 
-  List<ActionMethodSource> _createActionMethodSources(Element element) {
+  List<ActionMethodSource> _createActionMethods(Element element) {
     var classElement = element as ClassElement;
     var methodElements = classElement.methods;
     var factory = ActionMethodSourceFactory(reflectGuiConfigSource);
     return factory.createAll(methodElements);
   }
 
-  void _validateServiceClassActionMethodSources(FieldElement field,
+  void _validateServiceClassActionMethods(FieldElement field,
       Element serviceClass, List<ActionMethodSource> actionMethodSources) {
     if (actionMethodSources.isEmpty) {
       throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must contain 1 or more action methods.');

@@ -26,6 +26,13 @@ class ReflectGuiConfigSource {
     required this.serviceClasses,
   });
 
+  Set<DomainClassSource> get domainClasses {
+    var domainClasses=<DomainClassSource>{};
+    for (var serviceClass in serviceClasses) {
+      domainClasses.addAll(serviceClass.domainClasses);
+    }
+    return domainClasses;
+  }
 
   @override
   String toString() {
@@ -34,6 +41,7 @@ class ReflectGuiConfigSource {
         .add('actionMethodParameterProcessors', actionMethodParameterProcessors)
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
         .add('serviceClasses', serviceClasses)
+        .add('domainClasses', domainClasses)
         .toString();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor_source.dart';
+import 'package:reflect_gui_builder/core/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflect_gui_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
@@ -31,6 +32,13 @@ class ActionMethodSource extends LibraryMemberSource {
       : super(
             libraryUri: libraryUri,
             libraryMemberPath: '$className.$methodName');
+
+  /// Finds all the [DomainClass]es that are used in this [ActionMethod].
+  /// It will also get [DomainClass]es used inside the
+  /// DomainClass [ActionMethod]s and the [ActionMethod]s inside its [Property]s
+  ///
+  /// TODO: Be aware for never ending round trips.
+  Set<DomainClassSource> get domainClasses => {};//TODO
 
   @override
   String toString() {
