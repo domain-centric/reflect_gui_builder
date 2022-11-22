@@ -20,7 +20,6 @@ class ServiceClassSource extends ClassSource {
       required this.actionMethods});
 
   /// Finds all the [DomainClass]es that are used in all the [ActionMethod]s.
-  /// See [ActionMethodSource.domainClasses]!
   Set<DomainClassSource> get domainClasses {
     var domainClasses=<DomainClassSource>{};
     for (var actionMethod in actionMethods) {

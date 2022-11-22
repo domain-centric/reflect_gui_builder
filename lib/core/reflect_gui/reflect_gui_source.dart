@@ -26,6 +26,7 @@ class ReflectGuiConfigSource {
     required this.serviceClasses,
   });
 
+  /// Find's all [DomainClass]es in the [ServiceClass]es
   Set<DomainClassSource> get domainClasses {
     var domainClasses=<DomainClassSource>{};
     for (var serviceClass in serviceClasses) {
