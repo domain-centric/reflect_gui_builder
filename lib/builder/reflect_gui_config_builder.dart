@@ -25,7 +25,7 @@ class ReflectGuiConfigBuilder extends Builder {
       for (var topElement in library.topLevelElements) {
         if (reflectGuiReflectFactory.isValidReflectGuiConfigElement(topElement)) {
           var reflectGuiReflection =
-          reflectGuiReflectFactory.createFrom(topElement as ClassElement);
+          reflectGuiReflectFactory.create(topElement as ClassElement);
           log.info('\n$reflectGuiReflection');
           //TODO Store instances as a [BuildStep] resource so it can be used by other builders and store as [BuildStep] resource so it can be used by other builders
         }

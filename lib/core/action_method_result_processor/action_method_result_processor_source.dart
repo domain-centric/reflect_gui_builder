@@ -38,7 +38,7 @@ class ActionMethodResultProcessorSourceFactory extends SourceFactory {
   static const actionMethodResultProcessorLibraryUri =
       'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 
-  List<ActionMethodResultProcessorSource> createFrom(
+  List<ActionMethodResultProcessorSource> createAll(
       ClassElement reflectGuiConfigElement) {
     var field = findField(
         reflectGuiConfigElement, actionMethodResultProcessorFieldName);

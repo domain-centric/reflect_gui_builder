@@ -33,7 +33,7 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/core/property_factory/property_widget_factory.dart';
 
-  List<PropertyWidgetFactorySource> createFrom(
+  List<PropertyWidgetFactorySource> createAll(
       ClassElement reflectGuiConfigElement) {
     var field =
         findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
