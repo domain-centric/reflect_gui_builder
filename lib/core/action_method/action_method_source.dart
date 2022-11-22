@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflect_gui_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
@@ -14,15 +15,19 @@ import '../type/to_string.dart';
 class ActionMethodSource extends LibraryMemberSource {
   final String className;
   final String methodName;
-  final ActionMethodParameterProcessorSource parameterProcessorSource;
-  final ActionMethodResultProcessorSource resultProcessorSource;
+  final ClassSource? parameterType;
+  final ActionMethodParameterProcessorSource parameterProcessor;
+  final ClassSource? resultType;
+  final ActionMethodResultProcessorSource resultProcessor;
 
   ActionMethodSource(
       {required Uri libraryUri,
       required this.className,
       required this.methodName,
-      required this.parameterProcessorSource,
-      required this.resultProcessorSource})
+      this.parameterType,
+      required this.parameterProcessor,
+      this.resultType,
+      required this.resultProcessor})
       : super(
             libraryUri: libraryUri,
             libraryMemberPath: '$className.$methodName');
@@ -31,8 +36,10 @@ class ActionMethodSource extends LibraryMemberSource {
   String toString() {
     return ToStringBuilder('$ActionMethodSource')
         .add('libraryMemberUri', libraryMemberUri)
-        .add('actionMethodParameterProcessorSource', parameterProcessorSource)
-        .add('actionMethodResultProcessorSource', resultProcessorSource)
+        .add('parameterType', parameterType)
+        .add('parameterProcessor', parameterProcessor)
+        .add('resultType', resultType)
+        .add('resultProcessor', resultProcessor)
         .toString();
   }
 }
@@ -63,12 +70,14 @@ class ActionMethodSourceFactory extends SourceFactory {
       return null;
     }
 
-    var parameterProcessorSource = _findParameterProcessor(methodElement);
-    if (parameterProcessorSource == null) {
+    var parameterType = _createParameterType(methodElement);
+    var parameterProcessor = _findParameterProcessorFor(parameterType);
+    if (parameterProcessor == null) {
       return null;
     }
 
-    var resultProcessorSource = _findResultProcessor(methodElement);
+    ClassSource? resultType = _createParameterType(methodElement);
+    var resultProcessorSource = _findResultProcessorFor(resultType);
     if (resultProcessorSource == null) {
       return null;
     }
@@ -77,33 +86,21 @@ class ActionMethodSourceFactory extends SourceFactory {
         libraryUri: methodElement.library.source.uri,
         className: methodElement.enclosingElement.name!,
         methodName: methodElement.name,
-        parameterProcessorSource: parameterProcessorSource,
-        resultProcessorSource: resultProcessorSource);
+        parameterType: parameterType,
+        parameterProcessor: parameterProcessor,
+        resultType: _createResultType(methodElement),
+        resultProcessor: resultProcessorSource);
   }
 
-  ActionMethodParameterProcessorSource? _findParameterProcessor(
-      MethodElement methodElement) {
-    ClassSource? parameterType = _createParameterType(methodElement);
-    for (var parameterProcessor
-        in reflectGuiConfigSource.actionMethodParameterProcessorSources) {
-      if (_parameterProcessorSupports(parameterProcessor, parameterType)) {
-        return parameterProcessor;
-      }
-    }
-    return null;
-  }
+  ActionMethodParameterProcessorSource? _findParameterProcessorFor(
+          ClassSource? parameterType) =>
+      reflectGuiConfigSource.actionMethodParameterProcessorSources
+          .firstWhereOrNull((processor) => processor.supports(parameterType));
 
-  ActionMethodResultProcessorSource? _findResultProcessor(
-      MethodElement methodElement) {
-    ClassSource? resultType = _createResultType(methodElement);
-    for (var resultProcessor
-        in reflectGuiConfigSource.actionMethodResultProcessorSources) {
-      if (_resultProcessorSupports(resultProcessor, resultType)) {
-        return resultProcessor;
-      }
-    }
-    return null;
-  }
+  ActionMethodResultProcessorSource? _findResultProcessorFor(
+          ClassSource? resultType) =>
+      reflectGuiConfigSource.actionMethodResultProcessorSources
+          .firstWhereOrNull((processor) => processor.supports(resultType));
 
   ClassSource? _createParameterType(MethodElement methodElement) {
     if (methodElement.parameters.length == 1) {
@@ -117,14 +114,4 @@ class ActionMethodSourceFactory extends SourceFactory {
   ClassSource? _createResultType(MethodElement methodElement) =>
       ClassSource.fromInterfaceElement(
           methodElement.returnType.element as InterfaceElement);
-
-  bool _parameterProcessorSupports(
-          ActionMethodParameterProcessorSource parameterProcessor,
-          ClassSource? parameterType) =>
-      true; //TODO
-
-  bool _resultProcessorSupports(
-          ActionMethodResultProcessorSource resultProcessor,
-          ClassSource? resultType) =>
-      true; //TODO
 }

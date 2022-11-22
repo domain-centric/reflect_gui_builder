@@ -15,7 +15,12 @@ class ActionMethodParameterProcessorSource extends ClassSource {
       this.parameterType})
       : super(
             libraryUri: actionMethodParameterProcessorType.libraryUri,
-            libraryMemberPath: actionMethodParameterProcessorType.libraryMemberPath);
+            libraryMemberPath:
+                actionMethodParameterProcessorType.libraryMemberPath);
+
+  /// returns true if the parameter type is supported by the [ActionMethodParameterProcessorSource]
+  supports(ClassSource? parameterType) => true; //TODO
+
 
   @override
   String toString() {
@@ -24,6 +29,7 @@ class ActionMethodParameterProcessorSource extends ClassSource {
         .add('parameterType', parameterType)
         .toString();
   }
+
 }
 
 /// Creates a list of [ActionMethodParameterProcessorSource]s by using the
@@ -48,7 +54,7 @@ class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
 
       var source = ActionMethodParameterProcessorSource(
           actionMethodParameterProcessorType:
-          ClassSource.fromInterfaceElement(element as ClassElement),
+              ClassSource.fromInterfaceElement(element as ClassElement),
           parameterType: _createParameterType(element, field));
 
       sources.add(source);

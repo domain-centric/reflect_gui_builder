@@ -16,6 +16,9 @@ class ActionMethodResultProcessorSource extends ClassSource {
             libraryUri: actionMethodResultProcessorType.libraryUri,
       libraryMemberPath: actionMethodResultProcessorType.libraryMemberPath);
 
+  /// returns true if the result type is supported by the [ActionMethodResultProcessorSource]
+  bool supports(ClassSource? resultType) => true; //TODO
+
   @override
   String toString() {
     return ToStringBuilder(runtimeType.toString())
@@ -23,6 +26,7 @@ class ActionMethodResultProcessorSource extends ClassSource {
         .add('resultType', resultType)
         .toString();
   }
+
 }
 
 /// Creates a list of [ActionMethodResultProcessorSource]s by using the
