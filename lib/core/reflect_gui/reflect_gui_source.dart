@@ -3,6 +3,7 @@ import 'package:reflect_gui_builder/core/action_method_parameter_processor/actio
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
 
 import '../action_method_result_processor/action_method_result_processor_source.dart';
+import '../domain_class/domain_class_source.dart';
 import '../property_factory/property_widget_factory_source.dart';
 import '../service_class/service_class_source.dart';
 import '../type/to_string.dart';
@@ -24,6 +25,7 @@ class ReflectGuiConfigSource {
     required this.actionMethodResultProcessors,
     required this.serviceClasses,
   });
+
 
   @override
   String toString() {
@@ -49,23 +51,23 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
 
   /// creates a [ReflectGuiConfigSource] using a [ClassElement]
   /// that passed [isReflectGuiConfigClass]
-  ReflectGuiConfigSource createFrom(ClassElement reflectGuiConfigClassElement) {
-    var propertyWidgetFactorySources = PropertyWidgetFactorySourceFactory()
-        .createFrom(reflectGuiConfigClassElement);
-    var actionMethodParameterProcessorSources =
+  ReflectGuiConfigSource create(ClassElement reflectGuiConfigClassElement) {
+    var propertyWidgetFactories = PropertyWidgetFactorySourceFactory()
+        .createAll(reflectGuiConfigClassElement);
+    var actionMethodParameterProcessors =
         ActionMethodParameterProcessorSourceFactory()
-            .createFrom(reflectGuiConfigClassElement);
-    var actionMethodResultProcessorSources =
+            .createAll(reflectGuiConfigClassElement);
+    var actionMethodResultProcessors =
         ActionMethodResultProcessorSourceFactory()
-            .createFrom(reflectGuiConfigClassElement);
+            .createAll(reflectGuiConfigClassElement);
     var reflectGuiConfigSource = ReflectGuiConfigSource(
-        propertyWidgetFactories: propertyWidgetFactorySources,
-        actionMethodParameterProcessors: actionMethodParameterProcessorSources,
-        actionMethodResultProcessors: actionMethodResultProcessorSources,
+        propertyWidgetFactories: propertyWidgetFactories,
+        actionMethodParameterProcessors: actionMethodParameterProcessors,
+        actionMethodResultProcessors: actionMethodResultProcessors,
         serviceClasses: []);
 
     ServiceClassSourceFactory(reflectGuiConfigSource)
-        .populateWith(reflectGuiConfigClassElement);
+        .createAndPopulate(reflectGuiConfigClassElement);
 
     return reflectGuiConfigSource;
   }

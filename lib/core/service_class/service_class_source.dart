@@ -12,18 +12,18 @@ import '../type/to_string.dart';
 /// It is later converted to generated Dart code
 /// that implements [ServiceClassReflection].
 class ServiceClassSource extends ClassSource {
-  final List<ActionMethodSource> actionMethodSources;
+  final List<ActionMethodSource> actionMethods;
 
   ServiceClassSource(
       {required super.libraryUri,
       required super.libraryMemberPath,
-      required this.actionMethodSources});
+      required this.actionMethods});
 
   @override
   String toString() {
     return ToStringBuilder('$ServiceClassSource')
         .add('libraryMemberUri', libraryMemberUri)
-        .add('actionMethodSources', actionMethodSources)
+        .add('actionMethods', actionMethods)
         .toString();
   }
 }
@@ -37,9 +37,9 @@ class ServiceClassSourceFactory extends SourceFactory {
 
   ServiceClassSourceFactory(this.reflectGuiConfigSource);
 
-  /// populates the [reflectGuiConfigSource] with [ServiceClassSource] and
-  /// [DomainClassSource] with all their sub classes
-  void populateWith(ClassElement reflectGuiConfigElement) {
+  /// populates the [reflectGuiConfigSource] with created [ServiceClassSource]s
+  /// and all their sub classes
+  void createAndPopulate(ClassElement reflectGuiConfigElement) {
     var field = findField(reflectGuiConfigElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
@@ -51,7 +51,7 @@ class ServiceClassSourceFactory extends SourceFactory {
       var serviceClassSource = ServiceClassSource(
           libraryUri: element.library!.source.uri,
           libraryMemberPath: element.displayName,
-          actionMethodSources: actionMethodSources);
+          actionMethods: actionMethodSources);
       reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }
 
