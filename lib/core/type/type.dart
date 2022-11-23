@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/type/to_string.dart';
 
+import '../domain_class/domain_class_source.dart';
+
 /// Contains information on a library member from its source code.
 /// Implementations are normally created by [SourceFactory] that converts
 /// an source code [Element] from the analyzer package to
@@ -71,6 +73,18 @@ class ClassSource extends LibraryMemberSource {
   static String _className(InterfaceElement element) => element.thisType
       .getDisplayString(withNullability: false)
       .replaceFirst(noneLetterSuffix, '');
+
+  Set<DomainClassSource> get domainClasses {
+    var domainClasses = <DomainClassSource>{};
+    if (this is DomainClassSource) {
+      var domainClass = this as DomainClassSource;
+      domainClasses.add(domainClass);
+      domainClasses.addAll(domainClass.domainClasses);
+    } else if (genericType != null) {
+      domainClasses.addAll(genericType!.domainClasses);
+    }
+    return domainClasses;
+  }
 
 // factory ClassSource.fromInterfaceElementWithGenericType(InterfaceElement element) {
 // var name = element.thisType.getDisplayString(withNullability: false);

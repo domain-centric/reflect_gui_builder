@@ -6,6 +6,21 @@ import '../reflect_gui/reflection_factory.dart';
 /// Contains information on a [DomainClass]s source code.
 class DomainClassSource extends ClassSource {
   DomainClassSource({required super.libraryUri, required super.libraryMemberPath});
+
+  /// [DomainClassSource]s are created once for each class
+  /// by the [TypeSourceFactory].
+  /// Therefore [DomainClassSource]s are equal when
+  /// the [runtimeType] and [libraryMemberUri] compare
+  /// because other fields will be the identical.
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is LibraryMemberSource &&
+              runtimeType == DomainClassSource &&
+              libraryMemberUri == other.libraryMemberUri;
+
+  @override
+  int get hashCode => libraryMemberPath.hashCode ^ libraryUri.hashCode;
 }
 
 /// Creates a [DomainClassSource]s by using the

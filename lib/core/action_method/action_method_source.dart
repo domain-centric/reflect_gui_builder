@@ -38,7 +38,16 @@ class ActionMethodSource extends LibraryMemberSource {
   /// DomainClass [ActionMethod]s and the [ActionMethod]s inside its [Property]s
   ///
   /// TODO: Be aware for never ending round trips.
-  Set<DomainClassSource> get domainClasses => {};//TODO
+  Set<DomainClassSource> get domainClasses  {
+    var domainClasses=<DomainClassSource>{};
+    if (parameterType!=null) {
+      domainClasses.addAll(parameterType!.domainClasses);
+    }
+    if (resultType!=null) {
+      domainClasses.addAll(resultType!.domainClasses);
+    }
+    return domainClasses;
+  }
 
   @override
   String toString() {
