@@ -55,8 +55,8 @@ class PropertyWidgetFactorySourceFactory extends ReflectGuiConfigPopulateFactory
       if (genericElement == null) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
-      var propertyWidgetFactoryType = typeFactory.create(element);
-      var propertyType =typeFactory.create(genericElement as InterfaceElement);
+      var propertyWidgetFactoryType = typeFactory.create(element.thisType);
+      var propertyType =typeFactory.create((genericElement as InterfaceElement).thisType);
 
       var factory = PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 

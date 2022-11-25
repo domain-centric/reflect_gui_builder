@@ -59,7 +59,7 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
       var actionMethods = _createActionMethods(element as InterfaceElement);
       _validateServiceClassActionMethods(field, element, actionMethods);
       var serviceClassSource = ServiceClassSource(
-          serviceClass: typeFactory.create(element),
+          serviceClass: typeFactory.create(element.thisType),
           actionMethods: actionMethods);
       reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }

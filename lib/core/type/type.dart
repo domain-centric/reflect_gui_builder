@@ -112,23 +112,10 @@ class TypeSourceFactory {
   /// * Otherwise a [ClassSource] including its generic type if any
   ///   e.g. Person being the generic type in List<Person>
 
-  ClassSource create(InterfaceElement element) {
-    var domainClass = domainClassFactory.create(element);
-    if (domainClass == null) {
-      var genericType = _genericType(element);
-      return ClassSource(
-          libraryUri: libraryUri(element),
-          className: className(element),
-          genericType: genericType);
-    } else {
-      return domainClass;
-    }
-  }
-
-  ClassSource create2(InterfaceType type) {
+  ClassSource create(InterfaceType type) {
     var domainClass = domainClassFactory.create(type.element);
     if (domainClass == null) {
-      var genericType = _genericType2(type);
+      var genericType = _genericType(type);
       return ClassSource(
           libraryUri: libraryUri(type.element),
           className: className(type.element),
@@ -138,44 +125,19 @@ class TypeSourceFactory {
     }
   }
 
-
   static final noneLetterSuffix = RegExp('[^a-zA-Z].*\$');
 
-  static String className(InterfaceElement element) =>
-      element.thisType
-          .getDisplayString(withNullability: false)
-          .replaceFirst(noneLetterSuffix, '');
+  static String className(InterfaceElement element) => element.thisType
+      .getDisplayString(withNullability: false)
+      .replaceFirst(noneLetterSuffix, '');
 
   static Uri libraryUri(InterfaceElement element) => element.library.source.uri;
 
-  InterfaceElement? _genericElement(Element element) {
-    // if (element.typeParameters.length != 1) {
-    //   /// only supports 1 generic type parameters
-    //   /// Unsupported example: Map<int, String>
-    //   return null;
-    // } else {
-    /// Supported example: List<Person> or Iterator<int>
-    print(
-        '* $element '); //${(element as ClassElement).thisType.typeArguments.first}');
-    return null; //TODO
-    // }
-  }
-
-  ClassSource? _genericType(Element element) {
-    var genericElement = _genericElement(element);
-    if (genericElement != null) {
-      return create(genericElement);
-    } else {
-      return null;
-    }
-  }
-
-
-  ClassSource? _genericType2(InterfaceType type) {
-    if (type.typeArguments.length!=1) {
+  ClassSource? _genericType(InterfaceType type) {
+    if (type.typeArguments.length != 1 || type.typeArguments.first is! InterfaceType) {
       return null;
     } else {
-      return create2(type.typeArguments.first as InterfaceType);
+      return create(type.typeArguments.first as InterfaceType);
     }
   }
 }

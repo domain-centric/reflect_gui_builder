@@ -73,7 +73,7 @@ class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateF
     if (genericElement == null) {
       return null;
     }
-    var resultType =typeFactory.create(genericElement as InterfaceElement);
+    var resultType =typeFactory.create((genericElement as InterfaceElement).thisType);
     return resultType;
   }
 

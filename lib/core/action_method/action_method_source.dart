@@ -127,12 +127,12 @@ class ActionMethodSourceFactory extends SourceFactory {
   ClassSource? _createParameterType(MethodElement methodElement) {
     if (methodElement.parameters.length == 1) {
       return typeFactory
-          .create(methodElement.parameters.first as InterfaceElement);
+          .create((methodElement.parameters.first as InterfaceElement).thisType);
     } else {
       return null;
     }
   }
 
   ClassSource? _createResultType(MethodElement methodElement) =>
-      typeFactory.create2(methodElement.returnType as InterfaceType);
+      typeFactory.create(methodElement.returnType as InterfaceType);
 }
