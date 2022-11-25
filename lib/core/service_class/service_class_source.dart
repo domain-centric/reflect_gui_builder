@@ -15,13 +15,16 @@ class ServiceClassSource extends ClassSource {
   final List<ActionMethodSource> actionMethods;
 
   ServiceClassSource(
-      {required super.libraryUri,
-      required super.libraryMemberPath,
-      required this.actionMethods});
+      {required ClassSource serviceClass, required this.actionMethods})
+      : super(
+          libraryUri: serviceClass.libraryUri,
+          className: serviceClass.className,
+        );
 
   /// Finds all the [DomainClass]es that are used in all the [ActionMethod]s.
+  @override
   Set<DomainClassSource> get domainClasses {
-    var domainClasses=<DomainClassSource>{};
+    var domainClasses = <DomainClassSource>{};
     for (var actionMethod in actionMethods) {
       domainClasses.addAll(actionMethod.domainClasses);
     }
@@ -39,27 +42,24 @@ class ServiceClassSource extends ClassSource {
 
 /// Creates a list of [ServiceClassSource]s by using the
 /// analyzer package
-class ServiceClassSourceFactory extends SourceFactory {
+class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   static const serviceClassesFieldName = 'serviceClasses';
 
-  final ReflectGuiConfigSource reflectGuiConfigSource;
-
-  ServiceClassSourceFactory(this.reflectGuiConfigSource);
+  ServiceClassSourceFactory(PopulateFactoryContext context) : super(context);
 
   /// populates the [reflectGuiConfigSource] with created [ServiceClassSource]s
   /// and all their sub classes
-  void createAndPopulate(ClassElement reflectGuiConfigElement) {
+  @override
+  void populateReflectGuiConfig() {
     var field = findField(reflectGuiConfigElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
       _validateServiceClassElement(field, element);
-      var actionMethods = _createActionMethods(element);
-      _validateServiceClassActionMethods(
-          field, element, actionMethods);
+      var actionMethods = _createActionMethods(element as InterfaceElement);
+      _validateServiceClassActionMethods(field, element, actionMethods);
       var serviceClassSource = ServiceClassSource(
-          libraryUri: element.library!.source.uri,
-          libraryMemberPath: element.displayName,
+          serviceClass: typeFactory.create(element),
           actionMethods: actionMethods);
       reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }
@@ -79,6 +79,7 @@ class ServiceClassSourceFactory extends SourceFactory {
     if (serviceClass.isAbstract) {
       throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} may not be abstract.');
     }
+
     /// TODO would be nice if we could allow an single constructor with parameters, e.g. to inject infrastructure classes such as repositories, http clients or their test mocks
     if (!hasNamelessConstructorWithoutParameters(serviceClass)) {
       throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} does not have a nameless constructor without parameters.');
@@ -88,11 +89,12 @@ class ServiceClassSourceFactory extends SourceFactory {
     }
   }
 
-  List<ActionMethodSource> _createActionMethods(Element element) {
-    var classElement = element as ClassElement;
-    var methodElements = classElement.methods;
-    var factory = ActionMethodSourceFactory(reflectGuiConfigSource);
-    return factory.createAll(methodElements);
+  List<ActionMethodSource> _createActionMethods(InterfaceElement element) {
+    var factory = ActionMethodSourceFactory(
+      reflectGuiConfigSource: reflectGuiConfigSource,
+      typeFactory: typeFactory,
+    );
+    return factory.createAll(element);
   }
 
   void _validateServiceClassActionMethods(FieldElement field,

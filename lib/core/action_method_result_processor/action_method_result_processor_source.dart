@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
+import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
 
@@ -11,10 +12,8 @@ class ActionMethodResultProcessorSource extends ClassSource {
   final ClassSource? resultType;
 
   ActionMethodResultProcessorSource(
-      {required ClassSource actionMethodResultProcessorType, this.resultType})
-      : super(
-            libraryUri: actionMethodResultProcessorType.libraryUri,
-      libraryMemberPath: actionMethodResultProcessorType.libraryMemberPath);
+      {required Uri libraryUri, required String className, this.resultType})
+      : super(libraryUri: libraryUri, className: className);
 
   /// returns true if the result type is supported by the [ActionMethodResultProcessorSource]
   bool supports(ClassSource? resultType) => true; //TODO
@@ -26,42 +25,41 @@ class ActionMethodResultProcessorSource extends ClassSource {
         .add('resultType', resultType)
         .toString();
   }
-
 }
 
 /// Creates a list of [ActionMethodResultProcessorSource]s by using the
 /// analyzer package
-class ActionMethodResultProcessorSourceFactory extends SourceFactory {
+class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateFactory {
   static const actionMethodResultProcessorFieldName =
       'actionMethodResultProcessors';
   static const actionMethodResultProcessorName = 'ActionMethodResultProcessor';
   static const actionMethodResultProcessorLibraryUri =
       'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 
-  List<ActionMethodResultProcessorSource> createAll(
-      ClassElement reflectGuiConfigElement) {
+  ActionMethodResultProcessorSourceFactory(PopulateFactoryContext context): super(context);
+
+  @override
+  void populateReflectGuiConfig() {
     var field = findField(
         reflectGuiConfigElement, actionMethodResultProcessorFieldName);
 
     var elements = findInitializerElements(field);
-    List<ActionMethodResultProcessorSource> sources = [];
     for (var element in elements) {
       _validate(field, element);
 
-      var source = ActionMethodResultProcessorSource(
-          actionMethodResultProcessorType:
-              ClassSource.fromInterfaceElement(element as ClassElement),
+      var processor = ActionMethodResultProcessorSource(
+      libraryUri: element.library!.source.uri,
+          className: element.name!,
           resultType: _createResultType(element, field));
 
-      sources.add(source);
+      reflectGuiConfigSource.actionMethodResultProcessors.add(processor);
     }
 
-    if (sources.isEmpty) {
+    if (reflectGuiConfigSource.actionMethodResultProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
 
-    return sources;
   }
 
   ClassSource? _createResultType(Element element, FieldElement field) {
@@ -75,7 +73,7 @@ class ActionMethodResultProcessorSourceFactory extends SourceFactory {
     if (genericElement == null) {
       return null;
     }
-    var resultType = ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
+    var resultType =typeFactory.create(genericElement as InterfaceElement);
     return resultType;
   }
 
@@ -104,4 +102,5 @@ class ActionMethodResultProcessorSourceFactory extends SourceFactory {
       throw ('${field.asLibraryMemberPath}: ${actionMethodResultProcessor.asLibraryMemberPath} must extend $actionMethodResultProcessorName');
     }
   }
+
 }

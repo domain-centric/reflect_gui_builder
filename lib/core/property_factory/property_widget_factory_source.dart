@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
+import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
 
@@ -13,7 +14,7 @@ class PropertyWidgetFactorySource extends ClassSource {
       ClassSource propertyWidgetFactoryType, this.propertyType)
       : super(
             libraryUri: propertyWidgetFactoryType.libraryUri,
-      libraryMemberPath: propertyWidgetFactoryType.libraryMemberPath);
+      className: propertyWidgetFactoryType.className);
 
   @override
   String toString() {
@@ -27,19 +28,20 @@ class PropertyWidgetFactorySource extends ClassSource {
 
 /// Creates a list of [PropertyWidgetFactorySource]s by using the
 /// analyzer package
-class PropertyWidgetFactorySourceFactory extends SourceFactory {
+class PropertyWidgetFactorySourceFactory extends ReflectGuiConfigPopulateFactory {
   static const propertyWidgetFactoriesFieldName = 'propertyWidgetFactories';
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/core/property_factory/property_widget_factory.dart';
 
-  List<PropertyWidgetFactorySource> createAll(
-      ClassElement reflectGuiConfigElement) {
+  PropertyWidgetFactorySourceFactory(PopulateFactoryContext context): super(context);
+
+  @override
+  void populateReflectGuiConfig()  {
     var field =
         findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
-    List<PropertyWidgetFactorySource> sources = [];
     for (var element in elements) {
       _validatePropertyWidgetFactoryElement(field, element);
 
@@ -53,20 +55,18 @@ class PropertyWidgetFactorySourceFactory extends SourceFactory {
       if (genericElement == null) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
-      var classReflection = ClassSource.fromInterfaceElement(element);
-      var propertyType =ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
+      var propertyWidgetFactoryType = typeFactory.create(element);
+      var propertyType =typeFactory.create(genericElement as InterfaceElement);
 
-      var source = PropertyWidgetFactorySource(classReflection, propertyType);
+      var factory = PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 
-      sources.add(source);
+      reflectGuiConfigSource.propertyWidgetFactories.add(factory);
     }
 
-    if (sources.isEmpty) {
+    if (reflectGuiConfigSource.propertyWidgetFactories.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }
-
-    return sources;
   }
 
   void _validatePropertyWidgetFactoryElement(

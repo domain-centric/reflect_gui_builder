@@ -1,12 +1,13 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor_source.dart';
 import 'package:reflect_gui_builder/core/domain_class/domain_class_source.dart';
-import 'package:reflect_gui_builder/core/reflect_gui/reflect_gui_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
+import '../reflect_gui/reflect_gui_source.dart';
 import '../type/to_string.dart';
 
 /// Contains information from an [ActionMethod]s source code.
@@ -38,12 +39,12 @@ class ActionMethodSource extends LibraryMemberSource {
   /// DomainClass [ActionMethod]s and the [ActionMethod]s inside its [Property]s
   ///
   /// TODO: Be aware for never ending round trips.
-  Set<DomainClassSource> get domainClasses  {
-    var domainClasses=<DomainClassSource>{};
-    if (parameterType!=null) {
+  Set<DomainClassSource> get domainClasses {
+    var domainClasses = <DomainClassSource>{};
+    if (parameterType != null) {
       domainClasses.addAll(parameterType!.domainClasses);
     }
-    if (resultType!=null) {
+    if (resultType != null) {
       domainClasses.addAll(resultType!.domainClasses);
     }
     return domainClasses;
@@ -65,18 +66,22 @@ class ActionMethodSource extends LibraryMemberSource {
 /// analyzer package
 class ActionMethodSourceFactory extends SourceFactory {
   final ReflectGuiConfigSource reflectGuiConfigSource;
+  final TypeSourceFactory typeFactory;
 
-  ActionMethodSourceFactory(this.reflectGuiConfigSource);
+  ActionMethodSourceFactory({
+    required this.reflectGuiConfigSource,
+    required this.typeFactory,
+  });
 
-  List<ActionMethodSource> createAll(List<MethodElement> methodElements) {
-    var sources = <ActionMethodSource>[];
-    for (var methodElement in methodElements) {
-      var source = _create(methodElement);
-      if (source != null) {
-        sources.add(source);
+  List<ActionMethodSource> createAll(InterfaceElement element) {
+    var actionMethods = <ActionMethodSource>[];
+    for (var methodElement in element.methods) {
+      var actionMethod = _create(methodElement);
+      if (actionMethod != null) {
+        actionMethods.add(actionMethod);
       }
     }
-    return sources;
+    return actionMethods;
   }
 
   ActionMethodSource? _create(MethodElement methodElement) {
@@ -93,7 +98,7 @@ class ActionMethodSourceFactory extends SourceFactory {
       return null;
     }
 
-    ClassSource? resultType = _createParameterType(methodElement);
+    var resultType = _createResultType(methodElement);
     var resultProcessorSource = _findResultProcessorFor(resultType);
     if (resultProcessorSource == null) {
       return null;
@@ -121,14 +126,13 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ClassSource? _createParameterType(MethodElement methodElement) {
     if (methodElement.parameters.length == 1) {
-      return ClassSource.fromInterfaceElement(
-          methodElement.parameters.first as InterfaceElement);
+      return typeFactory
+          .create(methodElement.parameters.first as InterfaceElement);
     } else {
       return null;
     }
   }
 
   ClassSource? _createResultType(MethodElement methodElement) =>
-      ClassSource.fromInterfaceElement(
-          methodElement.returnType.element as InterfaceElement);
+      typeFactory.create2(methodElement.returnType as InterfaceType);
 }

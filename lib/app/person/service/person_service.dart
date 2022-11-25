@@ -6,11 +6,11 @@ class PersonService {
 
   List<Person> allCustomers() =>
       [
-        Person('James'),
-        Person('Mary'),
-        Person('Robert'),
-        Person('Patricia'),
-        Person('John'),
-        Person('Jenifer'),
+        Person()..name='James',
+        Person()..name='Mary',
+        Person()..name='Robert',
+        Person()..name='Patricia',
+        Person()..name='John',
+        Person()..name='Jenifer',
       ];
 }

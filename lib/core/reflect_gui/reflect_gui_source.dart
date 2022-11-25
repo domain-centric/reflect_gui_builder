@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflection_factory.dart';
+import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../action_method_result_processor/action_method_result_processor_source.dart';
 import '../domain_class/domain_class_source.dart';
@@ -13,18 +14,12 @@ import '../type/to_string.dart';
 /// It is later converted to generated Dart code
 /// that implements [ReflectGuiConfigReflection].
 class ReflectGuiConfigSource {
-  final List<ServiceClassSource> serviceClasses;
-  final List<PropertyWidgetFactorySource> propertyWidgetFactories;
+  final List<ServiceClassSource> serviceClasses=[];
+  final List<PropertyWidgetFactorySource> propertyWidgetFactories=[];
   final List<ActionMethodParameterProcessorSource>
-      actionMethodParameterProcessors;
-  final List<ActionMethodResultProcessorSource> actionMethodResultProcessors;
+      actionMethodParameterProcessors=[];
+  final List<ActionMethodResultProcessorSource> actionMethodResultProcessors=[];
 
-  ReflectGuiConfigSource({
-    required this.propertyWidgetFactories,
-    required this.actionMethodParameterProcessors,
-    required this.actionMethodResultProcessors,
-    required this.serviceClasses,
-  });
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
   Set<DomainClassSource> get domainClasses {
@@ -61,23 +56,38 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
   /// creates a [ReflectGuiConfigSource] using a [ClassElement]
   /// that passed [isReflectGuiConfigClass]
   ReflectGuiConfigSource create(ClassElement reflectGuiConfigClassElement) {
-    var propertyWidgetFactories = PropertyWidgetFactorySourceFactory()
-        .createAll(reflectGuiConfigClassElement);
-    var actionMethodParameterProcessors =
-        ActionMethodParameterProcessorSourceFactory()
-            .createAll(reflectGuiConfigClassElement);
-    var actionMethodResultProcessors =
-        ActionMethodResultProcessorSourceFactory()
-            .createAll(reflectGuiConfigClassElement);
-    var reflectGuiConfigSource = ReflectGuiConfigSource(
-        propertyWidgetFactories: propertyWidgetFactories,
-        actionMethodParameterProcessors: actionMethodParameterProcessors,
-        actionMethodResultProcessors: actionMethodResultProcessors,
-        serviceClasses: []);
+    var context = PopulateFactoryContext(reflectGuiConfigClassElement);
+    PropertyWidgetFactorySourceFactory(context).populateReflectGuiConfig();
+   ActionMethodParameterProcessorSourceFactory(context).populateReflectGuiConfig();
+   ActionMethodResultProcessorSourceFactory(context).populateReflectGuiConfig();
+   ServiceClassSourceFactory(context).populateReflectGuiConfig();
+    return context.reflectGuiConfigSource;
+  }
+}
 
-    ServiceClassSourceFactory(reflectGuiConfigSource)
-        .createAndPopulate(reflectGuiConfigClassElement);
 
-    return reflectGuiConfigSource;
+abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
+  final ClassElement reflectGuiConfigElement;
+  final ReflectGuiConfigSource reflectGuiConfigSource;
+  final TypeSourceFactory typeFactory;
+
+  ReflectGuiConfigPopulateFactory(PopulateFactoryContext context)
+      : reflectGuiConfigElement = context.reflectGuiConfigElement,
+        reflectGuiConfigSource = context.reflectGuiConfigSource,
+        typeFactory = context.typeFactory;
+
+  /// add objects that contain information on source code
+  /// to the [reflectGuiConfigSource] tree
+  void populateReflectGuiConfig();
+}
+
+/// All information needed to create a [ReflectGuiConfigSource]
+class PopulateFactoryContext {
+  final ClassElement reflectGuiConfigElement;
+  final ReflectGuiConfigSource reflectGuiConfigSource = ReflectGuiConfigSource();
+  late TypeSourceFactory typeFactory;
+
+  PopulateFactoryContext(this.reflectGuiConfigElement) {
+    typeFactory = TypeSourceFactory(reflectGuiConfigSource);
   }
 }

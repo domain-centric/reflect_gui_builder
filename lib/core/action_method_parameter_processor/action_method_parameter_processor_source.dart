@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
+import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
 
@@ -11,16 +12,11 @@ class ActionMethodParameterProcessorSource extends ClassSource {
   final ClassSource? parameterType;
 
   ActionMethodParameterProcessorSource(
-      {required ClassSource actionMethodParameterProcessorType,
-      this.parameterType})
-      : super(
-            libraryUri: actionMethodParameterProcessorType.libraryUri,
-            libraryMemberPath:
-                actionMethodParameterProcessorType.libraryMemberPath);
+      {required Uri libraryUri, required String className, this.parameterType})
+      : super(libraryUri: libraryUri, className: className);
 
   /// returns true if the parameter type is supported by the [ActionMethodParameterProcessorSource]
   supports(ClassSource? parameterType) => true; //TODO
-
 
   @override
   String toString() {
@@ -29,12 +25,12 @@ class ActionMethodParameterProcessorSource extends ClassSource {
         .add('parameterType', parameterType)
         .toString();
   }
-
 }
 
 /// Creates a list of [ActionMethodParameterProcessorSource]s by using the
 /// analyzer package
-class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
+class ActionMethodParameterProcessorSourceFactory
+    extends ReflectGuiConfigPopulateFactory {
   static const actionMethodParameterProcessorFieldName =
       'actionMethodParameterProcessors';
   static const actionMethodParameterProcessorName =
@@ -42,30 +38,30 @@ class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
   static const actionMethodParameterProcessorLibraryUri =
       'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor.dart';
 
-  List<ActionMethodParameterProcessorSource> createAll(
-      ClassElement reflectGuiConfigElement) {
+  ActionMethodParameterProcessorSourceFactory(PopulateFactoryContext context)
+      : super(context);
+
+  @override
+  void populateReflectGuiConfig() {
     var field = findField(
         reflectGuiConfigElement, actionMethodParameterProcessorFieldName);
 
     var elements = findInitializerElements(field);
-    List<ActionMethodParameterProcessorSource> sources = [];
     for (var element in elements) {
       _validate(field, element);
 
-      var source = ActionMethodParameterProcessorSource(
-          actionMethodParameterProcessorType:
-              ClassSource.fromInterfaceElement(element as ClassElement),
+      var processor = ActionMethodParameterProcessorSource(
+          libraryUri: element.library!.source.uri,
+          className: element.name!,
           parameterType: _createParameterType(element, field));
 
-      sources.add(source);
+      reflectGuiConfigSource.actionMethodParameterProcessors.add(processor);
     }
 
-    if (sources.isEmpty) {
+    if (reflectGuiConfigSource.actionMethodParameterProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
-
-    return sources;
   }
 
   ClassSource? _createParameterType(Element element, FieldElement field) {
@@ -81,8 +77,9 @@ class ActionMethodParameterProcessorSourceFactory extends SourceFactory {
     if (genericElement == null) {
       return null;
     }
-    var parameterType =
-        ClassSource.fromInterfaceElement(genericElement as InterfaceElement);
+    var parameterType = ClassSource(
+        libraryUri: genericElement.library!.source.uri,
+        className: genericElement.name!);
     return parameterType;
   }
 
