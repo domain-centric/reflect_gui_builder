@@ -14,16 +14,16 @@ import '../type/to_string.dart';
 /// It is later converted to generated Dart code
 /// that implements [ReflectGuiConfigReflection].
 class ReflectGuiConfigSource {
-  final List<ServiceClassSource> serviceClasses=[];
-  final List<PropertyWidgetFactorySource> propertyWidgetFactories=[];
+  final List<ServiceClassSource> serviceClasses = [];
+  final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
   final List<ActionMethodParameterProcessorSource>
-      actionMethodParameterProcessors=[];
-  final List<ActionMethodResultProcessorSource> actionMethodResultProcessors=[];
-
+      actionMethodParameterProcessors = [];
+  final List<ActionMethodResultProcessorSource> actionMethodResultProcessors =
+      [];
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
   Set<DomainClassSource> get domainClasses {
-    var domainClasses=<DomainClassSource>{};
+    var domainClasses = <DomainClassSource>{};
     for (var serviceClass in serviceClasses) {
       domainClasses.addAll(serviceClass.domainClasses);
     }
@@ -58,13 +58,14 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
   ReflectGuiConfigSource create(ClassElement reflectGuiConfigClassElement) {
     var context = PopulateFactoryContext(reflectGuiConfigClassElement);
     PropertyWidgetFactorySourceFactory(context).populateReflectGuiConfig();
-   ActionMethodParameterProcessorSourceFactory(context).populateReflectGuiConfig();
-   ActionMethodResultProcessorSourceFactory(context).populateReflectGuiConfig();
-   ServiceClassSourceFactory(context).populateReflectGuiConfig();
+    ActionMethodParameterProcessorSourceFactory(context)
+        .populateReflectGuiConfig();
+    ActionMethodResultProcessorSourceFactory(context)
+        .populateReflectGuiConfig();
+    ServiceClassSourceFactory(context).populateReflectGuiConfig();
     return context.reflectGuiConfigSource;
   }
 }
-
 
 abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
   final ClassElement reflectGuiConfigElement;
@@ -84,7 +85,8 @@ abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
 /// All information needed to create a [ReflectGuiConfigSource]
 class PopulateFactoryContext {
   final ClassElement reflectGuiConfigElement;
-  final ReflectGuiConfigSource reflectGuiConfigSource = ReflectGuiConfigSource();
+  final ReflectGuiConfigSource reflectGuiConfigSource =
+      ReflectGuiConfigSource();
   late TypeSourceFactory typeFactory;
 
   PopulateFactoryContext(this.reflectGuiConfigElement) {

@@ -134,7 +134,8 @@ class TypeSourceFactory {
   static Uri libraryUri(InterfaceElement element) => element.library.source.uri;
 
   ClassSource? _genericType(InterfaceType type) {
-    if (type.typeArguments.length != 1 || type.typeArguments.first is! InterfaceType) {
+    if (type.typeArguments.length != 1 ||
+        type.typeArguments.first is! InterfaceType) {
       return null;
     } else {
       return create(type.typeArguments.first as InterfaceType);

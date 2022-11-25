@@ -47,7 +47,6 @@ class EditDomainObjectParameterInForm
 //TODO other Dart types such as int, double,num, bool, DateTime
 class EditStringParameterInDialog
     extends ActionMethodParameterProcessor<String> {
-
   const EditStringParameterInDialog();
 
   @override

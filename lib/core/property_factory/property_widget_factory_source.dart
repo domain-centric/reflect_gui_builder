@@ -14,7 +14,7 @@ class PropertyWidgetFactorySource extends ClassSource {
       ClassSource propertyWidgetFactoryType, this.propertyType)
       : super(
             libraryUri: propertyWidgetFactoryType.libraryUri,
-      className: propertyWidgetFactoryType.className);
+            className: propertyWidgetFactoryType.className);
 
   @override
   String toString() {
@@ -28,16 +28,18 @@ class PropertyWidgetFactorySource extends ClassSource {
 
 /// Creates a list of [PropertyWidgetFactorySource]s by using the
 /// analyzer package
-class PropertyWidgetFactorySourceFactory extends ReflectGuiConfigPopulateFactory {
+class PropertyWidgetFactorySourceFactory
+    extends ReflectGuiConfigPopulateFactory {
   static const propertyWidgetFactoriesFieldName = 'propertyWidgetFactories';
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/core/property_factory/property_widget_factory.dart';
 
-  PropertyWidgetFactorySourceFactory(PopulateFactoryContext context): super(context);
+  PropertyWidgetFactorySourceFactory(PopulateFactoryContext context)
+      : super(context);
 
   @override
-  void populateReflectGuiConfig()  {
+  void populateReflectGuiConfig() {
     var field =
         findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
 
@@ -56,9 +58,11 @@ class PropertyWidgetFactorySourceFactory extends ReflectGuiConfigPopulateFactory
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
       var propertyWidgetFactoryType = typeFactory.create(element.thisType);
-      var propertyType =typeFactory.create((genericElement as InterfaceElement).thisType);
+      var propertyType =
+          typeFactory.create((genericElement as InterfaceElement).thisType);
 
-      var factory = PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
+      var factory =
+          PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 
       reflectGuiConfigSource.propertyWidgetFactories.add(factory);
     }

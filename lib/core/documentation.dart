@@ -13,4 +13,4 @@
 /// * Developers can easily look up a concept by clicking on a class link
 /// * The documentation can be used with a documentation generation tool
 ///   such as the documentation_builder package.
-abstract class ConceptDocumentation{}
+abstract class ConceptDocumentation {}

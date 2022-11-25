@@ -1,5 +1,1 @@
-
-abstract class ReflectGuiConfig {
-
-
-}
+abstract class ReflectGuiConfig {}

@@ -1,5 +1,3 @@
 class Person {
-  String name='';
-
-
+  String name = '';
 }

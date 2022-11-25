@@ -1,5 +1,5 @@
 class ToStringBuilder {
-  final  indentation='  ';
+  final indentation = '  ';
   final String name;
   final Map<String, dynamic> fieldsAndValues = {};
 
@@ -24,7 +24,7 @@ class ToStringBuilder {
   String objectWithoutFieldsToString() => name;
 
   String objectWithFieldsToString() {
-     List<String> fieldLines = fieldsToStrings();
+    List<String> fieldLines = fieldsToStrings();
     if (fieldLines.length == 1) {
       return objectWithSingleFieldLineToString(fieldLines.first);
     } else {
@@ -32,7 +32,8 @@ class ToStringBuilder {
     }
   }
 
-  String objectWithSingleFieldLineToString(String fieldLine) => '$name { $fieldLine }';
+  String objectWithSingleFieldLineToString(String fieldLine) =>
+      '$name { $fieldLine }';
 
   String objectWithMultipleFieldLinesToString(List<String> fieldLines) {
     String result = '$name {\n';
@@ -44,7 +45,7 @@ class ToStringBuilder {
   }
 
   List<String> fieldsToStrings() {
-     var fieldLines = <String>[];
+    var fieldLines = <String>[];
     for (var fieldName in fieldsAndValues.keys) {
       fieldLines.addAll(fieldToStrings(fieldName));
     }
@@ -61,7 +62,8 @@ class ToStringBuilder {
     }
   }
 
-  List<String> fieldsOfMultipleLinesToString(String fieldName, List<String> valueLines) {
+  List<String> fieldsOfMultipleLinesToString(
+      String fieldName, List<String> valueLines) {
     var results = <String>[];
     results.add('$fieldName:');
     for (var valueLine in valueLines) {
@@ -70,7 +72,8 @@ class ToStringBuilder {
     return results;
   }
 
-  List<String> fieldOfOneLineToString(String fieldName, String fieldValue) => ['$fieldName: $fieldValue'];
+  List<String> fieldOfOneLineToString(String fieldName, String fieldValue) =>
+      ['$fieldName: $fieldValue'];
 
   List<String> valueToStrings(dynamic value) {
     if (value is Iterable) {
@@ -117,7 +120,5 @@ class ToStringBuilder {
   }
 
   List<String> noneIterableToStrings(Object fieldValue) =>
-      fieldValue
-          .toString()
-          .split('\n');
+      fieldValue.toString().split('\n');
 }

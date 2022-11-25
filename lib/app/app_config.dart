@@ -1,4 +1,5 @@
-import 'package:reflect_gui_builder/app/person/service/person_service.dart' as i1;
+import 'package:reflect_gui_builder/app/person/service/person_service.dart'
+    as i1;
 import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor.dart';
 import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 
@@ -37,7 +38,6 @@ class MyApplicationConfig extends ReflectGuiConfig {
     ShowDomainObjectInReadonlyFormTab,
     ShowListInTableTab,
   ];
-
 
   /// Define the [ServiceClass]es that are to be used in the application.
   /// This must be a literal [List] without logic.

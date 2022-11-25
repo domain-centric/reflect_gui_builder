@@ -29,14 +29,16 @@ class ActionMethodResultProcessorSource extends ClassSource {
 
 /// Creates a list of [ActionMethodResultProcessorSource]s by using the
 /// analyzer package
-class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateFactory {
+class ActionMethodResultProcessorSourceFactory
+    extends ReflectGuiConfigPopulateFactory {
   static const actionMethodResultProcessorFieldName =
       'actionMethodResultProcessors';
   static const actionMethodResultProcessorName = 'ActionMethodResultProcessor';
   static const actionMethodResultProcessorLibraryUri =
       'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 
-  ActionMethodResultProcessorSourceFactory(PopulateFactoryContext context): super(context);
+  ActionMethodResultProcessorSourceFactory(PopulateFactoryContext context)
+      : super(context);
 
   @override
   void populateReflectGuiConfig() {
@@ -48,7 +50,7 @@ class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateF
       _validate(field, element);
 
       var processor = ActionMethodResultProcessorSource(
-      libraryUri: element.library!.source.uri,
+          libraryUri: element.library!.source.uri,
           className: element.name!,
           resultType: _createResultType(element, field));
 
@@ -59,7 +61,6 @@ class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateF
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
-
   }
 
   ClassSource? _createResultType(Element element, FieldElement field) {
@@ -73,7 +74,8 @@ class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateF
     if (genericElement == null) {
       return null;
     }
-    var resultType =typeFactory.create((genericElement as InterfaceElement).thisType);
+    var resultType =
+        typeFactory.create((genericElement as InterfaceElement).thisType);
     return resultType;
   }
 
@@ -102,5 +104,4 @@ class ActionMethodResultProcessorSourceFactory extends ReflectGuiConfigPopulateF
       throw ('${field.asLibraryMemberPath}: ${actionMethodResultProcessor.asLibraryMemberPath} must extend $actionMethodResultProcessorName');
     }
   }
-
 }

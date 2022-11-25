@@ -52,8 +52,9 @@ class DomainClassSourceFactory extends SourceFactory {
     return DomainClassSource(libraryUri: libraryUri, className: className);
   }
 
-  DomainClassSource? _findExistingDomainClass(Uri libraryUri, String className) {
-      var domainClasses = reflectGuiConfig.domainClasses;
+  DomainClassSource? _findExistingDomainClass(
+      Uri libraryUri, String className) {
+    var domainClasses = reflectGuiConfig.domainClasses;
     var existingDomainClass = domainClasses.firstWhereOrNull((domainClass) =>
         domainClass.libraryUri == libraryUri &&
         domainClass.libraryMemberPath == className);
@@ -77,7 +78,10 @@ class DomainClassSourceFactory extends SourceFactory {
     if (!hasNamelessConstructorWithoutParameters(element)) {
       throw ('Domain class: ${element.asLibraryMemberPath} does not have a nameless constructor without parameters.');
     }
-    if (TypeSourceFactory.libraryUri(element).toString().startsWith('package:reflect_gui_builder/core')) {// TODO rename to package:reflect_gui_builder/builder and move core folder under builder and rename core folder to domain
+    if (TypeSourceFactory.libraryUri(element)
+        .toString()
+        .startsWith('package:reflect_gui_builder/core')) {
+      // TODO rename to package:reflect_gui_builder/builder and move core folder under builder and rename core folder to domain
       throw ('Domain class: ${element.asLibraryMemberPath} can not be a reflect_gui_builder class.');
     }
     //TODO _validateIfHasAtLeastOneProperty;
