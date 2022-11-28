@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 import 'package:reflect_gui_builder/core/reflect_gui/reflect_gui_config.dart';
 
 import '../action_method/action_method.dart';
@@ -41,6 +42,20 @@ class EditDomainObjectParameterInForm
     //   FormExampleTab formTab = FormExampleTab(actionMethod);
     //   tabs.add(formTab);
     //TODO put in form OK button:  actionMethod.invokeMethodAndProcessResult(context, domainObject);
+  }
+}
+
+class ProcessResultDirectlyWhenThereIsNoParameter
+    extends ActionMethodParameterProcessor<void> {
+  const ProcessResultDirectlyWhenThereIsNoParameter();
+
+  @override
+  IconData? get defaultIcon => null;
+
+  @override
+  void call(BuildContext context, InvokeWithParameter actionMethod,
+      void actionMethodParameter) {
+    actionMethod.invokeMethodAndProcessResult(context, null);
   }
 }
 

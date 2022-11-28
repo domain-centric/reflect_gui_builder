@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflect_gui_source.dart';
@@ -16,7 +17,8 @@ class ActionMethodResultProcessorSource extends ClassSource {
       : super(libraryUri: libraryUri, className: className);
 
   /// returns true if the result type is supported by the [ActionMethodResultProcessorSource]
-  bool supports(ClassSource? resultType) => true; //TODO
+  bool supports(ClassSource? resultTypeToCompare) =>
+      supported(resultType, resultTypeToCompare);
 
   @override
   String toString() {
@@ -52,7 +54,7 @@ class ActionMethodResultProcessorSourceFactory
       var processor = ActionMethodResultProcessorSource(
           libraryUri: element.library!.source.uri,
           className: element.name!,
-          resultType: _createResultType(element, field));
+          resultType: _createResultType(element));
 
       reflectGuiConfigSource.actionMethodResultProcessors.add(processor);
     }
@@ -63,7 +65,8 @@ class ActionMethodResultProcessorSourceFactory
     }
   }
 
-  ClassSource? _createResultType(Element element, FieldElement field) {
+  ClassSource? _createResultType(Element element) {
+    //}, FieldElement field) {
     var superClass = findSuperClass(element as InterfaceElement,
         actionMethodResultProcessorLibraryUri, actionMethodResultProcessorName);
     var types = superClass!.typeArguments;
@@ -74,8 +77,7 @@ class ActionMethodResultProcessorSourceFactory
     if (genericElement == null) {
       return null;
     }
-    var resultType =
-        typeFactory.create((genericElement as InterfaceElement).thisType);
+    var resultType = typeFactory.create(types.first as InterfaceType);
     return resultType;
   }
 

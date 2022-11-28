@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/core/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflect_gui_source.dart';
@@ -16,7 +17,10 @@ class ActionMethodParameterProcessorSource extends ClassSource {
       : super(libraryUri: libraryUri, className: className);
 
   /// returns true if the parameter type is supported by the [ActionMethodParameterProcessorSource]
-  supports(ClassSource? parameterType) => true; //TODO
+  supports(ClassSource? parameterTypeToCompare) =>
+      supported(parameterType, parameterTypeToCompare);
+
+
 
   @override
   String toString() {
@@ -60,7 +64,8 @@ class ActionMethodParameterProcessorSourceFactory
 
     if (reflectGuiConfigSource.actionMethodParameterProcessors.isEmpty) {
       throw Exception(
-          '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
+          '${field
+              .asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
   }
 
@@ -85,28 +90,34 @@ class ActionMethodParameterProcessorSourceFactory
 
   void _validate(FieldElement field, Element actionMethodParameterProcessor) {
     if (actionMethodParameterProcessor is! ClassElement) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} must be a class.');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} must be a class.');
     }
     if (!actionMethodParameterProcessor.isPublic) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} must be public.');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} must be public.');
     }
     if (actionMethodParameterProcessor.isAbstract) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} may not be abstract.');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} may not be abstract.');
     }
     if (!hasNamelessConstructorWithoutParameters(
         actionMethodParameterProcessor)) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} does not have a nameless constructor without parameters.');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} does not have a nameless constructor without parameters.');
     }
     if (!hasConstNamelessConstructorWithoutParameters(
         actionMethodParameterProcessor)) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} must be immutable and therefore must have a constant constructor.');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} must be immutable and therefore must have a constant constructor.');
     }
 
     if (!hasSuperClass(
         actionMethodParameterProcessor,
         actionMethodParameterProcessorLibraryUri,
         actionMethodParameterProcessorName)) {
-      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor.asLibraryMemberPath} must extend $actionMethodParameterProcessorName');
+      throw ('${field.asLibraryMemberPath}: ${actionMethodParameterProcessor
+          .asLibraryMemberPath} must extend $actionMethodParameterProcessorName');
     }
   }
 }

@@ -38,7 +38,7 @@ class DomainClassSourceFactory extends SourceFactory {
     try {
       _validateDomainClassElement(element);
     } catch (e) {
-      print('$element $e');
+      //print('$element $e');
       return null;
     }
     var libraryUri = TypeSourceFactory.libraryUri(element);

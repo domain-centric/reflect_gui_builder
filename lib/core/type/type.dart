@@ -123,6 +123,7 @@ class TypeSourceFactory {
     } else {
       return domainClass;
     }
+    //TODO Enums
   }
 
   static final noneLetterSuffix = RegExp('[^a-zA-Z].*\$');
@@ -142,3 +143,24 @@ class TypeSourceFactory {
     }
   }
 }
+
+/// Returns true when the [typeToCompare] is supported by the [supportedType].
+/// Note that:
+/// * [typeToCompare] and or [supportedType] can be null.
+/// * if the [supportedType] or one of its generic types is an object
+///   than [typeToCompare] must be a [DomainClassSource]
+bool supported(ClassSource? supportedType, ClassSource? typeToCompare) {
+  if (supportedType == null && typeToCompare == null) {
+    return true;
+  }
+  if (supportedType != null && typeToCompare != null) {
+    return (supportedType.libraryMemberPath ==
+        typeToCompare.libraryMemberPath &&
+        supported(supportedType.genericType, typeToCompare.genericType)) ||
+        supportedType.libraryMemberUri.toString() == 'dart:core/Object' &&
+            typeToCompare is DomainClassSource;
+  } else {
+    return false;
+  }
+}
+
