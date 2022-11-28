@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:reflect_gui_builder/core/action_method/action_method_source.dart';
-import 'package:reflect_gui_builder/core/domain_class/domain_class_source.dart';
-import 'package:reflect_gui_builder/core/type/type.dart';
 
+import '../action_method/action_method_source.dart';
+import '../domain_class/domain_class_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
+import '../type/type.dart';
 
 /// Contains information on a [ServiceClass]s source code.
 /// It is created by the [ServiceClassSourceFactory].

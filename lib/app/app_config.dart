@@ -1,10 +1,10 @@
 import 'package:reflect_gui_builder/app/person/service/person_service.dart'
     as i1;
-import 'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor.dart';
-import 'package:reflect_gui_builder/core/action_method_result_processor/action_method_result_processor.dart';
 
-import '../core/property_factory/property_widget_factory.dart';
-import '../core/reflect_gui/reflect_gui_config.dart';
+import '../builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
+import '../builder/domain/action_method_result_processor/action_method_result_processor.dart';
+import '../builder/domain/property_factory/property_widget_factory.dart';
+import '../builder/domain/reflect_gui/reflect_gui_config.dart';
 
 class MyApplicationConfig extends ReflectGuiConfig {
   /// Returns the [PropertyWidgetFactory]s that are to be used in the application.

@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
+import '../type/type.dart';
 
 /// Contains information from an [ActionMethodReflection]s source code.
 /// It is created by the [ActionMethodSourceFactory].
@@ -33,7 +33,7 @@ class PropertyWidgetFactorySourceFactory
   static const propertyWidgetFactoriesFieldName = 'propertyWidgetFactories';
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
-      'package:reflect_gui_builder/core/property_factory/property_widget_factory.dart';
+      'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart';
 
   PropertyWidgetFactorySourceFactory(PopulateFactoryContext context)
       : super(context);

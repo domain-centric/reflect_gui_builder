@@ -1,10 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:reflect_gui_builder/core/domain_class/domain_class.dart';
-import 'package:reflect_gui_builder/core/reflect_gui/reflect_gui_source.dart';
-import 'package:reflect_gui_builder/core/type/to_string.dart';
+import 'package:reflect_gui_builder/builder/domain/type/to_string.dart';
 
 import '../domain_class/domain_class_source.dart';
+import '../reflect_gui/reflect_gui_source.dart';
 
 /// Contains information on a library member from its source code.
 /// Implementations are normally created by [ReflectGuiConfigPopulateFactory] that converts

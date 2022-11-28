@@ -1,10 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:reflect_gui_builder/core/domain_class/domain_class_source.dart';
-import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 import '../type/to_string.dart';
+import '../type/type.dart';
 
 /// Contains information on a [ActionMethodParameterProcessor]s source code.
 /// It is created by the [ActionMethodParameterProcessorSourceFactory]
@@ -40,7 +39,7 @@ class ActionMethodParameterProcessorSourceFactory
   static const actionMethodParameterProcessorName =
       'ActionMethodParameterProcessor';
   static const actionMethodParameterProcessorLibraryUri =
-      'package:reflect_gui_builder/core/action_method_parameter_processor/action_method_parameter_processor.dart';
+      'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 
   ActionMethodParameterProcessorSourceFactory(PopulateFactoryContext context)
       : super(context);

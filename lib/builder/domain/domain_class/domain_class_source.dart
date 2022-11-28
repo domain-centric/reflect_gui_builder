@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
-import 'package:reflect_gui_builder/core/type/type.dart';
 
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
+import '../type/type.dart';
 
 /// Contains information on a [DomainClass]s source code.
 class DomainClassSource extends ClassSource {
@@ -80,8 +80,7 @@ class DomainClassSourceFactory extends SourceFactory {
     }
     if (TypeSourceFactory.libraryUri(element)
         .toString()
-        .startsWith('package:reflect_gui_builder/core')) {
-      // TODO rename to package:reflect_gui_builder/builder and move core folder under builder and rename core folder to domain
+        .startsWith('package:reflect_gui_builder/builder/domain')) {
       throw ('Domain class: ${element.asLibraryMemberPath} can not be a reflect_gui_builder class.');
     }
     //TODO _validateIfHasAtLeastOneProperty;

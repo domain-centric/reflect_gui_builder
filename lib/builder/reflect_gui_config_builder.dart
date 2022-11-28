@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 
-import '../core/reflect_gui/reflect_gui_source.dart';
+import 'domain/reflect_gui/reflect_gui_source.dart';
 
 /// Finds classes that implement [ReflectGuiConfig]
 /// Creates instances, see [reflectGuiConfigs] below
