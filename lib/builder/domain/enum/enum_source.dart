@@ -40,12 +40,10 @@ class EnumSourceFactory extends SourceFactory {
   /// Creates a [EnumSource] if it is a [Enum]. Note that it will
   /// return an existing [EnumSource] if one was already created.
   EnumSource? create(InterfaceElement element) {
-    try {
-      _validateEnumElement(element);
-    } catch (e) {
-      //print('$element $e');
+    if (!_isSupportedEnum(element)) {
       return null;
     }
+
     var libraryUri = TypeSourceFactory.libraryUri(element);
     var className = TypeSourceFactory.className(element);
 
@@ -66,30 +64,15 @@ class EnumSourceFactory extends SourceFactory {
     return existingEnum;
   }
 
-  void _validateEnumElement(Element element) {
-    if (element is! ClassElement) {
-      throw ('Domain class: ${element.asLibraryMemberPath} must be a class.');
-    }
-    if (TypeSourceFactory.libraryUri(element).scheme == 'dart') {
-      throw ('Domain class: ${element.asLibraryMemberPath} can not be a class from the Dart core package.');
-    }
-    if (!element.isPublic) {
-      throw ('Domain class: ${element.asLibraryMemberPath} must be public.');
-    }
-    // TODO: DomainClass may be abstract???
-    // if (element.isAbstract) {
-    //   throw ('Domain class: ${element.asLibraryMemberPath} may not be abstract.');
-    // }
-    if (!hasNamelessConstructorWithoutParameters(element)) {
-      throw ('Domain class: ${element.asLibraryMemberPath} does not have a nameless constructor without parameters.');
-    }
-    if (TypeSourceFactory.libraryUri(element)
-        .toString()
-        .startsWith('package:reflect_gui_builder/builder/domain')) {
-      throw ('Domain class: ${element.asLibraryMemberPath} can not be a reflect_gui_builder class.');
-    }
-    //TODO _validateIfHasAtLeastOneProperty;
+  bool _isSupportedEnum(Element element) {
+    return element is EnumElement &&
+        element.isPublic &&
+        !element.asLibraryMemberPath.startsWith('dart:') &&
+        !element.asLibraryMemberPath
+            .startsWith('package:reflect_gui_builder/builder/domain') &&
+        _enumValues(element).isNotEmpty;
   }
 
-  _enumValues(InterfaceElement element) => []; //TODO
+  List<String> _enumValues(InterfaceElement element) =>
+      element.fields.map((field) => field.name).toList();
 }

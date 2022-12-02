@@ -36,10 +36,7 @@ class DomainSourceFactory extends SourceFactory {
   /// Creates a [DomainClassSource] if it is a [DomainClass]. Note that it will
   /// return an existing [DomainClassSource] if one was already created.
   DomainClassSource? create(InterfaceElement element) {
-    try {
-      _validateDomainClassElement(element);
-    } catch (e) {
-      //print('$element $e');
+    if (!_isSupportedDomainClass(element)) {
       return null;
     }
     var libraryUri = TypeSourceFactory.libraryUri(element);
@@ -62,28 +59,14 @@ class DomainSourceFactory extends SourceFactory {
     return existingDomainClass;
   }
 
-  void _validateDomainClassElement(Element element) {
-    if (element is! ClassElement) {
-      throw ('Domain class: ${element.asLibraryMemberPath} must be a class.');
-    }
-    if (TypeSourceFactory.libraryUri(element).scheme == 'dart') {
-      throw ('Domain class: ${element.asLibraryMemberPath} can not be a class from the Dart core package.');
-    }
-    if (!element.isPublic) {
-      throw ('Domain class: ${element.asLibraryMemberPath} must be public.');
-    }
-    // TODO: DomainClass may be abstract???
-    // if (element.isAbstract) {
-    //   throw ('Domain class: ${element.asLibraryMemberPath} may not be abstract.');
-    // }
-    if (!hasNamelessConstructorWithoutParameters(element)) {
-      throw ('Domain class: ${element.asLibraryMemberPath} does not have a nameless constructor without parameters.');
-    }
-    if (TypeSourceFactory.libraryUri(element)
-        .toString()
-        .startsWith('package:reflect_gui_builder/builder/domain')) {
-      throw ('Domain class: ${element.asLibraryMemberPath} can not be a reflect_gui_builder class.');
-    }
+  bool _isSupportedDomainClass(Element element) {
+    return element is ClassElement &&
+        element.isPublic &&
+        !element.isAbstract &&
+        hasNamelessConstructorWithoutParameters(element) &&
+        !element.asLibraryMemberPath.startsWith('dart:') &&
+        !element.asLibraryMemberPath
+            .startsWith('package:reflect_gui_builder/builder/domain');
     //TODO _validateIfHasAtLeastOneProperty;
   }
 }
