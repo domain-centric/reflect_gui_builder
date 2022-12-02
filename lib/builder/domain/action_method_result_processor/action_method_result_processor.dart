@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../action_method/action_method.dart';
 import '../action_method/action_method_reflection.dart';
 
+const dialogIcon=Icons.crop_7_5;
+const formIcon=Icons.table_rows_sharp;
+const tableIcon=Icons.table_chart_sharp;
+
 /// A [ActionMethodResultProcessor] processes the [ActionMethod] results
 /// (e.g. displays the results to the user or sends back an reply)
 ///
@@ -56,7 +60,7 @@ class ShowStringInDialog extends ActionMethodResultProcessor<String> {
   const ShowStringInDialog();
 
   @override
-  IconData? get defaultIcon => Icons.crop_7_5;
+  IconData? get defaultIcon => dialogIcon;
 
   @override
   void process(
@@ -76,7 +80,7 @@ class ShowDomainObjectInReadonlyFormTab extends ActionMethodResultProcessor<
   const ShowDomainObjectInReadonlyFormTab();
 
   @override
-  IconData? get defaultIcon => Icons.table_rows_sharp;
+  IconData? get defaultIcon => formIcon;
 
   @override
   void process(
@@ -102,7 +106,7 @@ class ShowListInTableTab extends ActionMethodResultProcessor<
   const ShowListInTableTab();
 
   @override
-  IconData? get defaultIcon => Icons.table_chart_sharp;
+  IconData? get defaultIcon => tableIcon;
 
   @override
   void process(BuildContext context, ActionMethodReflection actionMethod,

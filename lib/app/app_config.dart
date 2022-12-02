@@ -24,6 +24,7 @@ class MyApplicationConfig extends ReflectGuiConfig {
   /// TODO: Move to [ReflectGuiConfig]
   List<Type> actionMethodParameterProcessors = [
     ProcessResultDirectlyWhenThereIsNoParameter,
+    EditEnumInDialog,
     EditDomainObjectParameterInForm,
     EditStringParameterInDialog,
   ];

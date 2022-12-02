@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../action_method/action_method.dart';
 import '../action_method/action_method_reflection.dart';
 
+const dialogIcon = Icons.crop_7_5;
+const formIcon = Icons.table_rows_sharp;
+
 /// A [ActionMethodParameterProcessor] does something with
 /// [ActionMethod] parameters. E.g.:show a form to edit or view a [DomainObject]
 ///
@@ -30,12 +33,25 @@ abstract class ActionMethodParameterProcessor<PARAMETER_TYPE> {
   );
 }
 
+class EditEnumInDialog extends ActionMethodParameterProcessor<Enum> {
+  const EditEnumInDialog();
+
+  @override
+  IconData? get defaultIcon => dialogIcon;
+
+  @override
+  void process(Object context, ActionMethodReflection actionMethod,
+      Object actionMethodParameter) {
+    //TODO put in form OK button:  actionMethod.resultProcessor.process(context, enumValue);
+  }
+}
+
 class EditDomainObjectParameterInForm
     extends ActionMethodParameterProcessor<Object> {
   const EditDomainObjectParameterInForm();
 
   @override
-  IconData? get defaultIcon => Icons.table_rows_sharp;
+  IconData? get defaultIcon => formIcon;
 
   @override
   void process(Object context, ActionMethodReflection actionMethod,
@@ -43,7 +59,7 @@ class EditDomainObjectParameterInForm
     // Tabs tabs = Provider.of<Tabs>(context, listen: false);
     //   FormExampleTab formTab = FormExampleTab(actionMethod);
     //   tabs.add(formTab);
-    //TODO put in form OK button:  actionMethod.invokeMethodAndProcessResult(context, domainObject);
+    //TODO put in form OK button:  actionMethod.resultProcessor.process(context, domainObject);
   }
 }
 
@@ -70,7 +86,7 @@ class EditStringParameterInDialog
   const EditStringParameterInDialog();
 
   @override
-  IconData? get defaultIcon => Icons.crop_7_5;
+  IconData? get defaultIcon => dialogIcon;
 
   @override
   void process(
@@ -79,8 +95,7 @@ class EditStringParameterInDialog
     String actionMethodParameter,
   ) {
     // TODO create and open dialog
-    //TODO put in dialog OK button:
-    //actionMethod.invokeMethodAndProcessResult(context, string);
+    //TODO put in dialog OK button: actionMethod..resultProcessor.process(context, string)
   }
 }
 

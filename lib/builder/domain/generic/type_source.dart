@@ -90,12 +90,10 @@ class ClassSource extends LibraryMemberSource {
       libraryMemberPath.hashCode ^ libraryUri.hashCode ^ genericType.hashCode;
 
   @override
-  String toString() {
-    return ToStringBuilder(runtimeType.toString())
-        .add('libraryMemberUri', libraryMemberUri)
-        .add('genericType', genericType)
-        .toString();
-  }
+  String toString() => ToStringBuilder(runtimeType.toString())
+      .add('libraryMemberUri', libraryMemberUri)
+      .add('genericType', genericType)
+      .toString();
 }
 
 class TypeSourceFactory {
@@ -122,7 +120,7 @@ class TypeSourceFactory {
       return domainSource;
     }
     var enumSource = enumSourceFactory.create(type.element);
-    if (enumSource!=null) {
+    if (enumSource != null) {
       return enumSource;
     }
     var genericType = _genericType(type);
@@ -153,20 +151,32 @@ class TypeSourceFactory {
 /// Returns true when the [typeToCompare] is supported by the [supportedType].
 /// Note that:
 /// * [typeToCompare] and or [supportedType] can be null.
-/// * if the [supportedType] or one of its generic types is an object
+/// * if the [supportedType] or one of its generic types is an [Object] type
 ///   than [typeToCompare] must be a [DomainClassSource]
+/// * if the [supportedType] or one of its generic types is an [Enum] type
+///   than [typeToCompare] must be a [EnumSource]
 bool supported(ClassSource? supportedType, ClassSource? typeToCompare) {
   if (supportedType == null && typeToCompare == null) {
     return true;
   }
   if (supportedType != null && typeToCompare != null) {
-    return (supportedType.libraryMemberPath ==
-        typeToCompare.libraryMemberPath &&
-        supported(supportedType.genericType, typeToCompare.genericType)) ||
-        supportedType.libraryMemberUri.toString() == 'dart:core/Object' &&
-            typeToCompare is DomainClassSource;
+    return _hasSameLibraryMemberUri(supportedType, typeToCompare) &&
+            supported(supportedType.genericType, typeToCompare.genericType) ||
+        _isDomainClass(supportedType, typeToCompare) ||
+        _isEnum(supportedType, typeToCompare);
   } else {
     return false;
   }
 }
 
+bool _isEnum(ClassSource supportedType, ClassSource typeToCompare) =>
+    supportedType.libraryMemberUri.toString() == 'dart:core/Enum' &&
+    typeToCompare is EnumSource;
+
+bool _isDomainClass(ClassSource supportedType, ClassSource typeToCompare) =>
+    supportedType.libraryMemberUri.toString() == 'dart:core/Object' &&
+    typeToCompare is DomainClassSource;
+
+bool _hasSameLibraryMemberUri(
+        ClassSource supportedType, ClassSource typeToCompare) =>
+    (supportedType.libraryMemberPath == typeToCompare.libraryMemberPath);

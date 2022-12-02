@@ -2,6 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
+import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
@@ -29,6 +30,12 @@ class EnumSource extends ClassSource {
 
   @override
   int get hashCode => libraryMemberPath.hashCode ^ libraryUri.hashCode;
+
+  @override
+  String toString() => ToStringBuilder(runtimeType.toString())
+      .add('libraryMemberUri', libraryMemberUri)
+      .add('values', values)
+      .toString();
 }
 
 /// See [SourceClassFactory]
