@@ -1,12 +1,13 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
+import '../generic/to_string.dart';
+import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
-import '../type/to_string.dart';
-import '../type/type.dart';
 
-/// Contains information from an [ActionMethodReflection]s source code.
-/// It is created by the [ActionMethodSourceFactory].
+/// Contains information from an [PropertyWidgetFactory] source code.
+/// See [SourceClass]
 class PropertyWidgetFactorySource extends ClassSource {
   final ClassSource propertyType;
 
@@ -26,8 +27,9 @@ class PropertyWidgetFactorySource extends ClassSource {
   }
 }
 
-/// Creates a list of [PropertyWidgetFactorySource]s by using the
-/// analyzer package
+/// Creates [PropertyWidgetFactorySource]s from a [ReflectGuiConfig] class
+/// by using the analyzer package.
+/// See [SourceClassFactory]
 class PropertyWidgetFactorySourceFactory
     extends ReflectGuiConfigPopulateFactory {
   static const propertyWidgetFactoriesFieldName = 'propertyWidgetFactories';

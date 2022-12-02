@@ -1,4 +1,4 @@
-import '../documentation.dart';
+import '../generic/documentation.dart';
 
 /// ## [ActionMethod]
 ///

@@ -1,8 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:reflect_gui_builder/builder/domain/type/to_string.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 
 import '../domain_class/domain_class_source.dart';
+import '../enum/enum_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 
 /// Contains information on a library member from its source code.
@@ -99,30 +100,36 @@ class ClassSource extends LibraryMemberSource {
 
 class TypeSourceFactory {
   final ReflectGuiConfigSource reflectGuiConfig;
-  late DomainClassSourceFactory domainClassFactory;
+  late DomainSourceFactory domainSourceFactory;
+  late EnumSourceFactory enumSourceFactory;
 
   TypeSourceFactory(this.reflectGuiConfig) {
-    domainClassFactory = DomainClassSourceFactory(reflectGuiConfig);
+    domainSourceFactory = DomainSourceFactory(reflectGuiConfig);
+    enumSourceFactory = EnumSourceFactory(reflectGuiConfig);
   }
 
   /// returns:
   /// * A [DomainClassSource] if it is a [DomainClass]. Note that it will return
   ///   an existing [DomainClassSource] if one was already created.
+  /// * A [EnumSource] if it is a [Enum]. Note that it will return
+  ///   an existing [EnumSource] if one was already created.
   /// * Otherwise a [ClassSource] including its generic type if any
   ///   e.g. Person being the generic type in List<Person>
 
   ClassSource create(InterfaceType type) {
-    var domainClass = domainClassFactory.create(type.element);
-    if (domainClass == null) {
-      var genericType = _genericType(type);
-      return ClassSource(
-          libraryUri: libraryUri(type.element),
-          className: className(type.element),
-          genericType: genericType);
-    } else {
-      return domainClass;
+    var domainSource = domainSourceFactory.create(type.element);
+    if (domainSource != null) {
+      return domainSource;
     }
-    //TODO Enums
+    var enumSource = enumSourceFactory.create(type.element);
+    if (enumSource!=null) {
+      return enumSource;
+    }
+    var genericType = _genericType(type);
+    return ClassSource(
+        libraryUri: libraryUri(type.element),
+        className: className(type.element),
+        genericType: genericType);
   }
 
   static final noneLetterSuffix = RegExp('[^a-zA-Z].*\$');

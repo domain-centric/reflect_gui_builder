@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Creates property widgets for a specific property type
 abstract class PropertyWidgetFactory<T> {
   const PropertyWidgetFactory();
 

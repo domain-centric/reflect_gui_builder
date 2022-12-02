@@ -1,12 +1,12 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
+import '../generic/to_string.dart';
+import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
-import '../type/to_string.dart';
-import '../type/type.dart';
 
-/// Contains information on a [ActionMethodParameterProcessor]s source code.
-/// It is created by the [ActionMethodParameterProcessorSourceFactory]
+/// See [SourceClass]
 class ActionMethodParameterProcessorSource extends ClassSource {
   /// null = [ActionMethod] has no parameter
   final ClassSource? parameterType;
@@ -15,11 +15,10 @@ class ActionMethodParameterProcessorSource extends ClassSource {
       {required Uri libraryUri, required String className, this.parameterType})
       : super(libraryUri: libraryUri, className: className);
 
-  /// returns true if the parameter type is supported by the [ActionMethodParameterProcessorSource]
+  /// returns true if the parameter type is supported
+  /// by the [ActionMethodParameterProcessorSource]
   supports(ClassSource? parameterTypeToCompare) =>
       supported(parameterType, parameterTypeToCompare);
-
-
 
   @override
   String toString() {
@@ -30,8 +29,10 @@ class ActionMethodParameterProcessorSource extends ClassSource {
   }
 }
 
-/// Creates a list of [ActionMethodParameterProcessorSource]s by using the
-/// analyzer package
+/// Creates a list of [ActionMethodParameterProcessorSource]s
+/// from a [ReflectGuiConfig] class by using the analyzer package
+///
+/// See [SourceClassFactory]
 class ActionMethodParameterProcessorSourceFactory
     extends ReflectGuiConfigPopulateFactory {
   static const actionMethodParameterProcessorFieldName =

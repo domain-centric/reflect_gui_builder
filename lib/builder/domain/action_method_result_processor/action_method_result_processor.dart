@@ -13,7 +13,7 @@ import '../action_method/action_method_reflection.dart';
 ///
 ///  [ActionMethodResultProcessor]s are configured in the [ReflectGuiConfig]
 ///  These will be used to generate [ActionMethodSource] classes.
-abstract class ActionMethodResultProcessor<T> {
+abstract class ActionMethodResultProcessor<PARAMETER_TYPE> {
   const ActionMethodResultProcessor();
 
   /// Default icon if any
@@ -22,8 +22,11 @@ abstract class ActionMethodResultProcessor<T> {
   ///  Call's the action method (with or without parameter) and shows
   ///  the result in the user interface.
   ///  There will be multiple implementations for different result types [T].
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      T actionMethodResult);
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    PARAMETER_TYPE actionMethodParameter,
+  );
 }
 
 class ShowMethodExecutedSnackBar extends ActionMethodResultProcessor<void> {
@@ -33,8 +36,11 @@ class ShowMethodExecutedSnackBar extends ActionMethodResultProcessor<void> {
   IconData? get defaultIcon => null;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      void actionMethodResult) {
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    void actionMethodParameter,
+  ) {
     // TODO: implement call
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(
@@ -53,8 +59,11 @@ class ShowStringInDialog extends ActionMethodResultProcessor<String> {
   IconData? get defaultIcon => Icons.crop_7_5;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      void actionMethodResult) {
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    void actionMethodParameter,
+  ) {
     // TODO: implement
   }
 }
@@ -70,8 +79,11 @@ class ShowDomainObjectInReadonlyFormTab extends ActionMethodResultProcessor<
   IconData? get defaultIcon => Icons.table_rows_sharp;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      Object actionMethodResult) {
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    Object actionMethodParameter,
+  ) {
     // TODO: implement call
     /// TODO: use [ActionMethodReflection.resultDomainReflection]
     // var tabs = Provider.of<Tabs>(context, listen: false);
@@ -93,8 +105,8 @@ class ShowListInTableTab extends ActionMethodResultProcessor<
   IconData? get defaultIcon => Icons.table_chart_sharp;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      List<Object> actionMethodResult) {
+  void process(BuildContext context, ActionMethodReflection actionMethod,
+      List<Object> actionMethodParameter) {
     // TODO: implement call
     /// TODO: use [ActionMethodReflection.resultDomainReflection]
     // var tabs = Provider.of<Tabs>(context, listen: false);

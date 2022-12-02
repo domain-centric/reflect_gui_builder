@@ -6,21 +6,25 @@ import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
 
-/// Contains information on a [DomainClass] source code.
+/// Contains information on a [Enum]s source code.
 /// See [SourceClass]
-class DomainClassSource extends ClassSource {
-  DomainClassSource({required super.libraryUri, required super.className});
+class EnumSource extends ClassSource {
+  final List<String> values;
 
-  /// [DomainClassSource]s are created once for each class
+  EnumSource(
+      {required super.libraryUri,
+      required super.className,
+      required this.values});
+
+  /// [EnumSource]s are created once for each class
   /// by the [TypeSourceFactory].
-  /// Therefore [DomainClassSource]s are equal when
-  /// the [runtimeType] and [libraryMemberUri] compare
-  /// because other fields will be the identical.
+  /// Therefore [EnumSource]s are equal when
+  /// the [runtimeType] and [libraryMemberUri] are equal.
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LibraryMemberSource &&
-          runtimeType == DomainClassSource &&
+          runtimeType == EnumSource &&
           libraryMemberUri == other.libraryMemberUri;
 
   @override
@@ -28,16 +32,16 @@ class DomainClassSource extends ClassSource {
 }
 
 /// See [SourceClassFactory]
-class DomainSourceFactory extends SourceFactory {
+class EnumSourceFactory extends SourceFactory {
   final ReflectGuiConfigSource reflectGuiConfig;
 
-  DomainSourceFactory(this.reflectGuiConfig);
+  EnumSourceFactory(this.reflectGuiConfig);
 
-  /// Creates a [DomainClassSource] if it is a [DomainClass]. Note that it will
-  /// return an existing [DomainClassSource] if one was already created.
-  DomainClassSource? create(InterfaceElement element) {
+  /// Creates a [EnumSource] if it is a [Enum]. Note that it will
+  /// return an existing [EnumSource] if one was already created.
+  EnumSource? create(InterfaceElement element) {
     try {
-      _validateDomainClassElement(element);
+      _validateEnumElement(element);
     } catch (e) {
       //print('$element $e');
       return null;
@@ -45,24 +49,24 @@ class DomainSourceFactory extends SourceFactory {
     var libraryUri = TypeSourceFactory.libraryUri(element);
     var className = TypeSourceFactory.className(element);
 
-    var existingDomainClass = _findExistingDomainClass(libraryUri, className);
-    if (existingDomainClass != null) {
-      return existingDomainClass;
+    var existingEnum = _findExistingEnum(libraryUri, className);
+    if (existingEnum != null) {
+      return existingEnum;
     }
-
-    return DomainClassSource(libraryUri: libraryUri, className: className);
+    var values = _enumValues(element);
+    return EnumSource(
+        libraryUri: libraryUri, className: className, values: values);
   }
 
-  DomainClassSource? _findExistingDomainClass(
-      Uri libraryUri, String className) {
-    var domainClasses = reflectGuiConfig.domainClasses;
-    var existingDomainClass = domainClasses.firstWhereOrNull((domainClass) =>
-        domainClass.libraryUri == libraryUri &&
-        domainClass.libraryMemberPath == className);
-    return existingDomainClass;
+  EnumSource? _findExistingEnum(Uri libraryUri, String className) {
+    var enums = reflectGuiConfig.enums;
+    var existingEnum = enums.firstWhereOrNull((enumSource) =>
+        enumSource.libraryUri == libraryUri &&
+        enumSource.libraryMemberPath == className);
+    return existingEnum;
   }
 
-  void _validateDomainClassElement(Element element) {
+  void _validateEnumElement(Element element) {
     if (element is! ClassElement) {
       throw ('Domain class: ${element.asLibraryMemberPath} must be a class.');
     }
@@ -86,4 +90,6 @@ class DomainSourceFactory extends SourceFactory {
     }
     //TODO _validateIfHasAtLeastOneProperty;
   }
+
+  _enumValues(InterfaceElement element) => []; //TODO
 }

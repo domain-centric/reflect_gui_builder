@@ -1,19 +1,17 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
 import '../domain_class/domain_class_source.dart';
+import '../generic/to_string.dart';
+import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
-import '../type/to_string.dart';
-import '../type/type.dart';
 
-/// Contains information from an [ActionMethod]s source code.
-/// It is created by the [ActionMethodSourceFactory].
-/// It is later converted to generated Dart code
-/// that implements [ActionMethodReflection].
+/// See [SourceClass]
 class ActionMethodSource extends LibraryMemberSource {
   final String className;
   final String methodName;
@@ -126,8 +124,8 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ClassSource? _createParameterType(MethodElement methodElement) {
     if (methodElement.parameters.length == 1) {
-      return typeFactory.create(
-          (methodElement.parameters.first as InterfaceElement).thisType);
+      var parameterType = methodElement.parameters.first.type as InterfaceType;
+      return typeFactory.create(parameterType);
     } else {
       return null;
     }

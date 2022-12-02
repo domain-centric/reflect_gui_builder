@@ -1,13 +1,13 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
+import '../generic/to_string.dart';
+import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
 import '../reflect_gui/reflection_factory.dart';
-import '../type/to_string.dart';
-import '../type/type.dart';
 
-/// Contains information on a [ActionMethodResultProcessor]s source code.
-/// It is created by the [ActionMethodResultProcessorSourceFactory]
+/// See [SourceClass]
 class ActionMethodResultProcessorSource extends ClassSource {
   /// Te type of the result (return) type of the actionMethod
   final ClassSource? resultType;
@@ -16,7 +16,8 @@ class ActionMethodResultProcessorSource extends ClassSource {
       {required Uri libraryUri, required String className, this.resultType})
       : super(libraryUri: libraryUri, className: className);
 
-  /// returns true if the result type is supported by the [ActionMethodResultProcessorSource]
+  /// returns true if the result type is supported
+  /// by the [ActionMethodResultProcessorSource]
   bool supports(ClassSource? resultTypeToCompare) =>
       supported(resultType, resultTypeToCompare);
 
@@ -29,8 +30,11 @@ class ActionMethodResultProcessorSource extends ClassSource {
   }
 }
 
-/// Creates a list of [ActionMethodResultProcessorSource]s by using the
-/// analyzer package
+
+/// Creates a list of [ActionMethodResultProcessorSource]s
+/// from a [ReflectGuiConfig] class by using the analyzer package
+///
+/// See [SourceClassFactory]
 class ActionMethodResultProcessorSourceFactory
     extends ReflectGuiConfigPopulateFactory {
   static const actionMethodResultProcessorFieldName =

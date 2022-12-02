@@ -4,9 +4,10 @@ import '../action_method/action_method.dart';
 import '../action_method/action_method_reflection.dart';
 
 /// A [ActionMethodParameterProcessor] does something with
-/// [ActionMethod] parameters, for a given method parameter signature,
-/// before the [ActionMethodResultProcessor] is called to process the
-/// method result.
+/// [ActionMethod] parameters. E.g.:show a form to edit or view a [DomainObject]
+///
+/// The [ActionMethodParameterProcessor] will eventually call
+/// the [ActionMethodReflection.resultProcessor] to process the method result.
 ///
 /// [ActionMethodParameterProcessor]s are classes that:
 ///  - Extend [ActionMethodParameterProcessor]
@@ -16,14 +17,17 @@ import '../action_method/action_method_reflection.dart';
 ///  [ActionMethodParameterProcessor]s are configured in the [ReflectGuiConfig]
 ///  These will be used to generate [ActionMethodSource] classes.
 ///
-abstract class ActionMethodParameterProcessor<T> {
+abstract class ActionMethodParameterProcessor<PARAMETER_TYPE> {
   const ActionMethodParameterProcessor();
 
   /// Default icon if any
   IconData? get defaultIcon;
 
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      T actionMethodParameter);
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    PARAMETER_TYPE actionMethodParameter,
+  );
 }
 
 class EditDomainObjectParameterInForm
@@ -34,7 +38,7 @@ class EditDomainObjectParameterInForm
   IconData? get defaultIcon => Icons.table_rows_sharp;
 
   @override
-  void call(Object context, InvokeWithParameter actionMethod,
+  void process(Object context, ActionMethodReflection actionMethod,
       Object actionMethodParameter) {
     // Tabs tabs = Provider.of<Tabs>(context, listen: false);
     //   FormExampleTab formTab = FormExampleTab(actionMethod);
@@ -51,9 +55,12 @@ class ProcessResultDirectlyWhenThereIsNoParameter
   IconData? get defaultIcon => null;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      void actionMethodParameter) {
-    actionMethod.invokeMethodAndProcessResult(context, null);
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    void actionMethodParameter,
+  ) {
+    actionMethod.resultProcessor.process(context, actionMethod, null);
   }
 }
 
@@ -66,8 +73,11 @@ class EditStringParameterInDialog
   IconData? get defaultIcon => Icons.crop_7_5;
 
   @override
-  void call(BuildContext context, InvokeWithParameter actionMethod,
-      String actionMethodParameter) {
+  void process(
+    BuildContext context,
+    ActionMethodReflection actionMethod,
+    String actionMethodParameter,
+  ) {
     // TODO create and open dialog
     //TODO put in dialog OK button:
     //actionMethod.invokeMethodAndProcessResult(context, string);

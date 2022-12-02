@@ -1,56 +1,50 @@
 import 'package:flutter/cupertino.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
 
-import '../domain_class/domain_class_source.dart';
+import '../generic/type_reflection.dart';
 import '../item/item.dart';
 
 /// Implementations of a [ActionMethodReflection] class are
 /// generated classes that contain [ActionMethod] information for the
 /// graphical user interface.
-abstract class ActionMethodReflection extends DynamicItem {
+///
+/// [PARAMETER_TYPE] or [RESULT_TYPE] examples:
+/// * void: when there is none
+/// * int: when it is a [Dart] [int] type
+/// * Person: when it is a [DomainClass]
+/// * List<Person>: a [Collection] of [DomainClass]es
+abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE> extends DynamicItem {
   Object get methodOwner;
 
-  /// Returns a DomainClassReflection if the [ActionMethod] parameter type
-  /// contains a [DomainClass]
-  DomainClassSource? get parameterDomainReflection;
-
-  /// Returns a DomainClassReflection if the [ActionMethod] result type
-  /// contains a [DomainClass]
-  DomainClassSource? get resultDomainReflection;
-}
-
-abstract class StartWithoutParameter implements ActionMethodReflection {
-  /// Starts the ActionMethod process (e.g. when clicking on a menu button)
-  /// This is implemented on a [ActionMethodInfoWithoutParameter] or
-  /// [ActionMethodInfoWithParameter] and there is an parameter factory
+  /// Returns a reflection class that contains information on
+  /// the [ActionMethod]s parameter type.
   /// It:
-  /// - calls the _createParameter() method (if it exists)
-  /// - and then calls the _processParameter() method if it has a parameter
-  /// - finally it will call invokeMethodAndProcessResult()
-  void start(BuildContext context);
-}
+  /// * is null when there the [ActionMethod] has no parameter
+  /// * it could contain information on a [DomainClass] or [Enum].
+  ClassReflection? get parameterType;
 
-abstract class StartWithParameter<T> implements ActionMethodReflection {
-  /// Starts the ActionMethod process (e.g. when clicking on a menu button)
-  /// This is implemented on a ActionMethodInfoWithParameter
+  ActionMethodParameterProcessor get actionMethodParameterProcessor;
+
+  /// Starts the [ActionMethod] process (e.g. when clicking on a menu button)
   /// It:
-  /// - calls the _processParameter() method
-  void start(BuildContext context, T parameter);
-}
+  /// * calls the _createParameter() method (if it exists)
+  /// * and then calls the [actionMethodParameterProcessor]
+  void call(BuildContext context, PARAMETER_TYPE parameter);
 
-abstract class InvokeWithoutParameter implements ActionMethodReflection {
-  /// This method is only called by [ActionMethodSource.start]
-  void invokeMethodAndProcessResult(BuildContext context);
-}
-
-abstract class InvokeWithParameter<T> implements ActionMethodReflection {
-  /// This method should only be called by a [ActionMethodParameterProcessor]
-  /// (which might be delegated to a form ok or a dialog ok button)
+  /// Returns a reflection class that contains information on
+  /// the [ActionMethod]s result type.
   /// It:
-  /// - invokes the method
-  /// - and then calls the [ActionMethodResultProcessor] to process the results
-  /// - it will handle any exceptions that could be thrown
-  void invokeMethodAndProcessResult(BuildContext context, T parameter);
+  /// * is null when there the [ActionMethod] has no result (void)
+  /// * it could contain information on a [DomainClass] or [Enum].
+  ClassReflection? get resultType;
+
+  ActionMethodResultProcessor get resultProcessor;
 }
+
+
+
 
 // /// [ServiceObjectActionMethod]s are displayed on the main menu of an [ReflectGuiApplication] or are commands that can be accessed from the outside world in other type of [ReflectApplications]
 // abstract class ServiceObjectActionMethodInfo extends ActionMethodInfo {

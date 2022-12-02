@@ -1,18 +1,19 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
+import 'package:reflect_gui_builder/builder/domain/reflect_gui/reflect_gui_config.dart';
 import 'package:reflect_gui_builder/builder/domain/reflect_gui/reflection_factory.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
 import '../domain_class/domain_class_source.dart';
+import '../generic/to_string.dart';
+import '../generic/type_source.dart';
 import '../property_factory/property_widget_factory_source.dart';
 import '../service_class/service_class_source.dart';
-import '../type/to_string.dart';
-import '../type/type.dart';
 
-/// Contains information from an [ActionMethod]s source code.
-/// It is created by the [ReflectGuiConfigSourceFactory].
-/// It is later converted to generated Dart code
-/// that implements [ReflectGuiConfigReflection].
+/// Contains information from an [ReflectGuiConfig] class source code.
+/// See [SourceClass]
 class ReflectGuiConfigSource {
   final List<ServiceClassSource> serviceClasses = [];
   final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
@@ -30,6 +31,8 @@ class ReflectGuiConfigSource {
     return domainClasses;
   }
 
+  List<EnumSource>get enums => [];//TODO
+
   @override
   String toString() {
     return ToStringBuilder('$ReflectGuiConfigSource')
@@ -41,7 +44,7 @@ class ReflectGuiConfigSource {
         .toString();
   }
 }
-
+/// See [SourceClassFactory]
 class ReflectGuiConfigSourceFactory extends SourceFactory {
   bool isValidReflectGuiConfigElement(Element element) =>
       element is ClassElement &&
