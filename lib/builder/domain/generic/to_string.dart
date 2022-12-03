@@ -55,10 +55,10 @@ class ToStringBuilder {
   List<String> fieldToStrings(String fieldName) {
     var fieldValue = fieldsAndValues[fieldName];
     var valueLines = valueToStrings(fieldValue);
-    if (valueLines.length == 1) {
-      return fieldOfOneLineToString(fieldName, valueLines.first);
-    } else {
-      return fieldsOfMultipleLinesToString(fieldName, valueLines);
+    switch (valueLines.length) {
+      case 0: return [];
+      case 1:return fieldOfOneLineToString(fieldName, valueLines.first);
+      default: return fieldsOfMultipleLinesToString(fieldName, valueLines);
     }
   }
 
@@ -95,7 +95,7 @@ class ToStringBuilder {
     var results = <String>[];
     var values = iterable.toList();
     if (values.isEmpty) {
-      return ['[]'];
+      return [];//['[]'];
     }
     bool isFirstElement = true;
     for (var value in iterable.toList()) {

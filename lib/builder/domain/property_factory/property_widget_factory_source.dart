@@ -21,7 +21,7 @@ class PropertyWidgetFactorySource extends ClassSource {
   String toString() {
     return ToStringBuilder(runtimeType.toString())
         .add('libraryMemberUri', libraryMemberUri)
-        .add('genericType', genericType)
+        .add('genericTypes', genericTypes)
         .add('propertyType', propertyType)
         .toString();
   }

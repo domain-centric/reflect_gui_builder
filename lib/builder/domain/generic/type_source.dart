@@ -58,18 +58,20 @@ class LibraryMemberSource {
 /// an source code [Element] from the analyzer package to
 /// a [LibraryMemberSource]
 class ClassSource extends LibraryMemberSource {
-  final ClassSource? genericType;
+  final List<ClassSource> genericTypes;
   final String className;
 
   ClassSource(
-      {required Uri libraryUri, required this.className, this.genericType})
+      {required Uri libraryUri,
+      required this.className,
+      this.genericTypes = const []})
       : super(libraryUri: libraryUri, libraryMemberPath: className);
 
   Set<ClassSource> get usedTypes {
     var usedTypes = <ClassSource>{};
     usedTypes.add(this);
-    if (genericType != null) {
-      usedTypes.addAll(genericType!.usedTypes);
+    for (var genericType in genericTypes) {
+      usedTypes.addAll(genericType.usedTypes);
     }
     return usedTypes;
   }
@@ -81,16 +83,16 @@ class ClassSource extends LibraryMemberSource {
           runtimeType == other.runtimeType &&
           libraryMemberPath == other.libraryMemberPath &&
           libraryUri == other.libraryUri &&
-          genericType == other.genericType;
+          genericTypes == other.genericTypes;
 
   @override
   int get hashCode =>
-      libraryMemberPath.hashCode ^ libraryUri.hashCode ^ genericType.hashCode;
+      libraryMemberPath.hashCode ^ libraryUri.hashCode ^ genericTypes.hashCode;
 
   @override
   String toString() => ToStringBuilder(runtimeType.toString())
       .add('libraryMemberUri', libraryMemberUri)
-      .add('genericType', genericType)
+      .add('genericTypes', genericTypes)
       .toString();
 }
 
@@ -116,11 +118,11 @@ class TypeSourceFactory {
     if (enumSource != null) {
       return enumSource;
     }
-    var genericType = _genericType(type);
+    var genericTypes = _genericTypes(type);
     return ClassSource(
         libraryUri: libraryUri(type.element),
         className: className(type.element),
-        genericType: genericType);
+        genericTypes: genericTypes);
   }
 
   static final noneLetterSuffix = RegExp('[^a-zA-Z].*\$');
@@ -131,13 +133,13 @@ class TypeSourceFactory {
 
   static Uri libraryUri(InterfaceElement element) => element.library.source.uri;
 
-  ClassSource? _genericType(InterfaceType type) {
-    if (type.typeArguments.length != 1 ||
-        type.typeArguments.first is! InterfaceType) {
-      return null;
-    } else {
-      return create(type.typeArguments.first as InterfaceType);
+  List<ClassSource> _genericTypes(InterfaceType type) {
+    var genericTypes = <ClassSource>[];
+    for (var typeArgument in type.typeArguments) {
+      var genericType = create(typeArgument as InterfaceType);
+      genericTypes.add(genericType);
     }
+    return genericTypes;
   }
 }
 
@@ -154,12 +156,29 @@ bool supported(ClassSource? supportedType, ClassSource? typeToCompare) {
   }
   if (supportedType != null && typeToCompare != null) {
     return _hasSameLibraryMemberUri(supportedType, typeToCompare) &&
-            supported(supportedType.genericType, typeToCompare.genericType) ||
+            _hasSameGenericTypes(supportedType, typeToCompare) ||
         _isDomainClass(supportedType, typeToCompare) ||
         _isEnum(supportedType, typeToCompare);
   } else {
     return false;
   }
+}
+
+bool _hasSameGenericTypes(
+    ClassSource supportedType, ClassSource typeToCompare) {
+  if (supportedType.genericTypes.length != typeToCompare.genericTypes.length) {
+    return false;
+  }
+  for (int i = 0; i < supportedType.genericTypes.length; i++) {
+    var supportedTypeGenericType = supportedType.genericTypes[i];
+    var typeToCompareGenericType = typeToCompare.genericTypes[i];
+    var isSupported =
+        supported(supportedTypeGenericType, typeToCompareGenericType);
+    if (!isSupported) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool _isEnum(ClassSource supportedType, ClassSource typeToCompare) =>

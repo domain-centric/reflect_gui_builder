@@ -39,6 +39,7 @@ class EnumSource extends ClassSource {
   String toString() => ToStringBuilder(runtimeType.toString())
       .add('libraryMemberUri', libraryMemberUri)
       .add('values', values)
+      .add('actionMethods', actionMethods)
       .toString();
 }
 
