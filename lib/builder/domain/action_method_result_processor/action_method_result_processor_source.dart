@@ -5,7 +5,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/reflection_factory.dart';
+import '../reflect_gui/source_factory.dart';
 
 /// See [SourceClass]
 class ActionMethodResultProcessorSource extends ClassSource {
@@ -30,7 +30,6 @@ class ActionMethodResultProcessorSource extends ClassSource {
   }
 }
 
-
 /// Creates a list of [ActionMethodResultProcessorSource]s
 /// from a [ReflectGuiConfig] class by using the analyzer package
 ///
@@ -43,13 +42,13 @@ class ActionMethodResultProcessorSourceFactory
   static const actionMethodResultProcessorLibraryUri =
       'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
 
-  ActionMethodResultProcessorSourceFactory(PopulateFactoryContext context)
-      : super(context);
+  final FactoryContext context;
+  ActionMethodResultProcessorSourceFactory(this.context);
 
   @override
   void populateReflectGuiConfig() {
     var field = findField(
-        reflectGuiConfigElement, actionMethodResultProcessorFieldName);
+        context.reflectGuiConfigElement, actionMethodResultProcessorFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
@@ -60,10 +59,11 @@ class ActionMethodResultProcessorSourceFactory
           className: element.name!,
           resultType: _createResultType(element));
 
-      reflectGuiConfigSource.actionMethodResultProcessors.add(processor);
+      context.reflectGuiConfigSource.actionMethodResultProcessors
+          .add(processor);
     }
 
-    if (reflectGuiConfigSource.actionMethodResultProcessors.isEmpty) {
+    if (context.reflectGuiConfigSource.actionMethodResultProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
@@ -81,7 +81,7 @@ class ActionMethodResultProcessorSourceFactory
     if (genericElement == null) {
       return null;
     }
-    var resultType = typeFactory.create(types.first as InterfaceType);
+    var resultType = context.typeFactory.create(types.first as InterfaceType);
     return resultType;
   }
 

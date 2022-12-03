@@ -4,7 +4,7 @@ import '../action_method/action_method_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/reflection_factory.dart';
+import '../reflect_gui/source_factory.dart';
 
 /// Contains information on a [ServiceClass]s source code.
 /// It is created by the [ServiceClassSourceFactory].
@@ -44,26 +44,29 @@ class ServiceClassSource extends ClassSource {
 class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   static const serviceClassesFieldName = 'serviceClasses';
 
-  ServiceClassSourceFactory(PopulateFactoryContext context) : super(context);
+  final FactoryContext context;
+  ServiceClassSourceFactory(this.context);
 
   /// populates the [reflectGuiConfigSource] with created [ServiceClassSource]s
   /// and all their sub classes
   @override
   void populateReflectGuiConfig() {
-    var field = findField(reflectGuiConfigElement, serviceClassesFieldName);
+    var field =
+        findField(context.reflectGuiConfigElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
       _validateServiceClassElement(field, element);
-      var actionMethods = _createActionMethods(element as InterfaceElement);
+      var actionMethods = context.actionMethodSourceFactory
+          .createAll(element as InterfaceElement);
       _validateServiceClassActionMethods(field, element, actionMethods);
       var serviceClassSource = ServiceClassSource(
-          serviceClass: typeFactory.create(element.thisType),
+          serviceClass: context.typeFactory.create(element.thisType),
           actionMethods: actionMethods);
-      reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
+      context.reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
     }
 
-    if (reflectGuiConfigSource.serviceClasses.isEmpty) {
+    if (context.reflectGuiConfigSource.serviceClasses.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: may not be empty!');
     }
   }
@@ -86,14 +89,6 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
     if (!hasConstNamelessConstructorWithoutParameters(serviceClass)) {
       throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must be immutable and therefore must have a constant constructor.');
     }
-  }
-
-  List<ActionMethodSource> _createActionMethods(InterfaceElement element) {
-    var factory = ActionMethodSourceFactory(
-      reflectGuiConfigSource: reflectGuiConfigSource,
-      typeFactory: typeFactory,
-    );
-    return factory.createAll(element);
   }
 
   void _validateServiceClassActionMethods(FieldElement field,

@@ -1,8 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
 import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/reflect_gui/reflect_gui_config.dart';
-import 'package:reflect_gui_builder/builder/domain/reflect_gui/reflection_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/reflect_gui/source_factory.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
@@ -23,7 +24,8 @@ class ReflectGuiConfigSource {
       [];
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
-  Set<DomainClassSource> get domainClasses=> usedTypes.whereType<DomainClassSource>().toSet();
+  Set<DomainClassSource> get domainClasses =>
+      usedTypes.whereType<DomainClassSource>().toSet();
 
   Set<EnumSource> get enums => usedTypes.whereType<EnumSource>().toSet();
 
@@ -63,7 +65,7 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
   /// creates a [ReflectGuiConfigSource] using a [ClassElement]
   /// that passed [isReflectGuiConfigClass]
   ReflectGuiConfigSource create(ClassElement reflectGuiConfigClassElement) {
-    var context = PopulateFactoryContext(reflectGuiConfigClassElement);
+    var context = FactoryContext(reflectGuiConfigClassElement);
     PropertyWidgetFactorySourceFactory(context).populateReflectGuiConfig();
     ActionMethodParameterProcessorSourceFactory(context)
         .populateReflectGuiConfig();
@@ -75,28 +77,25 @@ class ReflectGuiConfigSourceFactory extends SourceFactory {
 }
 
 abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
-  final ClassElement reflectGuiConfigElement;
-  final ReflectGuiConfigSource reflectGuiConfigSource;
-  final TypeSourceFactory typeFactory;
-
-  ReflectGuiConfigPopulateFactory(PopulateFactoryContext context)
-      : reflectGuiConfigElement = context.reflectGuiConfigElement,
-        reflectGuiConfigSource = context.reflectGuiConfigSource,
-        typeFactory = context.typeFactory;
-
   /// add objects that contain information on source code
   /// to the [reflectGuiConfigSource] tree
   void populateReflectGuiConfig();
 }
 
 /// All information needed to create a [ReflectGuiConfigSource]
-class PopulateFactoryContext {
+class FactoryContext {
   final ClassElement reflectGuiConfigElement;
   final ReflectGuiConfigSource reflectGuiConfigSource =
       ReflectGuiConfigSource();
   late TypeSourceFactory typeFactory;
+  late EnumSourceFactory enumSourceFactory;
+  late DomainSourceFactory domainSourceFactory;
+  late ActionMethodSourceFactory actionMethodSourceFactory;
 
-  PopulateFactoryContext(this.reflectGuiConfigElement) {
-    typeFactory = TypeSourceFactory(reflectGuiConfigSource);
+  FactoryContext(this.reflectGuiConfigElement) {
+    typeFactory = TypeSourceFactory(this);
+    domainSourceFactory = DomainSourceFactory(this);
+    enumSourceFactory = EnumSourceFactory(this);
+    actionMethodSourceFactory = ActionMethodSourceFactory(this);
   }
 }

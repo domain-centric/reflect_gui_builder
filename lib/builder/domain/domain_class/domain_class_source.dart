@@ -4,7 +4,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/reflection_factory.dart';
+import '../reflect_gui/source_factory.dart';
 
 /// Contains information on a [DomainClass] source code.
 /// See [SourceClass]
@@ -29,9 +29,9 @@ class DomainClassSource extends ClassSource {
 
 /// See [SourceClassFactory]
 class DomainSourceFactory extends SourceFactory {
-  final ReflectGuiConfigSource reflectGuiConfig;
+  final FactoryContext context;
 
-  DomainSourceFactory(this.reflectGuiConfig);
+  DomainSourceFactory(this.context);
 
   /// Creates a [DomainClassSource] if it is a [DomainClass]. Note that it will
   /// return an existing [DomainClassSource] if one was already created.
@@ -52,7 +52,7 @@ class DomainSourceFactory extends SourceFactory {
 
   DomainClassSource? _findExistingDomainClass(
       Uri libraryUri, String className) {
-    var domainClasses = reflectGuiConfig.domainClasses;
+    var domainClasses = context.reflectGuiConfigSource.domainClasses;
     var existingDomainClass = domainClasses.firstWhereOrNull((domainClass) =>
         domainClass.libraryUri == libraryUri &&
         domainClass.libraryMemberPath == className);

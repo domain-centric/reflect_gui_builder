@@ -15,7 +15,8 @@ import '../item/item.dart';
 /// * int: when it is a [Dart] [int] type
 /// * Person: when it is a [DomainClass]
 /// * List<Person>: a [Collection] of [DomainClass]es
-abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE> extends DynamicItem {
+abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE>
+    extends DynamicItem {
   Object get methodOwner;
 
   /// Returns a reflection class that contains information on
@@ -42,9 +43,6 @@ abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE> extends Dynam
 
   ActionMethodResultProcessor get resultProcessor;
 }
-
-
-
 
 // /// [ServiceObjectActionMethod]s are displayed on the main menu of an [ReflectGuiApplication] or are commands that can be accessed from the outside world in other type of [ReflectApplications]
 // abstract class ServiceObjectActionMethodInfo extends ActionMethodInfo {

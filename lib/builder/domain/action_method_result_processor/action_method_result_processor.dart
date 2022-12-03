@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../action_method/action_method.dart';
 import '../action_method/action_method_reflection.dart';
 
-const dialogIcon=Icons.crop_7_5;
-const formIcon=Icons.table_rows_sharp;
-const tableIcon=Icons.table_chart_sharp;
+const dialogIcon = Icons.crop_7_5;
+const formIcon = Icons.table_rows_sharp;
+const tableIcon = Icons.table_chart_sharp;
 
 /// A [ActionMethodResultProcessor] processes the [ActionMethod] results
 /// (e.g. displays the results to the user or sends back an reply)

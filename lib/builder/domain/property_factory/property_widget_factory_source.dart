@@ -4,7 +4,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/reflection_factory.dart';
+import '../reflect_gui/source_factory.dart';
 
 /// Contains information from an [PropertyWidgetFactory] source code.
 /// See [SourceClass]
@@ -36,14 +36,13 @@ class PropertyWidgetFactorySourceFactory
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart';
-
-  PropertyWidgetFactorySourceFactory(PopulateFactoryContext context)
-      : super(context);
+  final FactoryContext context;
+  PropertyWidgetFactorySourceFactory(this.context);
 
   @override
   void populateReflectGuiConfig() {
-    var field =
-        findField(reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
+    var field = findField(
+        context.reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
@@ -59,17 +58,18 @@ class PropertyWidgetFactorySourceFactory
       if (genericElement == null) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
-      var propertyWidgetFactoryType = typeFactory.create(element.thisType);
-      var propertyType =
-          typeFactory.create((genericElement as InterfaceElement).thisType);
+      var propertyWidgetFactoryType =
+          context.typeFactory.create(element.thisType);
+      var propertyType = context.typeFactory
+          .create((genericElement as InterfaceElement).thisType);
 
       var factory =
           PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 
-      reflectGuiConfigSource.propertyWidgetFactories.add(factory);
+      context.reflectGuiConfigSource.propertyWidgetFactories.add(factory);
     }
 
-    if (reflectGuiConfigSource.propertyWidgetFactories.isEmpty) {
+    if (context.reflectGuiConfigSource.propertyWidgetFactories.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }

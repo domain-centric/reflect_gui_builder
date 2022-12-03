@@ -8,7 +8,7 @@ import '../action_method_result_processor/action_method_result_processor_source.
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/reflection_factory.dart';
+import '../reflect_gui/source_factory.dart';
 
 /// See [SourceClass]
 class ActionMethodSource extends LibraryMemberSource {
@@ -62,13 +62,9 @@ class ActionMethodSource extends LibraryMemberSource {
 /// Creates a [ActionMethodSource]s by using the
 /// analyzer package
 class ActionMethodSourceFactory extends SourceFactory {
-  final ReflectGuiConfigSource reflectGuiConfigSource;
-  final TypeSourceFactory typeFactory;
+  final FactoryContext context;
 
-  ActionMethodSourceFactory({
-    required this.reflectGuiConfigSource,
-    required this.typeFactory,
-  });
+  ActionMethodSourceFactory(this.context);
 
   List<ActionMethodSource> createAll(InterfaceElement element) {
     var actionMethods = <ActionMethodSource>[];
@@ -113,23 +109,23 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodParameterProcessorSource? _findParameterProcessorFor(
           ClassSource? parameterType) =>
-      reflectGuiConfigSource.actionMethodParameterProcessors
+      context.reflectGuiConfigSource.actionMethodParameterProcessors
           .firstWhereOrNull((processor) => processor.supports(parameterType));
 
   ActionMethodResultProcessorSource? _findResultProcessorFor(
           ClassSource? resultType) =>
-      reflectGuiConfigSource.actionMethodResultProcessors
+      context.reflectGuiConfigSource.actionMethodResultProcessors
           .firstWhereOrNull((processor) => processor.supports(resultType));
 
   ClassSource? _createParameterType(MethodElement methodElement) {
     if (methodElement.parameters.length == 1) {
       var parameterType = methodElement.parameters.first.type as InterfaceType;
-      return typeFactory.create(parameterType);
+      return context.typeFactory.create(parameterType);
     } else {
       return null;
     }
   }
 
   ClassSource? _createResultType(MethodElement methodElement) =>
-      typeFactory.create(methodElement.returnType as InterfaceType);
+      context.typeFactory.create(methodElement.returnType as InterfaceType);
 }

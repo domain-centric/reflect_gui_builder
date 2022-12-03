@@ -11,8 +11,7 @@ import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 ///   e.g. DomainSourceFactory
 /// * It is used by a [ReflectionClassFactory] but is decoupled from generating
 ///   a [ReflectionClass] code, so it has no methods to convert to Dart code.
-class SourceClass extends ConceptDocumentation{}
-
+class SourceClass extends ConceptDocumentation {}
 
 /// A [SourceClassFactory]
 /// * name ends with the SourceFactory suffix
@@ -21,5 +20,4 @@ class SourceClass extends ConceptDocumentation{}
 ///   from the analyzer package to a more specific and
 ///   better understandable [SourceClass] model.
 /// * is used by the [ReflectGuiConfigBuilder]
-class SourceClassFactory extends ConceptDocumentation{}
-
+class SourceClassFactory extends ConceptDocumentation {}

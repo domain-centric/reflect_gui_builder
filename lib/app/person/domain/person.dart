@@ -1,8 +1,6 @@
 class Person {
   String name = '';
-  Gender gender=Gender.unknown;
+  Gender gender = Gender.unknown;
 }
 
-enum Gender {
-  male, female, other, unknown
-}
+enum Gender { male, female, other, unknown }

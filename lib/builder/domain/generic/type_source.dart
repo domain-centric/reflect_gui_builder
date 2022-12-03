@@ -95,14 +95,9 @@ class ClassSource extends LibraryMemberSource {
 }
 
 class TypeSourceFactory {
-  final ReflectGuiConfigSource reflectGuiConfig;
-  late DomainSourceFactory domainSourceFactory;
-  late EnumSourceFactory enumSourceFactory;
+  final FactoryContext context;
 
-  TypeSourceFactory(this.reflectGuiConfig) {
-    domainSourceFactory = DomainSourceFactory(reflectGuiConfig);
-    enumSourceFactory = EnumSourceFactory(reflectGuiConfig);
-  }
+  TypeSourceFactory(this.context);
 
   /// returns:
   /// * A [DomainClassSource] if it is a [DomainClass]. Note that it will return
@@ -113,11 +108,11 @@ class TypeSourceFactory {
   ///   e.g. Person being the generic type in List<Person>
 
   ClassSource create(InterfaceType type) {
-    var domainSource = domainSourceFactory.create(type.element);
+    var domainSource = context.domainSourceFactory.create(type.element);
     if (domainSource != null) {
       return domainSource;
     }
-    var enumSource = enumSourceFactory.create(type.element);
+    var enumSource = context.enumSourceFactory.create(type.element);
     if (enumSource != null) {
       return enumSource;
     }
