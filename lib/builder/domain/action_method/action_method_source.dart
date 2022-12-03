@@ -5,7 +5,6 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
-import '../domain_class/domain_class_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
@@ -32,20 +31,20 @@ class ActionMethodSource extends LibraryMemberSource {
             libraryUri: libraryUri,
             libraryMemberPath: '$className.$methodName');
 
-  /// Finds all the [DomainClass]es that are used in this [ActionMethod].
-  /// It will also get [DomainClass]es used inside the
+  /// Finds all the [ClassSource]s that are used in this [ActionMethod].
+  /// It will also get [ClassSource]s used inside the
   /// DomainClass [ActionMethod]s and the [ActionMethod]s inside its [Property]s
   ///
   /// TODO: Be aware for never ending round trips.
-  Set<DomainClassSource> get domainClasses {
-    var domainClasses = <DomainClassSource>{};
+  Set<ClassSource> get usedTypes {
+    var usedTypes = <ClassSource>{};
     if (parameterType != null) {
-      domainClasses.addAll(parameterType!.domainClasses);
+      usedTypes.addAll(parameterType!.usedTypes);
     }
     if (resultType != null) {
-      domainClasses.addAll(resultType!.domainClasses);
+      usedTypes.addAll(resultType!.usedTypes);
     }
-    return domainClasses;
+    return usedTypes;
   }
 
   @override

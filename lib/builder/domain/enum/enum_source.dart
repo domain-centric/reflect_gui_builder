@@ -80,6 +80,8 @@ class EnumSourceFactory extends SourceFactory {
         _enumValues(element).isNotEmpty;
   }
 
-  List<String> _enumValues(InterfaceElement element) =>
-      element.fields.map((field) => field.name).toList();
+  List<String> _enumValues(InterfaceElement element) => element.fields
+      .where((field) => field.isEnumConstant)
+      .map((field) => field.name)
+      .toList();
 }

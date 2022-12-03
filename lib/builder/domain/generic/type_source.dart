@@ -65,15 +65,13 @@ class ClassSource extends LibraryMemberSource {
       {required Uri libraryUri, required this.className, this.genericType})
       : super(libraryUri: libraryUri, libraryMemberPath: className);
 
-  Set<DomainClassSource> get domainClasses {
-    var domainClasses = <DomainClassSource>{};
-    if (this is DomainClassSource) {
-      domainClasses.add(this as DomainClassSource);
-    }
+  Set<ClassSource> get usedTypes {
+    var usedTypes = <ClassSource>{};
+    usedTypes.add(this);
     if (genericType != null) {
-      domainClasses.addAll(genericType!.domainClasses);
+      usedTypes.addAll(genericType!.usedTypes);
     }
-    return domainClasses;
+    return usedTypes;
   }
 
   @override

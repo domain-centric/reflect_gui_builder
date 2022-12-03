@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 
 import '../action_method/action_method_source.dart';
-import '../domain_class/domain_class_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
 import '../reflect_gui/reflect_gui_source.dart';
@@ -21,14 +20,14 @@ class ServiceClassSource extends ClassSource {
           className: serviceClass.className,
         );
 
-  /// Finds all the [DomainClass]es that are used in all the [ActionMethod]s.
+  /// Finds all the [ClassSource]es that are used in all the [ActionMethod]s.
   @override
-  Set<DomainClassSource> get domainClasses {
-    var domainClasses = <DomainClassSource>{};
+  Set<ClassSource> get usedTypes {
+    var usedTypes = <ClassSource>{};
     for (var actionMethod in actionMethods) {
-      domainClasses.addAll(actionMethod.domainClasses);
+      usedTypes.addAll(actionMethod.usedTypes);
     }
-    return domainClasses;
+    return usedTypes;
   }
 
   @override

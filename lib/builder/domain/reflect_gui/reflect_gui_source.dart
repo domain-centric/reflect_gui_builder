@@ -23,15 +23,17 @@ class ReflectGuiConfigSource {
       [];
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
-  Set<DomainClassSource> get domainClasses {
-    var domainClasses = <DomainClassSource>{};
-    for (var serviceClass in serviceClasses) {
-      domainClasses.addAll(serviceClass.domainClasses);
-    }
-    return domainClasses;
-  }
+  Set<DomainClassSource> get domainClasses=> usedTypes.whereType<DomainClassSource>().toSet();
 
-  List<EnumSource>get enums => [];//TODO
+  Set<EnumSource> get enums => usedTypes.whereType<EnumSource>().toSet();
+
+  Set<ClassSource> get usedTypes {
+    var usedTypes = <ClassSource>{};
+    for (var serviceClass in serviceClasses) {
+      usedTypes.addAll(serviceClass.usedTypes);
+    }
+    return usedTypes;
+  }
 
   @override
   String toString() {
@@ -41,9 +43,11 @@ class ReflectGuiConfigSource {
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
         .add('serviceClasses', serviceClasses)
         .add('domainClasses', domainClasses)
+        .add('enums', enums)
         .toString();
   }
 }
+
 /// See [SourceClassFactory]
 class ReflectGuiConfigSourceFactory extends SourceFactory {
   bool isValidReflectGuiConfigElement(Element element) =>
