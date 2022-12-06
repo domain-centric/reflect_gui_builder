@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 
+import 'domain/reflect_gui/reflect_gui_reflect.dart';
 import 'domain/reflect_gui/reflect_gui_source.dart';
 
 /// Finds classes that implement [ReflectGuiConfig]
@@ -16,15 +17,16 @@ class ReflectGuiConfigBuilder extends Builder {
       // Get the `LibraryElement` for the primary input.
       var library = await buildStep.inputLibrary;
 
-      var reflectGuiReflectFactory = ReflectGuiConfigSourceFactory();
+      var sourceFactory = ReflectGuiConfigSourceFactory();
+      var reflectionFactory = ReflectGuiConfigReflectionFactory();
 
       for (var topElement in library.topLevelElements) {
-        if (reflectGuiReflectFactory
+        if (sourceFactory
             .isValidReflectGuiConfigElement(topElement)) {
-          var reflectGuiReflection =
-              reflectGuiReflectFactory.create(topElement as ClassElement);
-          log.info('\n$reflectGuiReflection');
-          //TODO Store instances as a [BuildStep] resource so it can be used by other builders and store as [BuildStep] resource so it can be used by other builders
+          var reflectGuiConfigSource =
+              sourceFactory.create(topElement as ClassElement);
+          log.info('\n$reflectGuiConfigSource');
+          var reflection= reflectionFactory.create(reflectGuiConfigSource);
         }
       }
       //TODO throw an error when no ReflectGuiConfiguration implementations are found

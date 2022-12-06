@@ -16,7 +16,6 @@ class ReflectionClass extends ConceptDocumentation {}
 /// A [ReflectionClassFactory]
 /// * name ends with the ReflectionFactory suffix
 ///   e.g. PersonReflectionFactory
-/// * creates a [ReflectionClass].
+/// * creates Dart code that implements a [ReflectionClass] using a [SourceClass]
 /// * is used by the [ReflectGuiConfigBuilder]
-/// * it converts a [SourceClass] to Dart code.
 class ReflectionClassFactory extends ConceptDocumentation {}

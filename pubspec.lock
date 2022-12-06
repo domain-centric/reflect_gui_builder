@@ -100,7 +100,7 @@ packages:
     source: hosted
     version: "2.0.1"
   code_builder:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: code_builder
       url: "https://pub.dartlang.org"
@@ -128,7 +128,7 @@ packages:
     source: hosted
     version: "3.0.2"
   dart_style:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dart_style
       url: "https://pub.dartlang.org"
