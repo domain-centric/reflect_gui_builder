@@ -5,13 +5,16 @@ import 'package:reflect_gui_builder/builder/domain/reflect_gui/reflect_gui_sourc
 /// See [ReflectionClassFactory]
 class ReflectGuiConfigReflectionFactory {
   create(ReflectGuiConfigSource reflectGuiConfigSource) {
-    final animal = Class((b) => b
-      ..name = 'Animal'
-      ..extend = refer('Organism')
-      ..methods.add(Method.returnsVoid((b) => b
-        ..name = 'eat'
-        ..body = const Code("print('Yum!');"))));
+    final applicationPresentation = Class((c) => c
+      ..name = '\$AcmePresentation'
+      ..extend = refer('ApplicationPresentation')
+      ..methods.add(Method((m) => m
+        ..name = 'name'
+        ..returns = refer('String')
+        ..lambda=true
+        ..body = Code(reflectGuiConfigSource.serviceClasses.first.className))));
     final emitter = DartEmitter.scoped();
-    print(DartFormatter().format('${animal.accept(emitter)}'));
+    print(DartFormatter().format('${applicationPresentation.accept(emitter)}'));
   }
+
 }
