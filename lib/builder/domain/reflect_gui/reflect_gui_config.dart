@@ -1,4 +1,3 @@
-import 'package:reflect_gui_builder/builder/domain/generic/reflection.dart';
 import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 
 /// A Configuration class for a Graphical User Interface application.
