@@ -7,7 +7,7 @@ import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dar
 import '../generic/type_reflection.dart';
 import '../item/item.dart';
 
-/// Implementations of a [ActionMethodReflection] class are
+/// Implementations of a [ActionMethodPresentation] class are
 /// generated classes that contain [ActionMethod] information for the
 /// graphical user interface.
 ///
@@ -16,7 +16,7 @@ import '../item/item.dart';
 /// * int: when it is a [Dart] [int] type
 /// * Person: when it is a [DomainClass]
 /// * List<Person>: a [Collection] of [DomainClass]es
-abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE>
+abstract class ActionMethodPresentation<PARAMETER_TYPE, RESULT_TYPE>
     extends DynamicItem {
   Object get methodOwner;
 
@@ -28,6 +28,9 @@ abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE>
   ClassReflection? get parameterType;
 
   ActionMethodParameterProcessor get actionMethodParameterProcessor;
+
+  /// returns a optional function that can create a parameter
+  PARAMETER_TYPE Function()? parameterFactory;
 
   /// Starts the [ActionMethod] process (e.g. when clicking on a menu button)
   /// It:
@@ -44,11 +47,3 @@ abstract class ActionMethodReflection<PARAMETER_TYPE, RESULT_TYPE>
 
   ActionMethodResultProcessor get resultProcessor;
 }
-
-// /// [ServiceObjectActionMethod]s are displayed on the main menu of an [ReflectGuiApplication] or are commands that can be accessed from the outside world in other type of [ReflectApplications]
-// abstract class ServiceObjectActionMethodInfo extends ActionMethodInfo {
-//   ServiceClassInfo get serviceObjectInfo;
-// }
-
-/// TODO explain what it does
-class ActionMethodParameterFactory {}

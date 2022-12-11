@@ -5,8 +5,8 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// Contains information on a [Enum]s source code.
 /// See [SourceClass]
@@ -74,7 +74,7 @@ class EnumSourceFactory extends SourceFactory {
   }
 
   EnumSource? _findExistingEnum(Uri libraryUri, String className) {
-    var enums = context.reflectGuiConfigSource.enums;
+    var enums = context.applicationPresentation.enums;
     var existingEnum = enums.firstWhereOrNull((enumSource) =>
         enumSource.libraryUri == libraryUri &&
         enumSource.libraryMemberPath == className);

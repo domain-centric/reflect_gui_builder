@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../action_method/action_method.dart';
-import '../action_method/action_method_reflection.dart';
+import '../action_method/action_method_presentation.dart';
 
 const dialogIcon = Icons.crop_7_5;
 const formIcon = Icons.table_rows_sharp;
@@ -28,7 +28,7 @@ abstract class ActionMethodResultProcessor<PARAMETER_TYPE> {
   ///  There will be multiple implementations for different result types [T].
   void process(
     BuildContext context,
-    ActionMethodReflection actionMethod,
+    ActionMethodPresentation actionMethod,
     PARAMETER_TYPE actionMethodParameter,
   );
 }
@@ -42,7 +42,7 @@ class ShowMethodExecutedSnackBar extends ActionMethodResultProcessor<void> {
   @override
   void process(
     BuildContext context,
-    ActionMethodReflection actionMethod,
+    ActionMethodPresentation actionMethod,
     void actionMethodParameter,
   ) {
     // TODO: implement call
@@ -65,7 +65,7 @@ class ShowStringInDialog extends ActionMethodResultProcessor<String> {
   @override
   void process(
     BuildContext context,
-    ActionMethodReflection actionMethod,
+    ActionMethodPresentation actionMethod,
     void actionMethodParameter,
   ) {
     // TODO: implement
@@ -85,7 +85,7 @@ class ShowDomainObjectInReadonlyFormTab extends ActionMethodResultProcessor<
   @override
   void process(
     BuildContext context,
-    ActionMethodReflection actionMethod,
+    ActionMethodPresentation actionMethod,
     Object actionMethodParameter,
   ) {
     // TODO: implement call
@@ -109,7 +109,7 @@ class ShowListInTableTab extends ActionMethodResultProcessor<
   IconData? get defaultIcon => tableIcon;
 
   @override
-  void process(BuildContext context, ActionMethodReflection actionMethod,
+  void process(BuildContext context, ActionMethodPresentation actionMethod,
       List<Object> actionMethodParameter) {
     // TODO: implement call
     /// TODO: use [ActionMethodReflection.resultDomainReflection]

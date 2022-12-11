@@ -7,8 +7,8 @@ import '../action_method_parameter_processor/action_method_parameter_processor_s
 import '../action_method_result_processor/action_method_result_processor_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// See [SourceClass]
 class ActionMethodSource extends LibraryMemberSource {
@@ -109,12 +109,12 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodParameterProcessorSource? _findParameterProcessorFor(
           ClassSource? parameterType) =>
-      context.reflectGuiConfigSource.actionMethodParameterProcessors
+      context.applicationPresentation.actionMethodParameterProcessors
           .firstWhereOrNull((processor) => processor.supports(parameterType));
 
   ActionMethodResultProcessorSource? _findResultProcessorFor(
           ClassSource? resultType) =>
-      context.reflectGuiConfigSource.actionMethodResultProcessors
+      context.applicationPresentation.actionMethodResultProcessors
           .firstWhereOrNull((processor) => processor.supports(resultType));
 
   ClassSource? _createParameterType(MethodElement methodElement) {

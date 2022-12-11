@@ -4,19 +4,19 @@ import 'package:reflect_gui_builder/app/person/service/person_service.dart'
 import '../builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 import '../builder/domain/action_method_result_processor/action_method_result_processor.dart';
 import '../builder/domain/property_factory/property_widget_factory.dart';
-import '../builder/domain/reflect_gui/reflect_gui_config.dart';
+import '../builder/domain/application/application_presentation.dart';
 
-class MyApplicationConfig extends ReflectGuiConfig {
+class AcmePresentation extends ApplicationPresentation {
   
   @override
-  List<Type> propertyWidgetFactories = [ // TODO: Move to [ReflectGuiConfig]
+  List<Type> propertyWidgetFactories = [ // TODO: Move to [ApplicationPresentation]
     StringWidgetFactory,
     IntWidgetFactory,
   ];
 
   
   @override
-  List<Type> actionMethodParameterProcessors = [// TODO: Move to [ReflectGuiConfig]
+  List<Type> actionMethodParameterProcessors = [// TODO: Move to [ApplicationPresentation]
     ProcessResultDirectlyWhenThereIsNoParameter,
     EditEnumInDialog,
     EditDomainObjectParameterInForm,
@@ -24,7 +24,7 @@ class MyApplicationConfig extends ReflectGuiConfig {
   ];
 
   @override
-  List<Type> actionMethodResultProcessors = [// TODO: Move to [ReflectGuiConfig]
+  List<Type> actionMethodResultProcessors = [// TODO: Move to [ApplicationPresentation]
     ShowMethodExecutedSnackBar,
     ShowStringInDialog,
     ShowDomainObjectInReadonlyFormTab,

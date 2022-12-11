@@ -3,8 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// Contains information on a [DomainClass] source code.
 /// See [SourceClass]
@@ -52,7 +52,7 @@ class DomainSourceFactory extends SourceFactory {
 
   DomainClassSource? _findExistingDomainClass(
       Uri libraryUri, String className) {
-    var domainClasses = context.reflectGuiConfigSource.domainClasses;
+    var domainClasses = context.applicationPresentation.domainClasses;
     var existingDomainClass = domainClasses.firstWhereOrNull((domainClass) =>
         domainClass.libraryUri == libraryUri &&
         domainClass.libraryMemberPath == className);

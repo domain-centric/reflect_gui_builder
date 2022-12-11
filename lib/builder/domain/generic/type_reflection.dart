@@ -1,7 +1,7 @@
-import 'package:reflect_gui_builder/builder/domain/generic/reflection.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 
-/// See [ReflectionClass]
+/// See [PresentationClass]
 /// a [LibraryMemberReflection]
 class LibraryMemberReflection {
   /// Name of the library member.
@@ -46,7 +46,7 @@ class LibraryMemberReflection {
   }
 }
 
-/// See [ReflectionClass]
+/// See [PresentationClass]
 class ClassReflection extends LibraryMemberReflection {
   final ClassReflection? genericType;
   final String className;

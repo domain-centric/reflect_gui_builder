@@ -1,9 +1,10 @@
+import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 
 /// A Configuration class for a Graphical User Interface application.
 /// It is used by the [ReflectGuiConfigBuilder] so that it knows how and which
-///  [Presentation] classes are to be generated.
-abstract class ReflectGuiConfig {
+///  [PresentationClass]es are to be generated.
+abstract class ApplicationPresentation {
   /// Returns the [PropertyWidgetFactory]s that are to be used in the application.
   /// The order is the order of processing (order of importance)!
   /// This must be a literal [List] without logic.

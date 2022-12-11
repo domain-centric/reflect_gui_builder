@@ -3,8 +3,8 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// Contains information from an [PropertyWidgetFactory] source code.
 /// See [SourceClass]
@@ -40,9 +40,9 @@ class PropertyWidgetFactorySourceFactory
   PropertyWidgetFactorySourceFactory(this.context);
 
   @override
-  void populateReflectGuiConfig() {
+  void populateApplicationPresentation() {
     var field = findField(
-        context.reflectGuiConfigElement, propertyWidgetFactoriesFieldName);
+        context.applicationPresentationElement, propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
@@ -66,10 +66,10 @@ class PropertyWidgetFactorySourceFactory
       var factory =
           PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 
-      context.reflectGuiConfigSource.propertyWidgetFactories.add(factory);
+      context.applicationPresentation.propertyWidgetFactories.add(factory);
     }
 
-    if (context.reflectGuiConfigSource.propertyWidgetFactories.isEmpty) {
+    if (context.applicationPresentation.propertyWidgetFactories.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }

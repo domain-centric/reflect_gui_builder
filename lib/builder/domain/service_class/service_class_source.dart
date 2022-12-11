@@ -3,8 +3,8 @@ import 'package:analyzer/dart/element/element.dart';
 import '../action_method/action_method_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// Contains information on a [ServiceClass]s source code.
 /// It is created by the [ServiceClassSourceFactory].
@@ -47,12 +47,12 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   final FactoryContext context;
   ServiceClassSourceFactory(this.context);
 
-  /// populates the [reflectGuiConfigSource] with created [ServiceClassSource]s
+  /// populates the [applicationPresentation] with created [ServiceClassSource]s
   /// and all their sub classes
   @override
-  void populateReflectGuiConfig() {
+  void populateApplicationPresentation() {
     var field =
-        findField(context.reflectGuiConfigElement, serviceClassesFieldName);
+        findField(context.applicationPresentationElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
@@ -63,10 +63,10 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
       var serviceClassSource = ServiceClassSource(
           serviceClass: context.typeFactory.create(element.thisType),
           actionMethods: actionMethods);
-      context.reflectGuiConfigSource.serviceClasses.add(serviceClassSource);
+      context.applicationPresentation.serviceClasses.add(serviceClassSource);
     }
 
-    if (context.reflectGuiConfigSource.serviceClasses.isEmpty) {
+    if (context.applicationPresentation.serviceClasses.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: may not be empty!');
     }
   }

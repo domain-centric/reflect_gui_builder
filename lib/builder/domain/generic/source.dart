@@ -1,5 +1,5 @@
 import 'package:reflect_gui_builder/builder/domain/generic/documentation.dart';
-import 'package:reflect_gui_builder/builder/domain/generic/reflection.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 
 /// A [SourceClass] is a class that contains information from Dart source code.
@@ -9,8 +9,8 @@ import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 ///   e.g. DomainSource
 /// * is created by a [SourceClassFactory]
 ///   e.g. DomainSourceFactory
-/// * It is used by a [ReflectionClassFactory] but is decoupled from generating
-///   a [ReflectionClass] code, so it has no methods to convert to Dart code.
+/// * It is used by a [PresentationClassFactory] but is decoupled from generating
+///   a [PresentationClass] code, so it has no methods to convert to Dart code.
 class SourceClass extends ConceptDocumentation {}
 
 /// A [SourceClassFactory]

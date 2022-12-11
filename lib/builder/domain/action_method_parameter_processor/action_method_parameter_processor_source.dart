@@ -3,8 +3,8 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../reflect_gui/reflect_gui_source.dart';
-import '../reflect_gui/source_factory.dart';
+import '../application/application_presentation_source.dart';
+import '../generic/source_factory.dart';
 
 /// See [SourceClass]
 class ActionMethodParameterProcessorSource extends ClassSource {
@@ -47,8 +47,8 @@ class ActionMethodParameterProcessorSourceFactory
   ActionMethodParameterProcessorSourceFactory(this.context);
 
   @override
-  void populateReflectGuiConfig() {
-    var field = findField(context.reflectGuiConfigElement,
+  void populateApplicationPresentation() {
+    var field = findField(context.applicationPresentationElement,
         actionMethodParameterProcessorFieldName);
 
     var elements = findInitializerElements(field);
@@ -60,12 +60,12 @@ class ActionMethodParameterProcessorSourceFactory
           className: element.name!,
           parameterType: _createParameterType(element, field));
 
-      context.reflectGuiConfigSource.actionMethodParameterProcessors
+      context.applicationPresentation.actionMethodParameterProcessors
           .add(processor);
     }
 
     if (context
-        .reflectGuiConfigSource.actionMethodParameterProcessors.isEmpty) {
+        .applicationPresentation.actionMethodParameterProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
