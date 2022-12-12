@@ -6,10 +6,10 @@ import 'package:recase/recase.dart';
 import '../translation/translatable_code.dart';
 
 /// See [PresentationClassFactory]
-class ApplicationPresentationFactory {
+class GeneratedApplicationPresentationFactory {
   final ApplicationPresentationSource application;
 
-  ApplicationPresentationFactory(this.application);
+  GeneratedApplicationPresentationFactory(this.application);
 
   create() {
     var c = Class(

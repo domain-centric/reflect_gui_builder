@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 
-import 'domain/application/application_presentation2_factory.dart';
+import 'domain/application/generated_application_presentation_factory.dart';
 import 'domain/application/application_presentation_source.dart';
 
 /// Finds classes that implement [ApplicationPresentation]
@@ -28,7 +28,7 @@ class ReflectGuiConfigBuilder extends Builder {
               sourceFactory.create(topElement as ClassElement);
           log.info('\n$applicationPresentationSource');
           var presentationFactory =
-              ApplicationPresentationFactory(applicationPresentationSource);
+              GeneratedApplicationPresentationFactory(applicationPresentationSource);
           presentationFactory.create();
         }
       }
