@@ -9,7 +9,7 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable_code
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory {
   final ApplicationPresentationSource application;
-  static final log = BuildLoggerFactory().create();
+  static final log = BuildLoggerFactory.create();
 
   GeneratedApplicationPresentationFactory(this.application);
 
