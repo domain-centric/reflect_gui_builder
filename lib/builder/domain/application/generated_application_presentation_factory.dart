@@ -1,13 +1,15 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:fluent_regex/fluent_regex.dart';
+
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:recase/recase.dart';
-
-import '../translation/translatable_code.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory {
   final ApplicationPresentationSource application;
+  static final log = BuildLoggerFactory().create();
 
   GeneratedApplicationPresentationFactory(this.application);
 
@@ -17,7 +19,7 @@ class GeneratedApplicationPresentationFactory {
       superClass: _createSuperClass(),
       fields: _createFields(),
     );
-    print(CodeFormatter().format(c));
+    log.info( CodeFormatter().format(c));
   }
 
   Type _createSuperClass() => Type('ApplicationPresentation2',
