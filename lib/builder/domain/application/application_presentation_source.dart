@@ -15,7 +15,7 @@ import '../service_class/service_class_source.dart';
 
 /// Contains information from an [ApplicationPresentation] class source code.
 /// See [SourceClass]
-class ApplicationPresentationSource {
+class ApplicationPresentationSource extends ClassSource {
   final List<ServiceClassSource> serviceClasses = [];
   final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
   final List<ActionMethodParameterProcessorSource>
@@ -23,12 +23,16 @@ class ApplicationPresentationSource {
   final List<ActionMethodResultProcessorSource> actionMethodResultProcessors =
       [];
 
+  ApplicationPresentationSource(
+      {required super.libraryUri, required super.className});
+
   /// Find's all [DomainClass]es in the [ServiceClass]es
   Set<DomainClassSource> get domainClasses =>
       usedTypes.whereType<DomainClassSource>().toSet();
 
   Set<EnumSource> get enums => usedTypes.whereType<EnumSource>().toSet();
 
+  @override
   Set<ClassSource> get usedTypes {
     var usedTypes = <ClassSource>{};
     for (var serviceClass in serviceClasses) {
@@ -64,9 +68,11 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
 
   /// creates a [ApplicationPresentationSource] using a [ClassElement]
   /// that passed [isValidApplicationPresentationElement]
-  ApplicationPresentationSource create(ClassElement applicationPresentationElement) {
+  ApplicationPresentationSource create(
+      ClassElement applicationPresentationElement) {
     var context = FactoryContext(applicationPresentationElement);
-    PropertyWidgetFactorySourceFactory(context).populateApplicationPresentation();
+    PropertyWidgetFactorySourceFactory(context)
+        .populateApplicationPresentation();
     ActionMethodParameterProcessorSourceFactory(context)
         .populateApplicationPresentation();
     ActionMethodResultProcessorSourceFactory(context)
@@ -85,14 +91,16 @@ abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
 /// All information needed to create a [ApplicationPresentationSource]
 class FactoryContext {
   final ClassElement applicationPresentationElement;
-  final ApplicationPresentationSource applicationPresentation =
-      ApplicationPresentationSource();
+  late ApplicationPresentationSource applicationPresentation;
   late TypeSourceFactory typeFactory;
   late EnumSourceFactory enumSourceFactory;
   late DomainSourceFactory domainSourceFactory;
   late ActionMethodSourceFactory actionMethodSourceFactory;
 
   FactoryContext(this.applicationPresentationElement) {
+    applicationPresentation = ApplicationPresentationSource(
+        libraryUri: applicationPresentationElement.library.source.uri,
+        className: applicationPresentationElement.name);
     typeFactory = TypeSourceFactory(this);
     domainSourceFactory = DomainSourceFactory(this);
     enumSourceFactory = EnumSourceFactory(this);

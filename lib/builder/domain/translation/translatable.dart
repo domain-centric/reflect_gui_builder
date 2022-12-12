@@ -13,9 +13,3 @@ class Translatable {
           {String language = 'en', List<dynamic> parameters = const []}) =>
       englishText; //TODO
 }
-
-class TranslatableReference extends Reference {
-  const TranslatableReference()
-      : super('$Translatable',
-            'package:reflect_gui_builder/builder/domain/translation/translatable.dart');
-}

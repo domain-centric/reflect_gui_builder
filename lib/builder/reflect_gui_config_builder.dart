@@ -21,15 +21,15 @@ class ReflectGuiConfigBuilder extends Builder {
       var library = await buildStep.inputLibrary;
 
       var sourceFactory = ApplicationPresentationSourceFactory();
-      var presentationFactory = ApplicationPresentationFactory();
 
       for (var topElement in library.topLevelElements) {
-        if (sourceFactory
-            .isValidApplicationPresentationElement(topElement)) {
+        if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
           var applicationPresentationSource =
               sourceFactory.create(topElement as ClassElement);
           log.info('\n$applicationPresentationSource');
-          presentationFactory.create(applicationPresentationSource);
+          var presentationFactory =
+              ApplicationPresentationFactory(applicationPresentationSource);
+          presentationFactory.create();
         }
       }
       //TODO throw an error when no ReflectGuiConfiguration implementations are found

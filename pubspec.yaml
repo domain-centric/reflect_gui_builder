@@ -14,8 +14,8 @@ dependencies:
   build_runner: ^2.3.2
   collection: ^1.16.0
   analyzer: ^5.2.0
-  code_builder: ^4.3.0
-  dart_style: ^2.2.4
+  dart_code: ^0.1.5
+  fluent_regex: ^1.0.3
 
 
 

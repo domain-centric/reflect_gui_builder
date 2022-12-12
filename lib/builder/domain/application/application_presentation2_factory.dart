@@ -1,30 +1,54 @@
-import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
+import 'package:dart_code/dart_code.dart';
+import 'package:fluent_regex/fluent_regex.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
+import '../translation/translatable_code.dart';
+
 /// See [PresentationClassFactory]
 class ApplicationPresentationFactory {
-  create(ApplicationPresentationSource reflectGuiConfigSource) {
-    final applicationPresentation = Class((c) => c
-      ..name = '\$AcmePresentation'
-      ..extend = const ApplicationPresentationReference()
-      ..methods.add(Method((m) => m
-        ..name = 'name'
-        ..returns = TranslatableReference()
-        ..lambda = true
-        ..body = Code("${TranslatableReference().symbol}( "
-            "key: '${reflectGuiConfigSource.serviceClasses.first.libraryMemberUri}', "
-            "englishText:'${reflectGuiConfigSource.serviceClasses.first.className}')"))));
-    final emitter = DartEmitter.scoped();
-    //print('${applicationPresentation.accept(emitter)}');
-    print(DartFormatter().format('${applicationPresentation.accept(emitter)}'));
+  final ApplicationPresentationSource application;
+
+  ApplicationPresentationFactory(this.application);
+
+  create() {
+    var c = Class(
+      _createClassName(),
+      superClass: _createSuperClass(),
+      fields: _createFields(),
+    );
+    print(CodeFormatter().format(c));
   }
-}
 
+  static final presentationSuffix =
+      FluentRegex().literal('presentation').endOfLine().ignoreCase();
 
-class ApplicationPresentationReference extends Reference {
-  const ApplicationPresentationReference()
-      : super('ApplicationPresentation',
-            'package:reflect_gui_builder/builder/domain/application/aplication_presentation.dart');
+  String _createClassName() =>
+      '${presentationSuffix.removeAll(application.className)}Presentation';
+
+  String _createClassDisplayName() =>
+      presentationSuffix.removeAll(application.className);
+
+  Type _createSuperClass() => Type('ApplicationPresentation2',
+      libraryUri:
+          'package:reflect_gui_builder/builder/domain/application/application_presentation2.dart');
+
+  List<Field> _createFields() => [
+        _createNameField(),
+        _createDescriptionField(),
+      ];
+
+  Field _createNameField() => Field('name',
+      type: TranslatableType(),
+      annotations: [Annotation.override()],
+      value: TranslatableConstructorCall(
+          key: '${application.libraryMemberUri}.name',
+          englishText: _createClassDisplayName()));
+
+  Field _createDescriptionField() => Field('description',
+      type: TranslatableType(),
+      annotations: [Annotation.override()],
+      value: TranslatableConstructorCall(
+          key: '${application.libraryMemberUri}.description',
+          englishText: _createClassDisplayName()));
 }
