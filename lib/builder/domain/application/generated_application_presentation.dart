@@ -2,11 +2,11 @@ import 'package:reflect_gui_builder/builder/domain/application/application_prese
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
-/// Implementations of [ApplicationPresentation2] are generated from the
+/// Implementations of [GeneratedApplicationPresentation] are generated from the
 /// projects source code. It contains all the needed presentation information.
 ///
 /// See [PresentationClass]
-abstract class ApplicationPresentation2 {
+abstract class GeneratedApplicationPresentation {
   /// The applications launch icon is set in pubspec.yaml using:
   /// [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons)
 
