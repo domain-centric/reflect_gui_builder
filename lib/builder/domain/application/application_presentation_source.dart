@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:analyzer/dart/element/element.dart';
+import 'package:fluent_regex/fluent_regex.dart';
+import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
+import 'package:yaml/yaml.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
@@ -15,21 +22,43 @@ import '../service_class/service_class_source.dart';
 
 /// Contains information from an [ApplicationPresentation] class source code.
 /// See [SourceClass]
-class ApplicationPresentationSource extends ClassSource {
+class ApplicationPresentationSource extends ClassSource
+    implements GeneratedApplicationPresentation {
   final List<ServiceClassSource> serviceClasses = [];
   final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
   final List<ActionMethodParameterProcessorSource>
       actionMethodParameterProcessors = [];
   final List<ActionMethodResultProcessorSource> actionMethodResultProcessors =
       [];
+  @override
+  Translatable name;
+  @override
+  Translatable description;
+  @override
+  Uri? documentation;
+  @override
+  Uri? homePage;
+  @override
+  Uri? titleImage;
+  @override
+  String? version;
 
-  ApplicationPresentationSource(
-      {required super.libraryUri, required super.className});
+  ApplicationPresentationSource({
+    required super.libraryUri,
+    required super.className,
+    required this.name,
+    required this.description,
+    this.documentation,
+    this.homePage,
+    this.titleImage,
+    this.version,
+  });
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
   Set<DomainClassSource> get domainClasses =>
       usedTypes.whereType<DomainClassSource>().toSet();
 
+  /// Find's all [Enum]s in the [ServiceClass]es
   Set<EnumSource> get enums => usedTypes.whereType<EnumSource>().toSet();
 
   @override
@@ -44,6 +73,13 @@ class ApplicationPresentationSource extends ClassSource {
   @override
   String toString() {
     return ToStringBuilder('$ApplicationPresentationSource')
+        .add('libraryMemberUri', libraryMemberUri)
+        .add('name', name)
+        .add('description', description)
+        .add('documentation', documentation)
+        .add('homePage', homePage)
+        .add('titleImage', titleImage)
+        .add('version', version)
         .add('propertyWidgetFactories', propertyWidgetFactories)
         .add('actionMethodParameterProcessors', actionMethodParameterProcessors)
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
@@ -96,14 +132,78 @@ class FactoryContext {
   late EnumSourceFactory enumSourceFactory;
   late DomainSourceFactory domainSourceFactory;
   late ActionMethodSourceFactory actionMethodSourceFactory;
+  final pubSpecYaml = PubSpecYaml();
 
   FactoryContext(this.applicationPresentationElement) {
+    var libraryUri = applicationPresentationElement.library.source.uri;
+    var className = applicationPresentationElement.name;
     applicationPresentation = ApplicationPresentationSource(
-        libraryUri: applicationPresentationElement.library.source.uri,
-        className: applicationPresentationElement.name);
+        libraryUri: libraryUri,
+        className: className,
+        name: _createName(),
+        description: _createDescription());
     typeFactory = TypeSourceFactory(this);
     domainSourceFactory = DomainSourceFactory(this);
     enumSourceFactory = EnumSourceFactory(this);
     actionMethodSourceFactory = ActionMethodSourceFactory(this);
+  }
+  static final presentationSuffix =
+      FluentRegex().literal('presentation').endOfLine().ignoreCase();
+
+  Translatable _createName() =>
+      Translatable(key: _createNameKey, englishText: _createNameText());
+
+  String get _createNameKey =>
+      '${applicationPresentationElement.asLibraryMemberPath}.name';
+
+  String _createNameText() =>
+      presentationSuffix.removeAll(applicationPresentationElement.name).sentenceCase;
+
+  Translatable _createDescription() => Translatable(
+      key: _createDescriptionKey, englishText: _createDescriptionText());
+
+  String get _createDescriptionKey =>
+      '${applicationPresentationElement.asLibraryMemberPath}.description';
+
+  String _createDescriptionText() {
+    var description = pubSpecYaml.yaml['description'];
+    if (description == null || description.toString().trim().isEmpty) {
+      return _createNameText();
+    } else {
+      return description;
+    }
+  }
+}
+
+class PubSpecYaml {
+  final Map yaml;
+
+  PubSpecYaml() : yaml = _read();
+
+  List<String> get authors {
+    YamlList? authors = yaml['authors'];
+    if (authors == null) {
+      return const [];
+    }
+    return authors.map((asset) => asset.toString()).toList();
+  }
+
+  List<String> get assets {
+    var flutter = yaml['flutter'];
+    if (flutter == null) {
+      return const [];
+    }
+    YamlList? assets = flutter['assets'];
+    if (assets == null) {
+      return const [];
+    }
+    return assets.map((asset) => asset.toString()).toList();
+  }
+
+  static Map _read() {
+    File yamlFile = File("pubspec.yaml");
+    String yamlString = yamlFile.readAsStringSync();
+    Map? yaml = loadYaml(yamlString);
+    return yaml ?? {};
   }
 }

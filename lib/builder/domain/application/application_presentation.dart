@@ -1,3 +1,4 @@
+import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
 

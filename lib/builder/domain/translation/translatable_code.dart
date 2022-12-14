@@ -4,15 +4,15 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart
 class TranslatableConstructorCall extends Expression {
   
   TranslatableConstructorCall(
-      {required String key, required String englishText})
+      Translatable translatable)
       : super.callConstructor(TranslatableType(),
-            parameterValues: _createParameterValues(key, englishText));
+            parameterValues: _createParameterValues(translatable));
 
   static ParameterValues _createParameterValues(
-          String key, String englishText) =>
+         Translatable translatable) =>
       ParameterValues([
-        ParameterValue.named('key', Expression.ofString(key)),
-        ParameterValue.named('englishText', Expression.ofString(englishText)),
+        ParameterValue.named('key', Expression.ofString(translatable.key)),
+        ParameterValue.named('englishText', Expression.ofString(translatable.englishText)),
       ]);
 }
 

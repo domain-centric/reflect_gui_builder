@@ -1,5 +1,5 @@
 class ToStringBuilder {
-  final indentation = '  ';
+  final indentation = '..';
   final String name;
   final Map<String, dynamic> fieldsAndValues = {};
 

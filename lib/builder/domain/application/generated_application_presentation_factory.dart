@@ -1,9 +1,7 @@
 import 'package:dart_code/dart_code.dart';
-import 'package:fluent_regex/fluent_regex.dart';
-
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
-import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 /// See [PresentationClassFactory]
@@ -15,54 +13,25 @@ class GeneratedApplicationPresentationFactory {
 
   create() {
     var c = Class(
-      ApplicationName().createClassName(application),
+      application
+          .className, // TODO add $ as a prefix of the class name to mark it is generated
       superClass: _createSuperClass(),
       fields: _createFields(),
     );
-    log.info( CodeFormatter().format(c));
+    log.info('\n${CodeFormatter().format(c)}');
   }
 
-  Type _createSuperClass() => Type('ApplicationPresentation2',
+  Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:
-          'package:reflect_gui_builder/builder/domain/application/application_presentation2.dart');
+          'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart');
 
   List<Field> _createFields() => [
-        ApplicationName().createField(application),
-        ApplicationDescription().createField(application),
+        _createTranslatableField('name', application.name),
+        _createTranslatableField('description', application.description),
       ];
-}
 
-class ApplicationName {
-  static const name = 'name';
-  static final presentationSuffix =
-      FluentRegex().literal('presentation').endOfLine().ignoreCase();
-
-  Field createField(ApplicationPresentationSource application) => Field(name,
-      type: TranslatableType(),
-      annotations: [Annotation.override()],
-      value: TranslatableConstructorCall(
-          key: '${application.libraryMemberUri}.$name',
-          englishText: createName(application)));
-
-  String createName(ApplicationPresentationSource application) =>
-      presentationSuffix.removeAll(application.className).sentenceCase;
-
-  String createClassName(ApplicationPresentationSource application) =>
-      '${presentationSuffix.removeAll(application.className)}Presentation';
-}
-
-class ApplicationDescription {
-  static const description = 'description';
-
-  Field createField(ApplicationPresentationSource application) => Field(
-      description,
-      type: TranslatableType(),
-      annotations: [Annotation.override()],
-      value: TranslatableConstructorCall(
-          key: '${application.libraryMemberUri}.$description',
-          englishText: createDescription(application)));
-
-  //TODO get description from pubspec, if none, fall back on [ApplicationName]
-  createDescription(ApplicationPresentationSource application) =>
-      ApplicationName().createName(application);
+  Field _createTranslatableField(String fieldName, Translatable translatable) =>
+      Field(fieldName,
+          annotations: [Annotation.override()],
+          value: TranslatableConstructorCall(translatable));
 }
