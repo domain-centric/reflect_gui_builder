@@ -35,7 +35,7 @@ class ApplicationPresentationSource extends ClassSource
   @override
   Translatable description;
   @override
-  Uri? documentation;
+  Uri? documentationUri;
   @override
   Uri? homePage;
   @override
@@ -48,7 +48,7 @@ class ApplicationPresentationSource extends ClassSource
     required super.className,
     required this.name,
     required this.description,
-    this.documentation,
+    this.documentationUri,
     this.homePage,
     this.titleImage,
     this.version,
@@ -76,7 +76,7 @@ class ApplicationPresentationSource extends ClassSource
         .add('libraryMemberUri', libraryMemberUri)
         .add('name', name)
         .add('description', description)
-        .add('documentation', documentation)
+        .add('documentation', documentationUri)
         .add('homePage', homePage)
         .add('titleImage', titleImage)
         .add('version', version)
@@ -129,7 +129,8 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
         libraryUri: _createLibraryUri(applicationPresentationElement),
         className: _createClassName(applicationPresentationElement),
         name: _createName(applicationPresentationElement),
-        description: _createDescription(applicationPresentationElement));
+        description: _createDescription(applicationPresentationElement),
+        documentationUri: _createDocumentationUri(applicationPresentationElement));
   }
 
   _createLibraryUri(ClassElement applicationPresentationElement) =>
@@ -165,10 +166,25 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
 
   String _createDescriptionText(ClassElement applicationPresentationElement) {
     var description = pubSpecYaml.yaml['description'];
-    if (description == null || description.toString().trim().isEmpty) {
+    if (_nullOrEmpty(description)) {
       return _createNameText(applicationPresentationElement);
     } else {
       return description;
+    }
+  }
+
+  bool _nullOrEmpty(String? string) => string == null || string.trim().isEmpty;
+  
+  Uri? _createDocumentationUri(ClassElement applicationPresentationElement) {
+    var documentationUri=pubSpecYaml.yaml['documentation'];
+    if (_nullOrEmpty(documentationUri)) {
+      return null;
+    } else {
+      try {
+return Uri.parse(documentationUri);
+      } catch (e) {
+return null;
+      }
     }
   }
 }

@@ -28,10 +28,36 @@ class GeneratedApplicationPresentationFactory {
   List<Field> _createFields() => [
         _createTranslatableField('name', application.name),
         _createTranslatableField('description', application.description),
+        _createUriField('documentationUri', application.documentationUri)
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
       Field(fieldName,
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
+
+  _createUriField(String fieldName, Uri? uri) => Field(fieldName,
+      annotations: [Annotation.override()], value: UriConstructorCall(uri));
+}
+
+class UriConstructorCall extends Expression {
+  factory UriConstructorCall(Uri? uri) {
+    if (uri == null) {
+      return UriConstructorCall._([Code('null')]);
+    } else {
+      return UriConstructorCall._(Expression.callConstructor(UriType(),
+              name: 'parse', parameterValues: _createParameterValues(uri))
+          .nodes);
+    }
+  }
+
+  UriConstructorCall._(List<CodeNode> nodes) : super(nodes);
+
+  static ParameterValues _createParameterValues(Uri uri) => ParameterValues([
+        ParameterValue(Expression.ofString(uri.toString())),
+      ]);
+}
+
+class UriType extends Type {
+  UriType() : super('$Uri');
 }
