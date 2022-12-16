@@ -92,6 +92,8 @@ class ApplicationPresentationSource extends ClassSource
 
 /// See [SourceClassFactory]
 class ApplicationPresentationSourceFactory extends SourceFactory {
+  final pubSpecYaml = PubSpecYaml();
+
   bool isValidApplicationPresentationElement(Element element) =>
       element is ClassElement &&
       element.isPublic &&
@@ -106,7 +108,11 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
   /// that passed [isValidApplicationPresentationElement]
   ApplicationPresentationSource create(
       ClassElement applicationPresentationElement) {
-    var context = FactoryContext(applicationPresentationElement);
+    var applicationPresentationSource =
+        _createApplicationPresentationSource(applicationPresentationElement);
+
+    var context = FactoryContext(
+        applicationPresentationElement, applicationPresentationSource);
     PropertyWidgetFactorySourceFactory(context)
         .populateApplicationPresentation();
     ActionMethodParameterProcessorSourceFactory(context)
@@ -115,6 +121,55 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
         .populateApplicationPresentation();
     ServiceClassSourceFactory(context).populateApplicationPresentation();
     return context.applicationPresentation;
+  }
+
+  ApplicationPresentationSource _createApplicationPresentationSource(
+      ClassElement applicationPresentationElement) {
+    return ApplicationPresentationSource(
+        libraryUri: _createLibraryUri(applicationPresentationElement),
+        className: _createClassName(applicationPresentationElement),
+        name: _createName(applicationPresentationElement),
+        description: _createDescription(applicationPresentationElement));
+  }
+
+  _createLibraryUri(ClassElement applicationPresentationElement) =>
+      applicationPresentationElement.library.source.uri;
+
+  _createClassName(ClassElement applicationPresentationElement) =>
+      applicationPresentationElement.name;
+
+  Translatable _createName(ClassElement applicationPresentationElement) =>
+      Translatable(
+          key: _createNameKey(applicationPresentationElement),
+          englishText: _createNameText(applicationPresentationElement));
+
+  String _createNameKey(ClassElement applicationPresentationElement) =>
+      '${applicationPresentationElement.asLibraryMemberPath}.name';
+
+  static final _presentationSuffix =
+      FluentRegex().literal('presentation').endOfLine().ignoreCase();
+
+  String _createNameText(ClassElement applicationPresentationElement) =>
+      _presentationSuffix
+          .removeAll(applicationPresentationElement.name)
+          .sentenceCase;
+
+  Translatable _createDescription(
+          ClassElement applicationPresentationElement) =>
+      Translatable(
+          key: _createDescriptionKey(applicationPresentationElement),
+          englishText: _createDescriptionText(applicationPresentationElement));
+
+  String _createDescriptionKey(ClassElement applicationPresentationElement) =>
+      '${applicationPresentationElement.asLibraryMemberPath}.description';
+
+  String _createDescriptionText(ClassElement applicationPresentationElement) {
+    var description = pubSpecYaml.yaml['description'];
+    if (description == null || description.toString().trim().isEmpty) {
+      return _createNameText(applicationPresentationElement);
+    } else {
+      return description;
+    }
   }
 }
 
@@ -132,46 +187,15 @@ class FactoryContext {
   late EnumSourceFactory enumSourceFactory;
   late DomainSourceFactory domainSourceFactory;
   late ActionMethodSourceFactory actionMethodSourceFactory;
-  final pubSpecYaml = PubSpecYaml();
 
-  FactoryContext(this.applicationPresentationElement) {
-    var libraryUri = applicationPresentationElement.library.source.uri;
-    var className = applicationPresentationElement.name;
-    applicationPresentation = ApplicationPresentationSource(
-        libraryUri: libraryUri,
-        className: className,
-        name: _createName(),
-        description: _createDescription());
+  FactoryContext(
+    this.applicationPresentationElement,
+    this.applicationPresentation,
+  ) {
     typeFactory = TypeSourceFactory(this);
     domainSourceFactory = DomainSourceFactory(this);
     enumSourceFactory = EnumSourceFactory(this);
     actionMethodSourceFactory = ActionMethodSourceFactory(this);
-  }
-  static final presentationSuffix =
-      FluentRegex().literal('presentation').endOfLine().ignoreCase();
-
-  Translatable _createName() =>
-      Translatable(key: _createNameKey, englishText: _createNameText());
-
-  String get _createNameKey =>
-      '${applicationPresentationElement.asLibraryMemberPath}.name';
-
-  String _createNameText() =>
-      presentationSuffix.removeAll(applicationPresentationElement.name).sentenceCase;
-
-  Translatable _createDescription() => Translatable(
-      key: _createDescriptionKey, englishText: _createDescriptionText());
-
-  String get _createDescriptionKey =>
-      '${applicationPresentationElement.asLibraryMemberPath}.description';
-
-  String _createDescriptionText() {
-    var description = pubSpecYaml.yaml['description'];
-    if (description == null || description.toString().trim().isEmpty) {
-      return _createNameText();
-    } else {
-      return description;
-    }
   }
 }
 
