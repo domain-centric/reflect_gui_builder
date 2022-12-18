@@ -27,8 +27,8 @@ class ReflectGuiConfigBuilder extends Builder {
           var applicationPresentationSource =
               sourceFactory.create(topElement as ClassElement);
           log.info('\n$applicationPresentationSource');
-          var presentationFactory =
-              GeneratedApplicationPresentationFactory(applicationPresentationSource);
+          var presentationFactory = GeneratedApplicationPresentationFactory(
+              applicationPresentationSource);
           presentationFactory.create();
         }
       }

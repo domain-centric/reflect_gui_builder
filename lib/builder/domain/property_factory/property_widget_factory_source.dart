@@ -41,8 +41,8 @@ class PropertyWidgetFactorySourceFactory
 
   @override
   void populateApplicationPresentation() {
-    var field = findField(
-        context.applicationPresentationElement, propertyWidgetFactoriesFieldName);
+    var field = findField(context.applicationPresentationElement,
+        propertyWidgetFactoriesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {

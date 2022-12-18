@@ -7,16 +7,16 @@ import '../builder/domain/property_factory/property_widget_factory.dart';
 import '../builder/domain/application/application_presentation.dart';
 
 class AcmePresentation extends ApplicationPresentation {
-  
   @override
-  List<Type> propertyWidgetFactories = [ // TODO: Move to [ApplicationPresentation]
+  List<Type> propertyWidgetFactories = [
+    // TODO: Move to [ApplicationPresentation]
     StringWidgetFactory,
     IntWidgetFactory,
   ];
 
-  
   @override
-  List<Type> actionMethodParameterProcessors = [// TODO: Move to [ApplicationPresentation]
+  List<Type> actionMethodParameterProcessors = [
+    // TODO: Move to [ApplicationPresentation]
     ProcessResultDirectlyWhenThereIsNoParameter,
     EditEnumInDialog,
     EditDomainObjectParameterInForm,
@@ -24,7 +24,8 @@ class AcmePresentation extends ApplicationPresentation {
   ];
 
   @override
-  List<Type> actionMethodResultProcessors = [// TODO: Move to [ApplicationPresentation]
+  List<Type> actionMethodResultProcessors = [
+    // TODO: Move to [ApplicationPresentation]
     ShowMethodExecutedSnackBar,
     ShowStringInDialog,
     ShowDomainObjectInReadonlyFormTab,

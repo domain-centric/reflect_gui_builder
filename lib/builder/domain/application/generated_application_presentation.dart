@@ -42,7 +42,7 @@ abstract class GeneratedApplicationPresentation {
   Uri? get homePage;
 
   /// A URI to the applications documentation is read from pubspec.yaml file.
-  Uri? get documentationUri;
+  Uri? get documentation;
 
   /// The applications version is read from the pubspec.yaml file.
   String? get version;

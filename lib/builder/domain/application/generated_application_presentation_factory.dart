@@ -28,7 +28,8 @@ class GeneratedApplicationPresentationFactory {
   List<Field> _createFields() => [
         _createTranslatableField('name', application.name),
         _createTranslatableField('description', application.description),
-        _createUriField('documentationUri', application.documentationUri)
+        _createUriField('documentation', application.documentation),
+        _createUriField('homePage', application.homePage),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>

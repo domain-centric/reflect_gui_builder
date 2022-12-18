@@ -35,7 +35,7 @@ class ApplicationPresentationSource extends ClassSource
   @override
   Translatable description;
   @override
-  Uri? documentationUri;
+  Uri? documentation;
   @override
   Uri? homePage;
   @override
@@ -48,7 +48,7 @@ class ApplicationPresentationSource extends ClassSource
     required super.className,
     required this.name,
     required this.description,
-    this.documentationUri,
+    this.documentation,
     this.homePage,
     this.titleImage,
     this.version,
@@ -76,7 +76,7 @@ class ApplicationPresentationSource extends ClassSource
         .add('libraryMemberUri', libraryMemberUri)
         .add('name', name)
         .add('description', description)
-        .add('documentation', documentationUri)
+        .add('documentationUri', documentation)
         .add('homePage', homePage)
         .add('titleImage', titleImage)
         .add('version', version)
@@ -130,7 +130,8 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
         className: _createClassName(applicationPresentationElement),
         name: _createName(applicationPresentationElement),
         description: _createDescription(applicationPresentationElement),
-        documentationUri: _createDocumentationUri(applicationPresentationElement));
+        documentation: _createDocumentationUri(applicationPresentationElement),
+        homePage: createHomePageUri(applicationPresentationElement));
   }
 
   _createLibraryUri(ClassElement applicationPresentationElement) =>
@@ -174,16 +175,29 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
   }
 
   bool _nullOrEmpty(String? string) => string == null || string.trim().isEmpty;
-  
+
   Uri? _createDocumentationUri(ClassElement applicationPresentationElement) {
-    var documentationUri=pubSpecYaml.yaml['documentation'];
+    var documentationUri = pubSpecYaml.yaml['documentation'];
     if (_nullOrEmpty(documentationUri)) {
       return null;
     } else {
       try {
-return Uri.parse(documentationUri);
+        return Uri.parse(documentationUri);
       } catch (e) {
-return null;
+        return null;
+      }
+    }
+  }
+
+  createHomePageUri(ClassElement applicationPresentationElement) {
+    var homePageUri = pubSpecYaml.yaml['homepage'];
+    if (_nullOrEmpty(homePageUri)) {
+      return null;
+    } else {
+      try {
+        return Uri.parse(homePageUri);
+      } catch (e) {
+        return null;
       }
     }
   }

@@ -47,8 +47,8 @@ class ActionMethodResultProcessorSourceFactory
 
   @override
   void populateApplicationPresentation() {
-    var field = findField(
-        context.applicationPresentationElement, actionMethodResultProcessorFieldName);
+    var field = findField(context.applicationPresentationElement,
+        actionMethodResultProcessorFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {

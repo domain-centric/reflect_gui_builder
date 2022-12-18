@@ -1,6 +1,5 @@
 name: reflect_gui_builder
 description: Generates Reflect Graphical User Interface Code
-documentation: https://www.google.com/
 version: 1.0.0+1
 
 environment:

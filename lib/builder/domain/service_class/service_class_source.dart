@@ -51,8 +51,8 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   /// and all their sub classes
   @override
   void populateApplicationPresentation() {
-    var field =
-        findField(context.applicationPresentationElement, serviceClassesFieldName);
+    var field = findField(
+        context.applicationPresentationElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
     for (var element in elements) {
