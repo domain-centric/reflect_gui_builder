@@ -29,6 +29,7 @@ class GeneratedApplicationPresentationFactory {
         _createTranslatableField('name', application.name),
         _createTranslatableField('description', application.description),
         _createStringField('version', application.version),
+        _createStringField('titleImagePath', application.titleImagePath),
         _createUriField('documentation', application.documentation),
         _createUriField('homePage', application.homePage),
       ];

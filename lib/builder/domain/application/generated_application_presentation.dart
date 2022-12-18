@@ -20,7 +20,7 @@ abstract class GeneratedApplicationPresentation {
   /// implements [ApplicationPresentation]
   Translatable get description;
 
-  /// The [titleImage] is displayed when no tabs are opened.
+  /// The [titleImagePath] is displayed when no tabs are opened.
   /// * You have added a title image as assets\my_first_application.png
   ///   * Note that the file name is your Application class name
   ///     in snake_case format.
@@ -35,7 +35,7 @@ abstract class GeneratedApplicationPresentation {
   ///   the flutter section of the pubspec.yaml file:
   ///     assets:
   ///     - assets/my_first_app.png
-  Uri? get titleImage;
+  String? get titleImagePath;
 
   /// A URI to the developers or applications home page
   /// is read from pubspec.yaml file.

@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:collection/collection.dart';
 import 'package:fluent_regex/fluent_regex.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
 import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
@@ -35,23 +37,23 @@ class ApplicationPresentationSource extends ClassSource
   @override
   Translatable description;
   @override
-  Uri? documentation;
+  String? version;
+  @override
+  String? titleImagePath;
   @override
   Uri? homePage;
   @override
-  Uri? titleImage;
-  @override
-  String? version;
+  Uri? documentation;
 
   ApplicationPresentationSource({
     required super.libraryUri,
     required super.className,
     required this.name,
     required this.description,
-    this.documentation,
-    this.homePage,
-    this.titleImage,
     this.version,
+    this.titleImagePath,
+    this.homePage,
+    this.documentation,
   });
 
   /// Find's all [DomainClass]es in the [ServiceClass]es
@@ -76,10 +78,10 @@ class ApplicationPresentationSource extends ClassSource
         .add('libraryMemberUri', libraryMemberUri)
         .add('name', name)
         .add('description', description)
-        .add('documentationUri', documentation)
-        .add('homePage', homePage)
-        .add('titleImage', titleImage)
         .add('version', version)
+        .add('titleImagePath', titleImagePath)
+        .add('homePage', homePage)
+        .add('documentation', documentation)
         .add('propertyWidgetFactories', propertyWidgetFactories)
         .add('actionMethodParameterProcessors', actionMethodParameterProcessors)
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
@@ -93,6 +95,7 @@ class ApplicationPresentationSource extends ClassSource
 /// See [SourceClassFactory]
 class ApplicationPresentationSourceFactory extends SourceFactory {
   final pubSpecYaml = PubSpecYaml();
+  final log = BuildLoggerFactory.create();
 
   bool isValidApplicationPresentationElement(Element element) =>
       element is ClassElement &&
@@ -126,13 +129,15 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
   ApplicationPresentationSource _createApplicationPresentationSource(
       ClassElement applicationPresentationElement) {
     return ApplicationPresentationSource(
-        libraryUri: _createLibraryUri(applicationPresentationElement),
-        className: _createClassName(applicationPresentationElement),
-        name: _createName(applicationPresentationElement),
-        version: _createVersion(),
-        description: _createDescription(applicationPresentationElement),
-        documentation: _createDocumentationUri(),
-        homePage: _createHomePageUri());
+      libraryUri: _createLibraryUri(applicationPresentationElement),
+      className: _createClassName(applicationPresentationElement),
+      name: _createName(applicationPresentationElement),
+      description: _createDescription(applicationPresentationElement),
+      version: _createVersion(),
+      titleImagePath: _createTitleImagePath(applicationPresentationElement),
+      documentation: _createDocumentationUri(),
+      homePage: _createHomePageUri(),
+    );
   }
 
   _createLibraryUri(ClassElement applicationPresentationElement) =>
@@ -203,9 +208,27 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
     }
   }
 
-  
   String? _createVersion() => pubSpecYaml.yaml['version'];
-  
+
+  String? _createTitleImagePath(ClassElement applicationPresentationElement) {
+    String className = _createNameText(applicationPresentationElement);
+    String fileName = ReCase(className).snakeCase;
+    String? foundAssetPath = _findAssetPath(fileName);
+    if (foundAssetPath == null) {
+      log.warning(
+          'No title image found. Please define a $fileName asset in pubspec.yaml.');
+    }
+    return foundAssetPath;
+  }
+
+  String? _findAssetPath(String fileName) {
+    var assets = pubSpecYaml.assets;
+    RegExp imageAsset = RegExp('$fileName.(jpeg|webp|gif|png|bmp|wbmp)\$',
+        caseSensitive: false);
+    String? found =
+        assets.firstWhereOrNull((asset) => imageAsset.hasMatch(asset));
+    return found;
+  }
 }
 
 abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
