@@ -28,6 +28,7 @@ class GeneratedApplicationPresentationFactory {
   List<Field> _createFields() => [
         _createTranslatableField('name', application.name),
         _createTranslatableField('description', application.description),
+        _createStringField('version', application.version),
         _createUriField('documentation', application.documentation),
         _createUriField('homePage', application.homePage),
       ];
@@ -37,14 +38,26 @@ class GeneratedApplicationPresentationFactory {
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
 
-  _createUriField(String fieldName, Uri? uri) => Field(fieldName,
+  Field _createUriField(String fieldName, Uri? uri) => Field(fieldName,
       annotations: [Annotation.override()], value: UriConstructorCall(uri));
+
+  Field _createStringField(String fieldName, String? string) => Field(fieldName,
+      annotations: [Annotation.override()],
+      value: _createStringExpression(string));
+
+  _createStringExpression(String? string) {
+    if (string == null) {
+      return Expression.ofNull();
+    } else {
+      return Expression.ofString(string);
+    }
+  }
 }
 
 class UriConstructorCall extends Expression {
   factory UriConstructorCall(Uri? uri) {
     if (uri == null) {
-      return UriConstructorCall._([Code('null')]);
+      return UriConstructorCall._(Expression.ofNull().nodes);
     } else {
       return UriConstructorCall._(Expression.callConstructor(UriType(),
               name: 'parse', parameterValues: _createParameterValues(uri))

@@ -129,9 +129,10 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
         libraryUri: _createLibraryUri(applicationPresentationElement),
         className: _createClassName(applicationPresentationElement),
         name: _createName(applicationPresentationElement),
+        version: _createVersion(),
         description: _createDescription(applicationPresentationElement),
-        documentation: _createDocumentationUri(applicationPresentationElement),
-        homePage: createHomePageUri(applicationPresentationElement));
+        documentation: _createDocumentationUri(),
+        homePage: _createHomePageUri());
   }
 
   _createLibraryUri(ClassElement applicationPresentationElement) =>
@@ -176,7 +177,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
 
   bool _nullOrEmpty(String? string) => string == null || string.trim().isEmpty;
 
-  Uri? _createDocumentationUri(ClassElement applicationPresentationElement) {
+  Uri? _createDocumentationUri() {
     var documentationUri = pubSpecYaml.yaml['documentation'];
     if (_nullOrEmpty(documentationUri)) {
       return null;
@@ -189,7 +190,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
     }
   }
 
-  createHomePageUri(ClassElement applicationPresentationElement) {
+  Uri? _createHomePageUri() {
     var homePageUri = pubSpecYaml.yaml['homepage'];
     if (_nullOrEmpty(homePageUri)) {
       return null;
@@ -201,6 +202,10 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
       }
     }
   }
+
+  
+  String? _createVersion() => pubSpecYaml.yaml['version'];
+  
 }
 
 abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
