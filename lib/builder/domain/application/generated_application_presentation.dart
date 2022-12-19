@@ -47,5 +47,5 @@ abstract class GeneratedApplicationPresentation {
   /// The applications version is read from the pubspec.yaml file.
   String? get version;
 
-  //List<ServiceClassPresentation> get serviceClasses;
+  // List<ServiceClassPresentation> get serviceClassPresentations;
 }

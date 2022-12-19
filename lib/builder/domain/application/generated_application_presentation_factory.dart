@@ -1,6 +1,8 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
+import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
@@ -32,6 +34,7 @@ class GeneratedApplicationPresentationFactory {
         _createStringField('titleImagePath', application.titleImagePath),
         _createUriField('documentation', application.documentation),
         _createUriField('homePage', application.homePage),
+        _createServiceClassesField(application.serviceClasses),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -46,13 +49,30 @@ class GeneratedApplicationPresentationFactory {
       annotations: [Annotation.override()],
       value: _createStringExpression(string));
 
-  _createStringExpression(String? string) {
+  Expression _createStringExpression(String? string) {
     if (string == null) {
       return Expression.ofNull();
     } else {
       return Expression.ofString(string);
     }
   }
+
+  Field _createServiceClassesField(List<ServiceClassSource> serviceClasses) =>
+      Field('serviceClasses',
+          annotations: [Annotation.override()],
+          value: _createServiceClassesExpression(serviceClasses));
+
+  Expression _createServiceClassesExpression(
+          List<ServiceClassSource> serviceClasses) =>
+      Expression.ofList(serviceClasses
+          .map((ServiceClassSource serviceClassSource) =>
+              Expression.callConstructor(Type(
+                serviceClassSource
+                    .libraryMemberPath, //TODO convert to generated name, e.g. PersonService => $PersonServicePresentation
+                libraryUri: serviceClassSource.libraryUri
+                    .toString(), //TODO convert path to generated file
+              )))
+          .toList());
 }
 
 class UriConstructorCall extends Expression {
