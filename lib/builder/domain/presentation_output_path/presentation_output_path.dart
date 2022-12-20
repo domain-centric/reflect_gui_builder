@@ -1,4 +1,5 @@
 import 'package:build/build.dart';
+import 'package:fluent_regex/fluent_regex.dart';
 
 /// A factory that creates an output path for [PresentationClass]es
 
@@ -7,10 +8,16 @@ class PresentationOutputPathFactory {
 
   PresentationOutputPathFactory(this.builder);
 
-  String createOutputClassName(String inputClassName) =>
-      '${inputClassName}Presentation';
-  //TODO add $ before class name to indicate that the class is generated
+static final presentationSuffix =FluentRegex().ignoreCase().literal('presentation').endOfLine();
 
+/// The outputClassName:
+/// * Starts with a dollar sign to indicate that it is an generated class 
+///   (an also to more likely have a unique name)
+/// * End with the Presentation suffix to indicate it is a class 
+///   in the presentation layer
+  String createOutputClassName(String inputClassName) =>
+      '\$${presentationSuffix.removeFirst(inputClassName)}Presentation';
+ 
   AssetId createOutputAssetId(Uri importUri) {
     //AssetId assetIdInput = ImportAssetId(importUri);
     AssetId assetIdInput = AssetId.resolve(importUri);

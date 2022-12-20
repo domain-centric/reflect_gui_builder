@@ -13,7 +13,7 @@ dependencies:
   build_runner: ^2.3.2
   collection: ^1.16.0
   analyzer: ^5.2.0
-  dart_code: ^0.1.5
+  dart_code: ^0.1.6
   fluent_regex: ^1.0.3
   recase: ^4.1.0
   logging: ^1.1.0

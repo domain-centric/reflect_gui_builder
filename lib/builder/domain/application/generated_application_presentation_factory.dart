@@ -17,13 +17,14 @@ class GeneratedApplicationPresentationFactory {
 
   create() {
     var c = Class(
-      application
-          .className, // TODO add $ as a prefix of the class name to mark it is generated
+      _className, 
       superClass: _createSuperClass(),
       fields: _createFields(),
     );
     log.info('\n${CodeFormatter().format(c)}');
   }
+
+  String get _className => outputPathFactory.createOutputClassName(application.className);
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:
