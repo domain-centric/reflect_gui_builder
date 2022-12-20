@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:fluent_regex/fluent_regex.dart';
 import 'package:recase/recase.dart';
@@ -110,12 +111,12 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
   /// creates a [ApplicationPresentationSource] using a [ClassElement]
   /// that passed [isValidApplicationPresentationElement]
   ApplicationPresentationSource create(
-      ClassElement applicationPresentationElement) {
+      Builder builder, ClassElement applicationPresentationElement) {
     var applicationPresentationSource =
         _createApplicationPresentationSource(applicationPresentationElement);
 
     var context = FactoryContext(
-        applicationPresentationElement, applicationPresentationSource);
+        builder, applicationPresentationElement, applicationPresentationSource);
     PropertyWidgetFactorySourceFactory(context)
         .populateApplicationPresentation();
     ActionMethodParameterProcessorSourceFactory(context)
@@ -247,6 +248,7 @@ class FactoryContext {
   late ActionMethodSourceFactory actionMethodSourceFactory;
 
   FactoryContext(
+    Builder builder,
     this.applicationPresentationElement,
     this.applicationPresentation,
   ) {

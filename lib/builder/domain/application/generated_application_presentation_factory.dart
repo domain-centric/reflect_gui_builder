@@ -1,7 +1,7 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
-import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
+import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
@@ -9,9 +9,11 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable_code
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory {
   final ApplicationPresentationSource application;
+  final PresentationOutputPathFactory outputPathFactory;
   static final log = BuildLoggerFactory.create();
 
-  GeneratedApplicationPresentationFactory(this.application);
+  GeneratedApplicationPresentationFactory(
+      this.outputPathFactory, this.application);
 
   create() {
     var c = Class(
@@ -66,13 +68,27 @@ class GeneratedApplicationPresentationFactory {
           List<ServiceClassSource> serviceClasses) =>
       Expression.ofList(serviceClasses
           .map((ServiceClassSource serviceClassSource) =>
-              Expression.callConstructor(Type(
-                serviceClassSource
-                    .libraryMemberPath, //TODO convert to generated name, e.g. PersonService => $PersonServicePresentation
-                libraryUri: serviceClassSource.libraryUri
-                    .toString(), //TODO convert path to generated file
-              )))
+              _createServiceClassPresentationConstructorCall(
+                  serviceClassSource))
           .toList());
+
+  Expression _createServiceClassPresentationConstructorCall(
+          ServiceClassSource serviceClassSource) =>
+      Expression.callConstructor(
+          _createServiceClassPresentationType(serviceClassSource));
+
+  Type _createServiceClassPresentationType(
+      ServiceClassSource serviceClassSource) {
+    var className =
+        outputPathFactory.createOutputClassName(serviceClassSource.className);
+    var libraryUri = outputPathFactory
+        .createImportOutputUri(serviceClassSource.libraryUri)
+        .toString();
+    return Type(
+      className,
+      libraryUri: libraryUri,
+    );
+  }
 }
 
 class UriConstructorCall extends Expression {

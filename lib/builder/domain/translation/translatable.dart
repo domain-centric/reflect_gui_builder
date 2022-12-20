@@ -1,4 +1,3 @@
-import 'package:code_builder/code_builder.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 
 class Translatable {

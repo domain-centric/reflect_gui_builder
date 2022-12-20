@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 
 import 'domain/application/generated_application_presentation_factory.dart';
 import 'domain/application/application_presentation_source.dart';
@@ -25,10 +26,12 @@ class ReflectGuiConfigBuilder extends Builder {
       for (var topElement in library.topLevelElements) {
         if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
           var applicationPresentationSource =
-              sourceFactory.create(topElement as ClassElement);
+              sourceFactory.create(this, topElement as ClassElement);
           log.info('\n$applicationPresentationSource');
+          var presentationOutputPathFactory =
+              PresentationOutputPathFactory(this);
           var presentationFactory = GeneratedApplicationPresentationFactory(
-              applicationPresentationSource);
+              presentationOutputPathFactory, applicationPresentationSource);
           presentationFactory.create();
         }
       }
@@ -40,6 +43,6 @@ class ReflectGuiConfigBuilder extends Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.dart': ['.NoOutput']
+        '.dart': ['.no_output'] //TODO get from build.yaml file
       };
 }
