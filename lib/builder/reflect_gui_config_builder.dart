@@ -38,7 +38,9 @@ class ReflectGuiConfigBuilder extends Builder {
         }
       }
 
-      log.info('\n${generatedLibraries.outputUrisAndLibraries}');
+      if (generatedLibraries.outputUrisAndLibraries.isNotEmpty) {
+        log.info('\n${generatedLibraries.outputUrisAndLibraries}');
+      }
 
       //TODO throw an error when no ReflectGuiConfiguration implementations are found
     } catch (e, stackTrace) {
@@ -48,6 +50,6 @@ class ReflectGuiConfigBuilder extends Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.dart': ['.no_output'] //TODO get from build.yaml file
+        '{{}}.dart': ['{{}}_presentation.dart'] //TODO get from build.yaml file
       };
 }
