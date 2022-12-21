@@ -5,6 +5,3 @@ import 'reflect_gui_config_builder.dart';
 
 Builder reflectGuiConfigBuilder(BuilderOptions builderOptions) =>
     ReflectGuiConfigBuilder();
-
-Builder reflectGuiReflectBuilder(BuilderOptions builderOptions) =>
-    ReflectGuiConfigBuilder();

@@ -1,5 +1,6 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
@@ -15,16 +16,21 @@ class GeneratedApplicationPresentationFactory {
   GeneratedApplicationPresentationFactory(
       this.outputPathFactory, this.application);
 
-  create() {
-    var c = Class(
-      _className, 
-      superClass: _createSuperClass(),
-      fields: _createFields(),
-    );
-    log.info('\n${CodeFormatter().format(c)}');
+  void populate(GeneratedLibraries generatedLibraries) {
+    var librarySourceUri = application.libraryUri.toString();
+    var classToAdd = _createClass();
+    generatedLibraries.addClass(librarySourceUri, classToAdd);
   }
 
-  String get _className => outputPathFactory.createOutputClassName(application.className);
+  _createClass() => Class(
+        _className,
+        superClass: _createSuperClass(),
+        fields: _createFields(),
+      );
+  // log.info('\n${CodeFormatter().format(createdClass)}');
+
+  String get _className =>
+      outputPathFactory.createOutputClassName(application.className);
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:

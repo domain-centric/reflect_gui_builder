@@ -8,16 +8,17 @@ class PresentationOutputPathFactory {
 
   PresentationOutputPathFactory(this.builder);
 
-static final presentationSuffix =FluentRegex().ignoreCase().literal('presentation').endOfLine();
+  static final presentationSuffix =
+      FluentRegex().ignoreCase().literal('presentation').endOfLine();
 
-/// The outputClassName:
-/// * Starts with a dollar sign to indicate that it is an generated class 
-///   (an also to more likely have a unique name)
-/// * End with the Presentation suffix to indicate it is a class 
-///   in the presentation layer
+  /// The outputClassName:
+  /// * Starts with a dollar sign to indicate that it is an generated class
+  ///   (an also to more likely have a unique name)
+  /// * End with the Presentation suffix to indicate it is a class
+  ///   in the presentation layer
   String createOutputClassName(String inputClassName) =>
       '\$${presentationSuffix.removeFirst(inputClassName)}Presentation';
- 
+
   AssetId createOutputAssetId(Uri importUri) {
     //AssetId assetIdInput = ImportAssetId(importUri);
     AssetId assetIdInput = AssetId.resolve(importUri);

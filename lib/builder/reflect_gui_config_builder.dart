@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 
@@ -22,19 +23,23 @@ class ReflectGuiConfigBuilder extends Builder {
       var library = await buildStep.inputLibrary;
 
       var sourceFactory = ApplicationPresentationSourceFactory();
+      var outputPathFactory = PresentationOutputPathFactory(this);
+      var generatedLibraries = GeneratedLibraries(outputPathFactory);
 
       for (var topElement in library.topLevelElements) {
         if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
           var applicationPresentationSource =
               sourceFactory.create(this, topElement as ClassElement);
-          log.info('\n$applicationPresentationSource');
-          var presentationOutputPathFactory =
-              PresentationOutputPathFactory(this);
+          //log.info('\n$applicationPresentationSource');
+
           var presentationFactory = GeneratedApplicationPresentationFactory(
-              presentationOutputPathFactory, applicationPresentationSource);
-          presentationFactory.create();
+              outputPathFactory, applicationPresentationSource);
+          presentationFactory.populate(generatedLibraries);
         }
       }
+
+      log.info('\n${generatedLibraries.outputUrisAndLibraries}');
+
       //TODO throw an error when no ReflectGuiConfiguration implementations are found
     } catch (e, stackTrace) {
       log.severe('Failed\n$e\n$stackTrace');
