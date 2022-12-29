@@ -3,7 +3,7 @@ class Person {
   Gender gender = Gender.unknown;
   int id = 0;
 
-  List<EmailAddress> get eMailAdresses => [];
+  List<EmailAddress> get eMailAddresses => [];
 }
 
 class EmailAddress {}

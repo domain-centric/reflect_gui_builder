@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
@@ -8,6 +9,7 @@ import 'package:reflect_gui_builder/builder/domain/presentation_output_path/pres
 
 import 'domain/application/generated_application_presentation_factory.dart';
 import 'domain/application/application_presentation_source.dart';
+import 'domain/service_class/service_class_presentation_factory.dart';
 
 /// Finds classes that implement [ApplicationPresentation]
 /// Creates [ApplicationPresentationSource]s from these classes
@@ -32,14 +34,24 @@ class ReflectGuiConfigBuilder extends Builder {
               sourceFactory.create(this, topElement as ClassElement);
           //log.info('\n$applicationPresentationSource');
 
-          var presentationFactory = GeneratedApplicationPresentationFactory(
-              outputPathFactory, applicationPresentationSource);
-          presentationFactory.populate(generatedLibraries);
+          _populateWithApplicationPresentation(
+              applicationPresentationSource, generatedLibraries);
+          _populateWithServiceClassPresentations(
+              applicationPresentationSource, generatedLibraries);
         }
       }
 
-      if (generatedLibraries.outputUrisAndLibraries.isNotEmpty) {
-        log.info('\n${generatedLibraries.outputUrisAndLibraries}');
+      if (generatedLibraries.inputUrisAndLibraries.isNotEmpty) {
+        log.info('\n${generatedLibraries.inputUrisAndLibraries}');
+        var outputAssetIdsAndLibraries =
+            generatedLibraries.outputAssetIdsAndLibraries;
+        for (var entry in outputAssetIdsAndLibraries.entries) {
+          var outputAssetId = entry.key;
+          var outputFile = _createOutputFile(outputAssetId);
+          FutureOr<String> generatedLibraryCode = Future.value(entry.value);
+          outputFile.writeAsString(entry.value);
+          // TODO buildStep.writeAsString(outputAssetId, generatedLibraryCode);
+        }
       }
 
       //TODO throw an error when no ReflectGuiConfiguration implementations are found
@@ -48,8 +60,32 @@ class ReflectGuiConfigBuilder extends Builder {
     }
   }
 
+  void _populateWithApplicationPresentation(
+      ApplicationPresentationSource applicationPresentationSource,
+      GeneratedLibraries generatedLibraries) {
+    var presentationFactory = GeneratedApplicationPresentationFactory(
+        applicationPresentationSource, generatedLibraries);
+    presentationFactory.populate();
+  }
+
+  void _populateWithServiceClassPresentations(
+      ApplicationPresentationSource applicationPresentationSource,
+      GeneratedLibraries generatedLibraries) {
+    var presentationFactory = ServiceClassPresentationFactory(
+        applicationPresentationSource, generatedLibraries);
+    presentationFactory.populate();
+  }
+
   @override
   Map<String, List<String>> get buildExtensions => {
-        '{{}}.dart': ['{{}}_presentation.dart'] //TODO get from build.yaml file
+        '.dart': ['_presentation.dart'] //TODO get from build.yaml file
       };
+
+  File _createOutputFile(AssetId outputAssetId) {
+    var assetUri = outputAssetId.uri;
+    var projectDirectory = Directory.current.path;
+    var filePath = [projectDirectory, 'lib', ...assetUri.pathSegments.skip(1)]
+        .join(Platform.pathSeparator);
+    return File(filePath);
+  }
 }

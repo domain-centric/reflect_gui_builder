@@ -1,3 +1,4 @@
+import 'package:build/build.dart';
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
@@ -46,9 +47,10 @@ class GeneratedLibraries {
         ])
       ];
 
-  Map<String, Library> get outputUrisAndLibraries => inputUrisAndLibraries.map(
-      (inputUri, library) => MapEntry(_createOutputUri(inputUri), library));
+  Map<AssetId, String> get outputAssetIdsAndLibraries =>
+      inputUrisAndLibraries.map((inputUri, library) =>
+          MapEntry(_createOutputUri(inputUri), library.toString()));
 
-  String _createOutputUri(String inputUri) =>
-      outputPathFactory.createImportOutputUri(Uri.parse(inputUri)).toString();
+  AssetId _createOutputUri(String inputUri) =>
+      outputPathFactory.createOutputAssetId(Uri.parse(inputUri));
 }

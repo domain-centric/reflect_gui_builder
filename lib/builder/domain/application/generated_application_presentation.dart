@@ -2,6 +2,8 @@ import 'package:reflect_gui_builder/builder/domain/application/application_prese
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
+import '../service_class/service_class_presentation2.dart';
+
 /// Implementations of [GeneratedApplicationPresentation] are generated from the
 /// projects source code. It contains all the needed presentation information.
 ///
@@ -47,5 +49,5 @@ abstract class GeneratedApplicationPresentation {
   /// The applications version is read from the pubspec.yaml file.
   String? get version;
 
-  // List<ServiceClassPresentation> get serviceClassPresentations;
+  List<ServiceClassPresentation> get serviceClasses;
 }

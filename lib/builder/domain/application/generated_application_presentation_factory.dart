@@ -2,7 +2,6 @@ import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
-import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
@@ -10,13 +9,13 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable_code
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory {
   final ApplicationPresentationSource application;
-  final PresentationOutputPathFactory outputPathFactory;
+  final GeneratedLibraries generatedLibraries;
   static final log = BuildLoggerFactory.create();
 
   GeneratedApplicationPresentationFactory(
-      this.outputPathFactory, this.application);
+      this.application, this.generatedLibraries);
 
-  void populate(GeneratedLibraries generatedLibraries) {
+  void populate() {
     var librarySourceUri = application.libraryUri.toString();
     var classToAdd = _createClass();
     generatedLibraries.addClass(librarySourceUri, classToAdd);
@@ -27,10 +26,9 @@ class GeneratedApplicationPresentationFactory {
         superClass: _createSuperClass(),
         fields: _createFields(),
       );
-  // log.info('\n${CodeFormatter().format(createdClass)}');
 
-  String get _className =>
-      outputPathFactory.createOutputClassName(application.className);
+  String get _className => generatedLibraries.outputPathFactory
+      .createOutputClassName(application.className);
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:
@@ -48,15 +46,23 @@ class GeneratedApplicationPresentationFactory {
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
       Field(fieldName,
+          modifier: Modifier.final$,
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
 
-  Field _createUriField(String fieldName, Uri? uri) => Field(fieldName,
-      annotations: [Annotation.override()], value: UriConstructorCall(uri));
+  Field _createUriField(String fieldName, Uri? uri) => Field(
+        fieldName,
+        modifier: Modifier.final$,
+        annotations: [Annotation.override()],
+        value: UriConstructorCall(uri),
+      );
 
-  Field _createStringField(String fieldName, String? string) => Field(fieldName,
-      annotations: [Annotation.override()],
-      value: _createStringExpression(string));
+  Field _createStringField(String fieldName, String? string) => Field(
+        fieldName,
+        annotations: [Annotation.override()],
+        modifier: Modifier.final$,
+        value: _createStringExpression(string),
+      );
 
   Expression _createStringExpression(String? string) {
     if (string == null) {
@@ -68,6 +74,7 @@ class GeneratedApplicationPresentationFactory {
 
   Field _createServiceClassesField(List<ServiceClassSource> serviceClasses) =>
       Field('serviceClasses',
+          modifier: Modifier.final$,
           annotations: [Annotation.override()],
           value: _createServiceClassesExpression(serviceClasses));
 
@@ -86,6 +93,7 @@ class GeneratedApplicationPresentationFactory {
 
   Type _createServiceClassPresentationType(
       ServiceClassSource serviceClassSource) {
+    var outputPathFactory = generatedLibraries.outputPathFactory;
     var className =
         outputPathFactory.createOutputClassName(serviceClassSource.className);
     var libraryUri = outputPathFactory

@@ -25,25 +25,18 @@ import '../service_class/service_class_source.dart';
 
 /// Contains information from an [ApplicationPresentation] class source code.
 /// See [SourceClass]
-class ApplicationPresentationSource extends ClassSource
-    implements GeneratedApplicationPresentation {
+class ApplicationPresentationSource extends ClassSource {
   final List<ServiceClassSource> serviceClasses = [];
   final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
   final List<ActionMethodParameterProcessorSource>
       actionMethodParameterProcessors = [];
   final List<ActionMethodResultProcessorSource> actionMethodResultProcessors =
       [];
-  @override
   Translatable name;
-  @override
   Translatable description;
-  @override
   String? version;
-  @override
   String? titleImagePath;
-  @override
   Uri? homePage;
-  @override
   Uri? documentation;
 
   ApplicationPresentationSource({
