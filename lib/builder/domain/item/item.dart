@@ -18,7 +18,7 @@ abstract class DynamicItem extends Item {
   /// Whether this item is visible
   /// Note that Items do not have an disabled state!
   /// See [https://axesslab.com/disabled-buttons-suck/] on why.
-  /// Instead items are  either visible or invisible
+  /// Instead items are either visible or invisible
   bool get visible;
 
   /// Order of appearance, relative to its peers.
