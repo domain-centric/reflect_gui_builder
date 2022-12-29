@@ -19,14 +19,13 @@ abstract class ActionMethodPresentation<PARAMETER_TYPE, RESULT_TYPE>
     extends DynamicItem {
   Object get methodOwner;
 
-  /// Returns a reflection class that contains information on
-  /// the [ActionMethod]s parameter type.
+  /// Returns a information on the [ActionMethod]s parameter type.
   /// It:
-  /// * is null when there the [ActionMethod] has no parameter
+  /// * is null when the [ActionMethod] has no parameter
   /// * it could contain information on a [DomainClass] or [Enum].
-  ClassReflection? get parameterType;
+  ClassPresentation? get parameterType;
 
-  ActionMethodParameterProcessor get actionMethodParameterProcessor;
+  ActionMethodParameterProcessor get parameterProcessor;
 
   /// returns a optional function that can create a parameter
   PARAMETER_TYPE Function()? parameterFactory;
@@ -37,12 +36,11 @@ abstract class ActionMethodPresentation<PARAMETER_TYPE, RESULT_TYPE>
   /// * and then calls the [actionMethodParameterProcessor]
   void call(BuildContext context, PARAMETER_TYPE parameter);
 
-  /// Returns a reflection class that contains information on
-  /// the [ActionMethod]s result type.
+  /// Returns information on the [ActionMethod]s result type.
   /// It:
-  /// * is null when there the [ActionMethod] has no result (void)
+  /// * is null when the [ActionMethod] has no result (void)
   /// * it could contain information on a [DomainClass] or [Enum].
-  ClassReflection? get resultType;
+  ClassPresentation? get resultType;
 
   ActionMethodResultProcessor get resultProcessor;
 }

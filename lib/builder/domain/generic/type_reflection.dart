@@ -47,11 +47,11 @@ class LibraryMemberReflection {
 }
 
 /// See [PresentationClass]
-class ClassReflection extends LibraryMemberReflection {
-  final ClassReflection? genericType;
+class ClassPresentation extends LibraryMemberReflection {
+  final ClassPresentation? genericType;
   final String className;
 
-  ClassReflection(
+  ClassPresentation(
       {required Uri libraryUri, required this.className, this.genericType})
       : super(libraryUri: libraryUri, libraryMemberPath: className);
 
