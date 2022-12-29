@@ -4,12 +4,8 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart
 /// - [ApplicationInfo] Te name and description of the application
 /// - [DomainClassInfo] The name and description in a list row or a form or a field
 abstract class Item {
-  /// Name of the item
-  /// In the language of the user if possible
   Translatable get name;
 
-  /// Optional description of the name, often to give more information on what it does
-  /// In the language of the user if possible
   Translatable get description;
 }
 
