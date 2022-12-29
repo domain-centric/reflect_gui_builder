@@ -6,7 +6,6 @@ import 'package:collection/collection.dart';
 import 'package:fluent_regex/fluent_regex.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
-import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
@@ -154,7 +153,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
   String _createNameText(ClassElement applicationPresentationElement) =>
       _presentationSuffix
           .removeAll(applicationPresentationElement.name)
-          .sentenceCase;
+          .titleCase;
 
   Translatable _createDescription(
           ClassElement applicationPresentationElement) =>
