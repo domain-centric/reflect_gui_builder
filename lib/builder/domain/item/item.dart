@@ -13,7 +13,6 @@ abstract class Item {
 /// - [ServiceClassInfo] e.g. a main menu item
 /// - [DomainObjectProperty] e.g. a form field or row
 /// - [ActionMethod], e.g. a menu item
-// TODO should implement or extend a class from the user_command package
 abstract class DynamicItem extends Item {
   /// Whether this item is visible
   /// Note that Items do not have an disabled state!
