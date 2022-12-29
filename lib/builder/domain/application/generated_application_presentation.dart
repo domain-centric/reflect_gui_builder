@@ -51,3 +51,4 @@ abstract class GeneratedApplicationPresentation {
 
   List<ServiceClassPresentation> get serviceClasses;
 }
+
