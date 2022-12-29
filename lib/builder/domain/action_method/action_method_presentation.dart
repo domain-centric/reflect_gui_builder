@@ -25,7 +25,7 @@ abstract class ActionMethodPresentation<PARAMETER_TYPE, RESULT_TYPE>
   /// * it could contain information on a [DomainClass] or [Enum].
   ClassPresentation? get parameterType;
 
-  ActionMethodParameterProcessor get parameterProcessor;
+  ActionMethodParameterProcessor<PARAMETER_TYPE> get parameterProcessor;
 
   /// returns a optional function that can create a parameter
   PARAMETER_TYPE Function()? parameterFactory;
@@ -42,5 +42,5 @@ abstract class ActionMethodPresentation<PARAMETER_TYPE, RESULT_TYPE>
   /// * it could contain information on a [DomainClass] or [Enum].
   ClassPresentation? get resultType;
 
-  ActionMethodResultProcessor get resultProcessor;
+  ActionMethodResultProcessor<RESULT_TYPE> get resultProcessor;
 }
