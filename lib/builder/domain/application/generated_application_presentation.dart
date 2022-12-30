@@ -1,6 +1,6 @@
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
-import 'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation2.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
 

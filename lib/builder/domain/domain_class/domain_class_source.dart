@@ -29,7 +29,7 @@ class DomainClassSource extends ClassSource {
 
 /// See [SourceClassFactory]
 class DomainSourceFactory extends SourceFactory {
-  final FactoryContext context;
+  final SourceContext context;
 
   DomainSourceFactory(this.context);
 

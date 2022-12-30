@@ -45,7 +45,7 @@ class EnumSource extends ClassSource {
 
 /// See [SourceClassFactory]
 class EnumSourceFactory extends SourceFactory {
-  final FactoryContext context;
+  final SourceContext context;
 
   EnumSourceFactory(this.context);
 

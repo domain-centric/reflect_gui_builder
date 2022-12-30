@@ -42,7 +42,7 @@ class ActionMethodParameterProcessorSourceFactory
   static const actionMethodParameterProcessorLibraryUri =
       'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 
-  final FactoryContext context;
+  final SourceContext context;
 
   ActionMethodParameterProcessorSourceFactory(this.context);
 

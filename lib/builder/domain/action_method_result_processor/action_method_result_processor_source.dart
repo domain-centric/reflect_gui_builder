@@ -42,7 +42,7 @@ class ActionMethodResultProcessorSourceFactory
   static const actionMethodResultProcessorLibraryUri =
       'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
 
-  final FactoryContext context;
+  final SourceContext context;
   ActionMethodResultProcessorSourceFactory(this.context);
 
   @override

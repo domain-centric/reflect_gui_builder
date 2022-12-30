@@ -44,7 +44,7 @@ class ServiceClassSource extends ClassSource {
 class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   static const serviceClassesFieldName = 'serviceClasses';
 
-  final FactoryContext context;
+  final SourceContext context;
   ServiceClassSourceFactory(this.context);
 
   /// populates the [applicationPresentation] with created [ServiceClassSource]s

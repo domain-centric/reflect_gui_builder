@@ -107,7 +107,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
     var applicationPresentationSource =
         _createApplicationPresentationSource(applicationPresentationElement);
 
-    var context = FactoryContext(
+    var context = SourceContext(
         builder, applicationPresentationElement, applicationPresentationSource);
     PropertyWidgetFactorySourceFactory(context)
         .populateApplicationPresentation();
@@ -231,7 +231,7 @@ abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
 }
 
 /// All information needed to create a [ApplicationPresentationSource]
-class FactoryContext {
+class SourceContext {
   final ClassElement applicationPresentationElement;
   late ApplicationPresentationSource applicationPresentation;
   late TypeSourceFactory typeFactory;
@@ -239,7 +239,7 @@ class FactoryContext {
   late DomainSourceFactory domainSourceFactory;
   late ActionMethodSourceFactory actionMethodSourceFactory;
 
-  FactoryContext(
+  SourceContext(
     Builder builder,
     this.applicationPresentationElement,
     this.applicationPresentation,

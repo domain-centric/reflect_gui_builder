@@ -1,20 +1,23 @@
+import 'package:build/build.dart';
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
+import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
 /// See [PresentationClassFactory]
-class GeneratedApplicationPresentationFactory {
-  final ApplicationPresentationSource application;
-  final GeneratedLibraries generatedLibraries;
-  static final log = BuildLoggerFactory.create();
+class GeneratedApplicationPresentationFactory extends CodeFactory {
+  
+  GeneratedApplicationPresentationFactory(CodeFactoryContext context): super(context) ;
 
-  GeneratedApplicationPresentationFactory(
-      this.application, this.generatedLibraries);
 
+  @override
   void populate() {
     var librarySourceUri = application.libraryUri.toString();
     var classToAdd = _createClass();
@@ -27,7 +30,7 @@ class GeneratedApplicationPresentationFactory {
         fields: _createFields(),
       );
 
-  String get _className => generatedLibraries.outputPathFactory
+  String get _className => outputPathFactory
       .createOutputClassName(application.className);
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
@@ -93,7 +96,6 @@ class GeneratedApplicationPresentationFactory {
 
   Type _createServiceClassPresentationType(
       ServiceClassSource serviceClassSource) {
-    var outputPathFactory = generatedLibraries.outputPathFactory;
     var className =
         outputPathFactory.createOutputClassName(serviceClassSource.className);
     var libraryUri = outputPathFactory

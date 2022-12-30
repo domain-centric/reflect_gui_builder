@@ -36,7 +36,7 @@ class PropertyWidgetFactorySourceFactory
   static const propertyWidgetFactoryName = 'PropertyWidgetFactory';
   static const propertyWidgetFactoryLibraryUri =
       'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart';
-  final FactoryContext context;
+  final SourceContext context;
   PropertyWidgetFactorySourceFactory(this.context);
 
   @override

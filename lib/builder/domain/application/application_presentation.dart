@@ -1,8 +1,8 @@
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
-import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
+import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
 /// A Configuration class for a Graphical User Interface application.
-/// It is used by the [ReflectGuiConfigBuilder] so that it knows how and which
+/// It is used by the [ReflectPresentationLibraryBuilder] so that it knows how and which
 ///  [PresentationClass]es are to be generated.
 abstract class ApplicationPresentation {
   /// Returns the [PropertyWidgetFactory]s that are to be used in the application.

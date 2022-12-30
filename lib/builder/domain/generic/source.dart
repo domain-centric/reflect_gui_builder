@@ -1,6 +1,6 @@
 import 'package:reflect_gui_builder/builder/domain/generic/documentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
-import 'package:reflect_gui_builder/builder/reflect_gui_config_builder.dart';
+import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
 /// A [SourceClass] is a class that contains information from Dart source code.
 ///
@@ -19,5 +19,5 @@ class SourceClass extends ConceptDocumentation {}
 /// * creates a [SourceClass] by converting the source code model
 ///   from the analyzer package to a more specific and
 ///   better understandable [SourceClass] model.
-/// * is used by the [ReflectGuiConfigBuilder]
+/// * is used by the [ReflectPresentationLibraryBuilder]
 class SourceClassFactory extends ConceptDocumentation {}

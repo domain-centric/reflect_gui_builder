@@ -97,7 +97,7 @@ class ClassSource extends LibraryMemberSource {
 }
 
 class TypeSourceFactory {
-  final FactoryContext context;
+  final SourceContext context;
 
   TypeSourceFactory(this.context);
 

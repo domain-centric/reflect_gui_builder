@@ -1,14 +1,12 @@
 import 'package:dart_code/dart_code.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
-import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 
-class ServiceClassPresentationFactory {
-  final ApplicationPresentationSource application;
-  final GeneratedLibraries generatedLibraries;
+class ServiceClassPresentationFactory extends CodeFactory{
+  
+  ServiceClassPresentationFactory(CodeFactoryContext context): super(context);
 
-  ServiceClassPresentationFactory(this.application, this.generatedLibraries);
-
+  @override
   void populate() {
     for (var serviceClass in application.serviceClasses) {
       var librarySourceUri = serviceClass.libraryUri.toString();
@@ -23,10 +21,10 @@ class ServiceClassPresentationFactory {
       );
 
   String _createClassName(ServiceClassSource serviceClass) =>
-      generatedLibraries.outputPathFactory
+      outputPathFactory
           .createOutputClassName(serviceClass.className);
 
   Type _createSuperClass() => Type('ServiceClassPresentation',
       libraryUri:
-          'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart');
+          'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation2.dart');
 }

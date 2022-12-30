@@ -62,7 +62,7 @@ class ActionMethodSource extends LibraryMemberSource {
 /// Creates a [ActionMethodSource]s by using the
 /// analyzer package
 class ActionMethodSourceFactory extends SourceFactory {
-  final FactoryContext context;
+  final SourceContext context;
 
   ActionMethodSourceFactory(this.context);
 
