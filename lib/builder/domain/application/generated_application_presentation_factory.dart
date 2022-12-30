@@ -99,7 +99,7 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
     var className =
         outputPathFactory.createOutputClassName(serviceClassSource.className);
     var libraryUri = outputPathFactory
-        .createImportOutputUri(serviceClassSource.libraryUri)
+        .createOutputUri(serviceClassSource.libraryUri)
         .toString();
     return Type(
       className,
