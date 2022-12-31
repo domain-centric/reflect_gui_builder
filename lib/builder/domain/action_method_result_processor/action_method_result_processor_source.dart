@@ -55,8 +55,8 @@ class ActionMethodResultProcessorSourceFactory
       _validate(field, element);
 
       var processor = ActionMethodResultProcessorSource(
-          libraryUri: element.library!.source.uri,
-          className: element.name!,
+          libraryUri: element.library.source.uri,
+          className: element.name,
           resultType: _createResultType(element));
 
       context.applicationPresentation.actionMethodResultProcessors
