@@ -84,7 +84,7 @@ class PresentationOutputPathFactory {
 }
 
 /// **************************************************************************
-/// The following is borrowed and adapted 
+/// The following is borrowed and adapted
 /// from package:build\expected_outputs.dart
 /// So we can get the expected output path using build options
 /// **************************************************************************

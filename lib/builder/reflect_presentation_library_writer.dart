@@ -4,7 +4,7 @@ import 'package:reflect_gui_builder/builder/domain/application/application_prese
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 
-/// Writes the libraries that where generated 
+/// Writes the libraries that where generated
 /// by the preceding [ReflectPresentationLibraryBuilder]:
 
 class ReflectPresentationLibraryWriter extends Builder {
@@ -22,7 +22,7 @@ class ReflectPresentationLibraryWriter extends Builder {
 
       if (generatedLibrary != null) {
         var outputAssetId = _createOutputAssetId(inputLibraryUri);
-        var libraryCode =generatedLibrary.toString();
+        var libraryCode = generatedLibrary.toString();
         print('\nWRITING\n${outputAssetId.uri}\n$libraryCode\n');
         buildStep.writeAsString(outputAssetId, libraryCode);
       }
@@ -33,8 +33,7 @@ class ReflectPresentationLibraryWriter extends Builder {
 
   AssetId _createOutputAssetId(Uri inputLibraryUri) {
     var outputPathFactory = PresentationOutputPathFactory(this);
-    var outputAssetId =
-        outputPathFactory.createOutputAssetId(inputLibraryUri);
+    var outputAssetId = outputPathFactory.createOutputAssetId(inputLibraryUri);
     return outputAssetId;
   }
 

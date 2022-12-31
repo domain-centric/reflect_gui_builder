@@ -286,6 +286,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.3"
+  plural_noun:
+    dependency: "direct main"
+    description:
+      name: plural_noun
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   pool:
     dependency: transitive
     description:

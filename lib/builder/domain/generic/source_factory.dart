@@ -102,8 +102,8 @@ abstract class SourceFactory {
         'Could not find field: $fieldNameToFind in $reflectGuiConfigClass');
   }
 
-  List<Element> findInitializerElements(FieldElement field) {
-    var foundElements = <Element>[];
+  List<ClassElement> findInitializerElements(FieldElement field) {
+    var foundElements = <ClassElement>[];
     var declaration = _declarationOfElement(field).node;
     var expression = (declaration as VariableDeclaration).initializer;
     if (expression.runtimeType.toString() != 'ListLiteralImpl') {
@@ -123,6 +123,10 @@ abstract class SourceFactory {
       if (element == null) {
         throw Exception(
             '${field.asLibraryMemberPath}: Could not find the type of $identifier');
+      }
+      if (element is! ClassElement) {
+        throw Exception(
+            '${field.asLibraryMemberPath}: $identifier must be a class');
       }
       foundElements.add(element);
     }

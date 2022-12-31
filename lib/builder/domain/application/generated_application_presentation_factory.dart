@@ -13,9 +13,8 @@ import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder
 
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory extends CodeFactory {
-  
-  GeneratedApplicationPresentationFactory(CodeFactoryContext context): super(context) ;
-
+  GeneratedApplicationPresentationFactory(CodeFactoryContext context)
+      : super(context);
 
   @override
   void populate() {
@@ -30,8 +29,8 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
         fields: _createFields(),
       );
 
-  String get _className => outputPathFactory
-      .createOutputClassName(application.className);
+  String get _className =>
+      outputPathFactory.createOutputClassName(application.className);
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:

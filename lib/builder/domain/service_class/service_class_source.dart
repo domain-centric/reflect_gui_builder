@@ -1,4 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:fluent_regex/fluent_regex.dart';
+import 'package:recase/recase.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
+import 'package:plural_noun/plural_noun.dart';
 
 import '../action_method/action_method_source.dart';
 import '../generic/to_string.dart';
@@ -11,10 +15,16 @@ import '../generic/source_factory.dart';
 /// It is later converted to generated Dart code
 /// that implements [ServiceClassReflection].
 class ServiceClassSource extends ClassSource {
+  final Translatable name;
+  final Translatable description;
+
   final List<ActionMethodSource> actionMethods;
 
   ServiceClassSource(
-      {required ClassSource serviceClass, required this.actionMethods})
+      {required this.name,
+      required this.description,
+      required ClassSource serviceClass,
+      required this.actionMethods})
       : super(
           libraryUri: serviceClass.libraryUri,
           className: serviceClass.className,
@@ -55,12 +65,13 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
         context.applicationPresentationElement, serviceClassesFieldName);
 
     var elements = findInitializerElements(field);
-    for (var element in elements) {
+    for (ClassElement element in elements) {
       _validateServiceClassElement(field, element);
-      var actionMethods = context.actionMethodSourceFactory
-          .createAll(element as InterfaceElement);
+      var actionMethods = context.actionMethodSourceFactory.createAll(element);
       _validateServiceClassActionMethods(field, element, actionMethods);
       var serviceClassSource = ServiceClassSource(
+          name: _createName(element),
+          description: _createDescription(element),
           serviceClass: context.typeFactory.create(element.thisType),
           actionMethods: actionMethods);
       context.applicationPresentation.serviceClasses.add(serviceClassSource);
@@ -97,4 +108,29 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
       throw ('${field.asLibraryMemberPath}: ${serviceClass.asLibraryMemberPath} must contain 1 or more action methods.');
     }
   }
+
+  Translatable _createName(ClassElement serviceClassElement) => Translatable(
+      key: _createNameKey(serviceClassElement),
+      englishText: _createNameText(serviceClassElement));
+
+  String _createNameKey(ClassElement serviceClassElement) =>
+      '${serviceClassElement.asLibraryMemberPath}.name';
+
+  static final _serviceSuffix =
+      FluentRegex().literal('service').endOfLine().ignoreCase();
+
+  String _createNameText(ClassElement serviceClassElement) =>
+      PluralRules().convertToPluralNoun(
+          _serviceSuffix.removeFirst(serviceClassElement.name).titleCase);
+
+  Translatable _createDescription(ClassElement serviceClassElement) =>
+      Translatable(
+          key: _createDescriptionKey(serviceClassElement),
+          englishText: _createDescriptionText(serviceClassElement));
+
+  String _createDescriptionKey(ClassElement serviceClassElement) =>
+      '${serviceClassElement.asLibraryMemberPath}.description';
+
+  String _createDescriptionText(ClassElement serviceClassElement) =>
+      _createNameText(serviceClassElement);
 }
