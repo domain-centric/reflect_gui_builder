@@ -6,7 +6,7 @@ import '../builder/domain/action_method_result_processor/action_method_result_pr
 import '../builder/domain/property_factory/property_widget_factory.dart';
 import '../builder/domain/application/application_presentation.dart';
 
-class MyFirstAppPresentation extends ApplicationPresentation {
+class MyFirstApp extends ApplicationPresentation {
   @override
   List<Type> propertyWidgetFactories = [
     // TODO: Move to [ApplicationPresentation]
