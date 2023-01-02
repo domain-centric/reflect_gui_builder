@@ -17,18 +17,22 @@ class ActionMethodPresentationFactory {
   Field create(ActionMethodSource actionMethod, int order) => Field(
         actionMethod.methodName,
         modifier: Modifier.final$,
-        value: _createConstructorCall(actionMethod),
+        value: _createConstructorCall(actionMethod, order),
       );
 
-  Expression _createConstructorCall(ActionMethodSource actionMethod) =>
+  Expression _createConstructorCall(
+          ActionMethodSource actionMethod, int order) =>
       Expression.callConstructor(ActionMethodPresentationType(),
-          parameterValues: _createConstructorParameterValues(actionMethod));
+          parameterValues:
+              _createConstructorParameterValues(actionMethod, order));
 
   ParameterValues _createConstructorParameterValues(
-          ActionMethodSource actionMethod) =>
+          ActionMethodSource actionMethod, int order) =>
       ParameterValues([
         _createTranslatableParameter('name', actionMethod.name),
         _createTranslatableParameter('description', actionMethod.description),
+        ParameterValue.named('visible', Expression.ofBool(true)),
+        ParameterValue.named('order', Expression.ofInt(order)),
       ]);
 
   ParameterValue _createTranslatableParameter(
