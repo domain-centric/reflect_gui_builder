@@ -1,5 +1,6 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class ActionMethodPresentationFactory {
@@ -25,11 +26,16 @@ class ActionMethodPresentationFactory {
 
   ParameterValues _createConstructorParameterValues(
           ActionMethodSource actionMethod) =>
-      ParameterValues([_createName(actionMethod)]);
+      ParameterValues([
+        _createTranslatableParameter('name', actionMethod.name),
+        _createTranslatableParameter('description', actionMethod.description),
+      ]);
 
-  ParameterValue _createName(ActionMethodSource actionMethod) =>
-      ParameterValue.named(
-          'name', TranslatableConstructorCall(actionMethod.name));
+  ParameterValue _createTranslatableParameter(
+    String name,
+    Translatable translatable,
+  ) =>
+      ParameterValue.named(name, TranslatableConstructorCall(translatable));
 }
 
 class ActionMethodPresentationType extends Type {
