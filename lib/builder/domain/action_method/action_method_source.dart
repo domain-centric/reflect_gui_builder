@@ -1,7 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
+import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
 import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
 import '../action_method_result_processor/action_method_result_processor_source.dart';
@@ -12,6 +14,8 @@ import '../generic/source_factory.dart';
 
 /// See [SourceClass]
 class ActionMethodSource extends LibraryMemberSource {
+  final Translatable name;
+  final Translatable description;
   final String className;
   final String methodName;
   final ClassSource? parameterType;
@@ -23,6 +27,8 @@ class ActionMethodSource extends LibraryMemberSource {
       {required Uri libraryUri,
       required this.className,
       required this.methodName,
+      required this.name,
+      required this.description,
       this.parameterType,
       required this.parameterProcessor,
       this.resultType,
@@ -101,6 +107,8 @@ class ActionMethodSourceFactory extends SourceFactory {
         libraryUri: methodElement.library.source.uri,
         className: methodElement.enclosingElement.name!,
         methodName: methodElement.name,
+        name: _createName(methodElement),
+        description: _createDescription(methodElement),
         parameterType: parameterType,
         parameterProcessor: parameterProcessor,
         resultType: _createResultType(methodElement),
@@ -128,4 +136,24 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ClassSource? _createResultType(MethodElement methodElement) =>
       context.typeFactory.create(methodElement.returnType as InterfaceType);
+
+  Translatable _createName(MethodElement methodElement) => Translatable(
+      key: _createNameKey(methodElement),
+      englishText: _createNameText(methodElement));
+
+  String _createNameKey(MethodElement methodElement) =>
+      '${methodElement.asLibraryMemberPath}.name';
+
+  String _createNameText(MethodElement methodElement) =>
+      methodElement.name.sentenceCase;
+
+  Translatable _createDescription(MethodElement methodElement) => Translatable(
+      key: _createDescriptionKey(methodElement),
+      englishText: _createDescriptionText(methodElement));
+
+  String _createDescriptionKey(MethodElement methodElement) =>
+      '${methodElement.asLibraryMemberPath}.description';
+
+  String _createDescriptionText(MethodElement methodElement) =>
+      _createNameText(methodElement);
 }

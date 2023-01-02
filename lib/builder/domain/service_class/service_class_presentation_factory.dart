@@ -1,9 +1,10 @@
 import 'package:dart_code/dart_code.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation_factory.dart';
+// import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
-
-import '../translation/translatable.dart';
 
 class ServiceClassPresentationFactory extends CodeFactory {
   ServiceClassPresentationFactory(CodeFactoryContext context) : super(context);
@@ -19,10 +20,12 @@ class ServiceClassPresentationFactory extends CodeFactory {
     }
   }
 
-  Class _createClass(ServiceClassSource serviceClass, int index) =>
-      Class(_createClassName(serviceClass),
-          superClass: _createSuperClass(),
-          fields: _createFields(serviceClass, index));
+  Class _createClass(ServiceClassSource serviceClass, int index) => Class(
+        _createClassName(serviceClass),
+        superClass: _createSuperClass(),
+        fields: _createFields(serviceClass, index),
+        methods: _createMethods(serviceClass),
+      );
 
   String _createClassName(ServiceClassSource serviceClass) =>
       outputPathFactory.createOutputClassName(serviceClass.className);
@@ -36,6 +39,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
         _createTranslatableField('description', serviceClass.description),
         _createOrderField(index),
         _createVisibleField(),
+        ..._createActionMethodFields(serviceClass),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -55,4 +59,36 @@ class ServiceClassPresentationFactory extends CodeFactory {
       modifier: Modifier.final$,
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
+
+  List<Method> _createMethods(ServiceClassSource serviceClass) => [
+        _createActionMethodsGetter(serviceClass),
+      ];
+
+  /// e.g. List<ActionMethodPresentation> get actionMethods => [allCustomers];
+
+  Method _createActionMethodsGetter(ServiceClassSource serviceClass) =>
+      Method.getter(
+        'actionMethods',
+        _createActionMethodsGetterBody(serviceClass),
+        annotations: [Annotation.override()],
+        type: ActionMethodPresentationType(),
+      );
+
+  Expression _createActionMethodsGetterBody(ServiceClassSource serviceClass) =>
+      Expression.ofList(serviceClass.actionMethods
+          .map((actionMethod) =>
+              Expression.callMethodOrFunction(actionMethod.methodName))
+          .toList());
+
+  List<Field> _createActionMethodFields(ServiceClassSource serviceClass) {
+    final presentationFactory = ActionMethodPresentationFactory();
+    var fields = <Field>[];
+    var order = 0;
+    for (var actionMethod in serviceClass.actionMethods) {
+      order += 100;
+      var field = presentationFactory.create(actionMethod, order);
+      fields.add(field);
+    }
+    return fields;
+  }
 }
