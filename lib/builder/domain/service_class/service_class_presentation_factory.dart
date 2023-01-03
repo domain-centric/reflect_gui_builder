@@ -1,6 +1,7 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
@@ -38,6 +39,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
         _createTranslatableField('description', serviceClass.description),
         _createOrderField(index),
         _createVisibleField(),
+        _createServiceObjectField(serviceClass),
         ..._createActionMethodFields(serviceClass),
       ];
 
@@ -75,8 +77,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
 
   Expression _createActionMethodsGetterBody(ServiceClassSource serviceClass) =>
       Expression.ofList(serviceClass.actionMethods
-          .map((actionMethod) =>
-              Expression.ofVariable(actionMethod.methodName))
+          .map((actionMethod) => Expression.ofVariable(actionMethod.methodName))
           .toList());
 
   List<Field> _createActionMethodFields(ServiceClassSource serviceClass) {
@@ -90,4 +91,13 @@ class ServiceClassPresentationFactory extends CodeFactory {
     }
     return fields;
   }
+
+  Field _createServiceObjectField(ServiceClassSource serviceClass) =>
+      Field('serviceObject',
+          modifier: Modifier.final$,
+          annotations: [Annotation.override()],
+          value: Expression.callConstructor(
+            TypeFactory.create(serviceClass),
+            isConst: true,
+          ));
 }

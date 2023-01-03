@@ -54,26 +54,19 @@ class ActionMethodPresentationFactory {
 
   ParameterValue _createParameterProcessor(ActionMethodSource actionMethod) =>
       ParameterValue.named(
-        'parameterProcessor',
-        Expression([
-          KeyWord.const$,
-          Code(' '),
+          'parameterProcessor',
           Expression.callConstructor(
-              TypeFactory.create(actionMethod.parameterProcessor))
-        ]),
-      );
+            TypeFactory.create(actionMethod.parameterProcessor),
+            isConst: true,
+          ));
 
-      
   ParameterValue _createResultProcessor(ActionMethodSource actionMethod) =>
       ParameterValue.named(
-        'resultProcessor',
-        Expression([
-          KeyWord.const$,
-          Code(' '),
+          'resultProcessor',
           Expression.callConstructor(
-              TypeFactory.create(actionMethod.resultProcessor))
-        ]),
-      );
+            TypeFactory.create(actionMethod.resultProcessor),
+            isConst: true,
+          ));
 }
 
 class ActionMethodPresentationType extends Type {
