@@ -71,13 +71,13 @@ class ServiceClassPresentationFactory extends CodeFactory {
         'actionMethods',
         _createActionMethodsGetterBody(serviceClass),
         annotations: [Annotation.override()],
-        type: ActionMethodPresentationType(),
+        type: Type.ofList(genericType: ActionMethodPresentationType()),
       );
 
   Expression _createActionMethodsGetterBody(ServiceClassSource serviceClass) =>
       Expression.ofList(serviceClass.actionMethods
           .map((actionMethod) =>
-              Expression.callMethodOrFunction(actionMethod.methodName))
+              Expression.ofVariable(actionMethod.methodName))
           .toList());
 
   List<Field> _createActionMethodFields(ServiceClassSource serviceClass) {

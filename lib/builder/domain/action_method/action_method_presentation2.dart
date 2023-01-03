@@ -30,8 +30,6 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   @override
   final double order;
 
-  final Object Function() methodOwnerFactory;
-
   /// Returns a information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
@@ -62,7 +60,6 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
     required this.description,
     required this.visible,
     required this.order,
-    required this.methodOwnerFactory,
     this.parameterType,
     required this.parameterProcessor,
     this.parameterFactory,
