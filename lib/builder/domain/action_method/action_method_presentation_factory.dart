@@ -35,6 +35,7 @@ class ActionMethodPresentationFactory {
         _createVisible(),
         _createOrder(order),
         _createParameterProcessor(actionMethod),
+        _createResultProcessor(actionMethod),
       ]);
 
   ParameterValue _createOrder(int order) =>
@@ -59,6 +60,18 @@ class ActionMethodPresentationFactory {
           Code(' '),
           Expression.callConstructor(
               TypeFactory.create(actionMethod.parameterProcessor))
+        ]),
+      );
+
+      
+  ParameterValue _createResultProcessor(ActionMethodSource actionMethod) =>
+      ParameterValue.named(
+        'resultProcessor',
+        Expression([
+          KeyWord.const$,
+          Code(' '),
+          Expression.callConstructor(
+              TypeFactory.create(actionMethod.resultProcessor))
         ]),
       );
 }
