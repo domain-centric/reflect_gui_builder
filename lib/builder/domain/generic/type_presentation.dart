@@ -2,8 +2,8 @@ import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 
 /// See [PresentationClass]
-/// a [LibraryMemberReflection]
-class LibraryMemberReflection {
+/// a [LibraryMemberPresentation]
+class LibraryMemberPresentation {
   /// Name of the library member.
   /// Examples:
   /// * myConstant
@@ -26,14 +26,14 @@ class LibraryMemberReflection {
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
   final Uri libraryMemberUri;
 
-  LibraryMemberReflection(
+  LibraryMemberPresentation(
       {required this.libraryMemberPath, required this.libraryUri})
       : libraryMemberUri = Uri.parse('$libraryUri/$libraryMemberPath');
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LibraryMemberReflection &&
+      other is LibraryMemberPresentation &&
           runtimeType == other.runtimeType &&
           libraryMemberUri == other.libraryMemberUri;
 
@@ -47,7 +47,7 @@ class LibraryMemberReflection {
 }
 
 /// See [PresentationClass]
-class ClassPresentation extends LibraryMemberReflection {
+class ClassPresentation extends LibraryMemberPresentation {
   final ClassPresentation? genericType;
   final String className;
 

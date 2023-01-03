@@ -3,7 +3,7 @@ import 'package:reflect_gui_builder/builder/domain/action_method_result_processo
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
-import '../generic/type_reflection.dart';
+import '../generic/type_presentation.dart';
 import '../item/item.dart';
 
 /// Implementations of a [ActionMethodPresentation] class are
