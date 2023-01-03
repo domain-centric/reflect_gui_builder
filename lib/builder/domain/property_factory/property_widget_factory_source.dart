@@ -48,7 +48,7 @@ class PropertyWidgetFactorySourceFactory
     for (var element in elements) {
       _validatePropertyWidgetFactoryElement(field, element);
 
-      var superClass = findSuperClass(element as InterfaceElement,
+      var superClass = findSuperClass(element,
           propertyWidgetFactoryLibraryUri, propertyWidgetFactoryName);
       var types = superClass!.typeArguments;
       if (types.isEmpty) {

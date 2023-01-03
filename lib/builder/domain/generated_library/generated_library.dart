@@ -1,6 +1,5 @@
 import 'package:build/build.dart';
 import 'package:dart_code/dart_code.dart';
-import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
 class GeneratedLibraries {

@@ -1,15 +1,8 @@
-import 'package:build/build.dart';
 import 'package:dart_code/dart_code.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
-import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart';
-import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
-import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
-import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
-import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
 /// See [PresentationClassFactory]
 class GeneratedApplicationPresentationFactory extends CodeFactory {
