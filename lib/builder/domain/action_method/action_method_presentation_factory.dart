@@ -34,6 +34,7 @@ class ActionMethodPresentationFactory {
         _createDescription(actionMethod),
         _createVisible(),
         _createOrder(order),
+        _createIcon(actionMethod),
         _createParameterProcessor(actionMethod),
         _createResultProcessor(actionMethod),
       ]);
@@ -53,20 +54,38 @@ class ActionMethodPresentationFactory {
           'name', TranslatableConstructorCall(actionMethod.name));
 
   ParameterValue _createParameterProcessor(ActionMethodSource actionMethod) =>
-      ParameterValue.named(
-          'parameterProcessor',
-          Expression.callConstructor(
-            TypeFactory.create(actionMethod.parameterProcessor),
-            isConst: true,
-          ));
+      ParameterValue.named('parameterProcessor',
+          _createParameterProcessorConstructorCall(actionMethod));
+
+  Expression _createParameterProcessorConstructorCall(
+          ActionMethodSource actionMethod) =>
+      Expression.callConstructor(
+        TypeFactory.create(actionMethod.parameterProcessor),
+        isConst: true,
+      );
 
   ParameterValue _createResultProcessor(ActionMethodSource actionMethod) =>
+      ParameterValue.named('resultProcessor',
+          _createResultProcessorConstructorCall(actionMethod));
+
+  Expression _createResultProcessorConstructorCall(
+      ActionMethodSource actionMethod) {
+    return Expression.callConstructor(
+      TypeFactory.create(actionMethod.resultProcessor),
+      isConst: true,
+    );
+  }
+
+  ParameterValue _createIcon(ActionMethodSource actionMethod) =>
       ParameterValue.named(
-          'resultProcessor',
-          Expression.callConstructor(
-            TypeFactory.create(actionMethod.resultProcessor),
-            isConst: true,
-          ));
+          'icon',
+          _createResultProcessorConstructorCall(actionMethod)
+              .getProperty('defaultIcon')
+              .ifNull(_createParameterProcessorConstructorCall(actionMethod)
+                  .getProperty('defaultIcon'))
+              .ifNull(Expression.ofType(Type('Icons',
+                      libraryUri: 'package:flutter/material.dart'))
+                  .getProperty('fiber_manual_record_rounded')));
 }
 
 class ActionMethodPresentationType extends Type {

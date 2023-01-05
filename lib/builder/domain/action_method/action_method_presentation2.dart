@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
@@ -29,7 +30,9 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   @override
   final double order;
 
-  /// Returns a information on the [ActionMethod]s parameter type.
+  final IconData icon;
+  
+  /// Returns information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
   /// * it could contain information on a [DomainClass] or [Enum].
@@ -59,10 +62,12 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
     required this.description,
     required this.visible,
     required this.order,
+    required this.icon,
     this.parameterType,
     required this.parameterProcessor,
     this.parameterFactory,
     this.resultType,
     required this.resultProcessor,
   });
+
 }
