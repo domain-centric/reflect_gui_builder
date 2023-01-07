@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../action_method/action_method.dart';
-import '../action_method/action_method_presentation2.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation2.dart';
 
 const dialogIcon = Icons.crop_7_5;
 const formIcon = Icons.table_rows_sharp;
@@ -17,7 +17,7 @@ const tableIcon = Icons.table_chart_sharp;
 ///
 ///  [ActionMethodResultProcessor]s are configured in the [ReflectGuiConfig]
 ///  These will be used to generate [ActionMethodSource] classes.
-abstract class ActionMethodResultProcessor<PARAMETER_TYPE> {
+abstract class ActionMethodResultProcessor<RESULT_TYPE> {
   const ActionMethodResultProcessor();
 
   /// Default icon if any
@@ -25,12 +25,13 @@ abstract class ActionMethodResultProcessor<PARAMETER_TYPE> {
 
   ///  Call's the action method (with or without parameter) and shows
   ///  the result in the user interface.
-  ///  There will be multiple implementations for different result types [T].
+  ///  There will be multiple implementations for different result types [RESULT_TYPE].
   void process(
     BuildContext context,
-    ActionMethodPresentation actionMethod,
-    PARAMETER_TYPE actionMethodParameter,
-  );
+    Object actionMethodOwner,
+    ActionMethodPresentation actionMethod, [
+    Object? actionMethodParameter,
+  ]);
 }
 
 class ShowMethodExecutedSnackBar extends ActionMethodResultProcessor<void> {
@@ -40,18 +41,10 @@ class ShowMethodExecutedSnackBar extends ActionMethodResultProcessor<void> {
   IconData? get defaultIcon => null;
 
   @override
-  void process(
-    BuildContext context,
-    ActionMethodPresentation actionMethod,
-    void actionMethodParameter,
-  ) {
-    // TODO: implement call
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text(
-    //         '${actionMethodInfo.name} has executed successfully.'), //TODO make multilingual
-    //   ),
-    // );
+  void process(BuildContext context, Object actionMethodOwner,
+      ActionMethodPresentation actionMethod,
+      [Object? actionMethodParameter]) {
+    // TODO: implement process
   }
 }
 
@@ -63,12 +56,10 @@ class ShowStringInDialog extends ActionMethodResultProcessor<String> {
   IconData? get defaultIcon => dialogIcon;
 
   @override
-  void process(
-    BuildContext context,
-    ActionMethodPresentation actionMethod,
-    void actionMethodParameter,
-  ) {
-    // TODO: implement
+  void process(BuildContext context, Object actionMethodOwner,
+      ActionMethodPresentation actionMethod,
+      [Object? actionMethodParameter]) {
+    // TODO: implement process
   }
 }
 
@@ -83,12 +74,9 @@ class ShowDomainObjectInReadonlyFormTab extends ActionMethodResultProcessor<
   IconData? get defaultIcon => formIcon;
 
   @override
-  void process(
-    BuildContext context,
-    ActionMethodPresentation actionMethod,
-    Object actionMethodParameter,
-  ) {
-    // TODO: implement call
+  void process(BuildContext context, Object actionMethodOwner,
+      ActionMethodPresentation actionMethod,
+      [Object? actionMethodParameter]) {
     /// TODO: use [ActionMethodReflection.resultDomainReflection]
     // var tabs = Provider.of<Tabs>(context, listen: false);
     // var formTab =
@@ -109,8 +97,9 @@ class ShowListInTableTab extends ActionMethodResultProcessor<
   IconData? get defaultIcon => tableIcon;
 
   @override
-  void process(BuildContext context, ActionMethodPresentation actionMethod,
-      List<Object> actionMethodParameter) {
+  void process(BuildContext context, Object actionMethodOwner,
+      ActionMethodPresentation actionMethod,
+      [Object? actionMethodParameter]) {
     // TODO: implement call
     /// TODO: use [ActionMethodReflection.resultDomainReflection]
     // var tabs = Provider.of<Tabs>(context, listen: false);

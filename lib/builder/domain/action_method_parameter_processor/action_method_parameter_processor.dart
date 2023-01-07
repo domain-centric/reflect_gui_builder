@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../action_method/action_method.dart';
-import '../action_method/action_method_presentation2.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation2.dart';
 
 const dialogIcon = Icons.crop_7_5;
 const formIcon = Icons.table_rows_sharp;
@@ -28,6 +28,7 @@ abstract class ActionMethodParameterProcessor<PARAMETER_TYPE> {
 
   void process(
     BuildContext context,
+    Object actionMethodOwner,
     ActionMethodPresentation actionMethod,
     PARAMETER_TYPE actionMethodParameter,
   );
@@ -40,8 +41,12 @@ class EditEnumInDialog extends ActionMethodParameterProcessor<Enum> {
   IconData? get defaultIcon => dialogIcon;
 
   @override
-  void process(Object context, ActionMethodPresentation actionMethod,
-      Object actionMethodParameter) {
+  void process(
+    Object context,
+    Object actionMethodOwner,
+    ActionMethodPresentation actionMethod,
+    Object actionMethodParameter,
+  ) {
     //TODO put in form OK button:  actionMethod.resultProcessor.process(context, enumValue);
   }
 }
@@ -54,8 +59,12 @@ class EditDomainObjectParameterInForm
   IconData? get defaultIcon => formIcon;
 
   @override
-  void process(Object context, ActionMethodPresentation actionMethod,
-      Object actionMethodParameter) {
+  void process(
+    Object context,
+    Object actionMethodOwner,
+    ActionMethodPresentation actionMethod,
+    Object actionMethodParameter,
+  ) {
     // Tabs tabs = Provider.of<Tabs>(context, listen: false);
     //   FormExampleTab formTab = FormExampleTab(actionMethod);
     //   tabs.add(formTab);
@@ -73,10 +82,12 @@ class ProcessResultDirectlyWhenThereIsNoParameter
   @override
   void process(
     BuildContext context,
+    Object actionMethodOwner,
     ActionMethodPresentation actionMethod,
     void actionMethodParameter,
   ) {
-    actionMethod.resultProcessor.process(context, actionMethod, null);
+    actionMethod.resultProcessor
+        .process(context, actionMethodOwner, actionMethod);
   }
 }
 
@@ -91,6 +102,7 @@ class EditStringParameterInDialog
   @override
   void process(
     BuildContext context,
+    Object actionMethodOwner,
     ActionMethodPresentation actionMethod,
     String actionMethodParameter,
   ) {
