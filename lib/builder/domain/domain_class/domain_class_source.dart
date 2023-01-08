@@ -1,25 +1,30 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
+import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
-
-import '../generic/type_source.dart';
-import '../application/application_presentation_source.dart';
-import '../generic/source_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 
 /// Contains information on a [DomainClass] source code.
 /// See [SourceClass]
 class DomainClassSource extends ClassSource {
+  final Translatable name;
+  final Translatable description;
   final List<PropertySource> properties;
 
   DomainClassSource({
     required super.libraryUri,
     required super.className,
+    required this.name,
+    required this.description,
     required this.properties,
   });
 
- @override
+  @override
   String toString() => ToStringBuilder(runtimeType.toString())
       .add('libraryMemberUri', libraryMemberUri)
       .add('genericTypes', genericTypes)
@@ -66,6 +71,8 @@ class DomainSourceFactory extends SourceFactory {
     return DomainClassSource(
       libraryUri: libraryUri,
       className: className,
+      name: _createName(element),
+      description: _createDescription(element),
       properties: properties,
     );
   }
@@ -89,4 +96,24 @@ class DomainSourceFactory extends SourceFactory {
             .startsWith('package:reflect_gui_builder/builder/domain') &&
         PropertySourceFactory().hasProperty(element);
   }
+
+    Translatable _createName(ClassElement domainClassElement) => Translatable(
+      key: _createNameKey(domainClassElement),
+      englishText: _createNameText(domainClassElement));
+
+  String _createNameKey(ClassElement domainClassElement) =>
+      '${domainClassElement.asLibraryMemberPath}.name';
+  String _createNameText(ClassElement domainClassElement) =>
+     domainClassElement.name.titleCase;
+
+  Translatable _createDescription(ClassElement domainClassElement) =>
+      Translatable(
+          key: _createDescriptionKey(domainClassElement),
+          englishText: _createDescriptionText(domainClassElement));
+
+  String _createDescriptionKey(ClassElement domainClassElement) =>
+      '${domainClassElement.asLibraryMemberPath}.description';
+
+  String _createDescriptionText(ClassElement domainClassElement) =>
+      _createNameText(domainClassElement);
 }
