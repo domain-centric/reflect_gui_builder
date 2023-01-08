@@ -33,7 +33,7 @@ class DomainClassPresentationFactory extends CodeFactory {
 
   List<Field> _createFields(DomainClassSource domainClass) => [
         _createTranslatableField('name', domainClass.name),
-        _createTranslatableField('typeDescription', domainClass.description),
+        _createTranslatableField('description', domainClass.description),
         ///..._createActionMethodFields(domainClass),
         ..._createPropertyFields(domainClass),
       ];
