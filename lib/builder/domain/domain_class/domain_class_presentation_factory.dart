@@ -32,7 +32,7 @@ class DomainClassPresentationFactory extends CodeFactory {
           'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation.dart');
 
   List<Field> _createFields(DomainClassSource domainClass) => [
-        _createTranslatableField('typeName', domainClass.name),
+        _createTranslatableField('name', domainClass.name),
         _createTranslatableField('typeDescription', domainClass.description),
         ///..._createActionMethodFields(domainClass),
         ..._createPropertyFields(domainClass),
