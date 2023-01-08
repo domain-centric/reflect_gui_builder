@@ -32,7 +32,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
 
   Type _createSuperClass() => Type('ServiceClassPresentation',
       libraryUri:
-          'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation2.dart');
+          'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart');
 
   List<Field> _createFields(ServiceClassSource serviceClass, int index) => [
         _createTranslatableField('name', serviceClass.name),
