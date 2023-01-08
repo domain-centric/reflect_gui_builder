@@ -10,7 +10,7 @@ class PresentationOutputPathFactory {
   PresentationOutputPathFactory(this.builder) {
     ///TODO get inputPath and outputPath from build options (or use these default values)
     String inputPath = '^lib/{{}}.dart';
-    String outputPath = 'lib/{{}}_presentation.dart';
+    String outputPath = 'lib/{{}}.presentation.dart';
     _parsedExtension = _ParsedBuildOutput.parse(builder, inputPath, outputPath);
   }
 

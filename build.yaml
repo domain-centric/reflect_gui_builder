@@ -16,15 +16,15 @@ builders:
     import: 'package:reflect_gui_builder/builder/builder_factory.dart'
     builder_factories: ['reflectPresentationLibraryBuilder']
     build_extensions:
-      '.dart': # This is ignored. See ReflectPresentationLibraryBuilder.buildExtensions
-        - '.noOutput' # This is ignored. See ReflectPresentationLibraryBuilder.buildExtensions
+      '.ignored1': # This is ignored. See ReflectPresentationLibraryBuilder.buildExtensions
+        - '.ignored2' # This is ignored. See ReflectPresentationLibraryBuilder.buildExtensions
     auto_apply: root_package
     runs_before: [reflect_gui_builder|reflectPresentationLibraryWriter]
   reflectPresentationLibraryWriter:
     import: 'package:reflect_gui_builder/builder/builder_factory.dart'
     builder_factories: ['reflectPresentationLibraryWriter']
     build_extensions:
-      '^lib/{{}}.dart':
-        - '^lib/{{}}_presentation.dart'
+      '.ignored1': # This is ignored. See ReflectPresentationLibraryWriter.buildExtensions
+        - '.ignored2'# This is ignored. See ReflectPresentationLibraryWriter.buildExtensions
     build_to: source
     auto_apply: root_package

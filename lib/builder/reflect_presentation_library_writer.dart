@@ -41,6 +41,6 @@ class ReflectPresentationLibraryWriter extends Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.dart': ['_presentation.dart'] //TODO get from build.yaml options
+        '.dart': ['.presentation.dart'] //TODO get from build.yaml options
       };
 }
