@@ -92,5 +92,5 @@ class ActionMethodPresentationType extends Type {
   ActionMethodPresentationType()
       : super('ActionMethodPresentation',
             libraryUri:
-                'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation2.dart');
+                'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart');
 }
