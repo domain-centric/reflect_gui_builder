@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/application/generated_application_presentation_factory.dart';
@@ -37,6 +38,7 @@ class ReflectPresentationLibraryBuilder extends Builder {
 
           GeneratedApplicationPresentationFactory(context).populate();
           ServiceClassPresentationFactory(context).populate();
+          DomainClassPresentationFactory(context).populate();
         }
       }
 

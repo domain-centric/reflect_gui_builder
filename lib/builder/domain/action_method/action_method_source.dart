@@ -24,7 +24,7 @@ class ActionMethodSource extends LibraryMemberSource {
   final ActionMethodResultProcessorSource resultProcessor;
 
   ActionMethodSource(
-      {required Uri libraryUri,
+      {required super.libraryUri,
       required this.className,
       required this.methodName,
       required this.name,
@@ -33,9 +33,7 @@ class ActionMethodSource extends LibraryMemberSource {
       required this.parameterProcessor,
       this.resultType,
       required this.resultProcessor})
-      : super(
-            libraryUri: libraryUri,
-            libraryMemberPath: '$className.$methodName');
+      : super(libraryMemberPath: '$className.$methodName');
 
   /// Finds all the [ClassSource]s that are used in this [ActionMethod].
   /// It will also get [ClassSource]s used inside the

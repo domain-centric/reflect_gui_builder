@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 
 import '../generic/type_source.dart';
 import '../application/application_presentation_source.dart';
@@ -9,7 +11,20 @@ import '../generic/source_factory.dart';
 /// Contains information on a [DomainClass] source code.
 /// See [SourceClass]
 class DomainClassSource extends ClassSource {
-  DomainClassSource({required super.libraryUri, required super.className});
+  final List<PropertySource> properties;
+
+  DomainClassSource({
+    required super.libraryUri,
+    required super.className,
+    required this.properties,
+  });
+
+ @override
+  String toString() => ToStringBuilder(runtimeType.toString())
+      .add('libraryMemberUri', libraryMemberUri)
+      .add('genericTypes', genericTypes)
+      .add('properties', properties)
+      .toString();
 
   /// [DomainClassSource]s are created once for each class
   /// by the [TypeSourceFactory].
@@ -47,7 +62,12 @@ class DomainSourceFactory extends SourceFactory {
       return existingDomainClass;
     }
 
-    return DomainClassSource(libraryUri: libraryUri, className: className);
+    var properties = PropertySourceFactory().create(element as ClassElement);
+    return DomainClassSource(
+      libraryUri: libraryUri,
+      className: className,
+      properties: properties,
+    );
   }
 
   DomainClassSource? _findExistingDomainClass(
@@ -66,7 +86,7 @@ class DomainSourceFactory extends SourceFactory {
         hasNamelessConstructorWithoutParameters(element) &&
         !element.asLibraryMemberPath.startsWith('dart:') &&
         !element.asLibraryMemberPath
-            .startsWith('package:reflect_gui_builder/builder/domain');
-    //TODO _validateIfHasAtLeastOneProperty;
+            .startsWith('package:reflect_gui_builder/builder/domain') &&
+        PropertySourceFactory().hasProperty(element);
   }
 }
