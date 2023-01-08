@@ -16,14 +16,16 @@ class ReflectPresentationLibraryWriter extends Builder {
       if (generatedLibraries.isEmpty) {
         throw ('No class found that extends $ApplicationPresentation');
       }
-      var inputLibraryUri = buildStep.inputId.uri;
+
+      var inputLibrary = await buildStep.inputLibrary;
+      var inputLibraryUri = inputLibrary.source.uri;
       var generatedLibrary =
           generatedLibraries.inputUrisAndLibraries[inputLibraryUri.toString()];
 
       if (generatedLibrary != null) {
         var outputAssetId = _createOutputAssetId(inputLibraryUri);
         var libraryCode = generatedLibrary.toString();
-        print('\nWRITING\n${outputAssetId.uri}\n$libraryCode\n');
+        // print('\nWRITING\n${outputAssetId.uri}\n$libraryCode\n');
         buildStep.writeAsString(outputAssetId, libraryCode);
       }
     } catch (e, stackTrace) {

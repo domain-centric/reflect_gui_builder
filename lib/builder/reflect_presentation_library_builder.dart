@@ -23,43 +23,35 @@ class ReflectPresentationLibraryBuilder extends Builder {
     try {
       var library = await buildStep.inputLibrary;
 
-      var sourceFactory = ApplicationPresentationSourceFactory();
-      var generatedLibraries =
-          await buildStep.fetchResource<GeneratedLibraries>(resource);
+      if (libraryToInclude(library)) {
+        print('--${library.source}');
 
-      for (var topElement in library.topLevelElements) {
-        if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
-          var applicationPresentationSource =
-              sourceFactory.create(this, topElement as ClassElement);
-          //log.info('\n$applicationPresentationSource');
+        var generatedLibraries =
+            await buildStep.fetchResource<GeneratedLibraries>(resource);
 
-          CodeFactoryContext context = CodeFactoryContext(
-              this, generatedLibraries, applicationPresentationSource);
-
-          GeneratedApplicationPresentationFactory(context).populate();
-          ServiceClassPresentationFactory(context).populate();
-          DomainClassPresentationFactory(context).populate();
-        }
+        _populateGeneratedLibraries(library, generatedLibraries);
       }
-
-//TODO remove commented code
-
-      // if (generatedLibraries.inputUrisAndLibraries.isNotEmpty) {
-      //   log.info('\n${generatedLibraries.inputUrisAndLibraries}');
-      //   var outputAssetIdsAndLibraries =
-      //       generatedLibraries.outputAssetIdsAndLibraries;
-      //   for (var entry in outputAssetIdsAndLibraries.entries) {
-      //     var outputAssetId = entry.key;
-      //     // var outputFile = _createOutputFile(outputAssetId);
-      //     // FutureOr<String> generatedLibraryCode = Future.value(entry.value);
-      //     // outputFile.writeAsString(entry.value);
-      //     // TODO buildStep.writeAsString(outputAssetId, generatedLibraryCode);
-      //   }
-      // }
-
-      //TODO throw an error when no ReflectGuiConfiguration implementations are found
     } catch (e, stackTrace) {
       log.severe('Failed\n$e\n$stackTrace');
+    }
+  }
+
+  void _populateGeneratedLibraries(
+      LibraryElement library, GeneratedLibraries generatedLibraries) {
+    var sourceFactory = ApplicationPresentationSourceFactory();
+    for (var topElement in library.topLevelElements) {
+      if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
+        var applicationPresentationSource =
+            sourceFactory.create(this, topElement as ClassElement);
+        //log.info('\n$applicationPresentationSource');
+
+        CodeFactoryContext context = CodeFactoryContext(
+            this, generatedLibraries, applicationPresentationSource);
+
+        GeneratedApplicationPresentationFactory(context).populate();
+        ServiceClassPresentationFactory(context).populate();
+        DomainClassPresentationFactory(context).populate();
+      }
     }
   }
 
@@ -95,3 +87,8 @@ class ReflectPresentationLibraryBuilder extends Builder {
         ]
       };
 }
+
+/// No need to process the dart files in: package:reflect_gui_builder/builder/
+bool libraryToInclude(LibraryElement library) => !library.source.uri
+    .toString()
+    .startsWith('package:reflect_gui_builder/builder/');

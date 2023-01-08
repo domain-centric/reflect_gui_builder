@@ -3,6 +3,7 @@ targets:
     builders:
       reflect_gui_builder|reflectPresentationLibraryBuilder:
         generate_for:
+          include:
           - lib/**.dart
         enabled: True
       reflect_gui_builder|reflectPresentationLibraryWriter:
