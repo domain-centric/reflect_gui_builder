@@ -49,11 +49,11 @@ class ServiceClassPresentationFactory extends CodeFactory {
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
 
-  _createOrderField(int index) => Field(
+  _createOrderField(int order) => Field(
         'order',
         modifier: Modifier.final$,
         annotations: [Annotation.override()],
-        value: Expression.ofInt(index),
+        value: Expression.ofInt(order),
       );
 
   _createVisibleField() => Field('visible',

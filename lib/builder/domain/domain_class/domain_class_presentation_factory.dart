@@ -12,16 +12,27 @@ class DomainClassPresentationFactory extends CodeFactory {
   void populate() {
     for (var domainClass in application.domainClasses) {
       var librarySourceUri = domainClass.libraryUri.toString();
-      var classToAdd = _createClass(domainClass);
-      generatedLibraries.addClass(librarySourceUri, classToAdd);
+      var classes = _createClasses(domainClass);
+      for (var aClass in classes) {
+        generatedLibraries.addClass(librarySourceUri, aClass);
+      }
     }
   }
 
-  Class _createClass(DomainClassSource domainClass) => Class(
+  List<Class> _createClasses(DomainClassSource domainClassSource) {
+    var propertyClasses =
+        PropertyPresentationFactory().createClasses(domainClassSource);
+    var domainClass = _createDomainClass(domainClassSource, propertyClasses);
+    return [domainClass, ...propertyClasses];
+  }
+
+  Class _createDomainClass(
+          DomainClassSource domainClass, List<Class> propertyClasses) =>
+      Class(
         _createClassName(domainClass),
         superClass: _createSuperClass(),
         fields: _createFields(domainClass),
-        methods: _createMethods(domainClass),
+        methods: _createMethods(domainClass, propertyClasses),
       );
 
   String _createClassName(DomainClassSource domainClass) =>
@@ -34,8 +45,6 @@ class DomainClassPresentationFactory extends CodeFactory {
   List<Field> _createFields(DomainClassSource domainClass) => [
         _createTranslatableField('name', domainClass.name),
         _createTranslatableField('description', domainClass.description),
-        ///..._createActionMethodFields(domainClass),
-        ..._createPropertyFields(domainClass),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -44,9 +53,13 @@ class DomainClassPresentationFactory extends CodeFactory {
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
 
-  List<Method> _createMethods(DomainClassSource domainClass) => [
+  List<Method> _createMethods(
+    DomainClassSource domainClass,
+    List<Class> propertyClasses,
+  ) =>
+      [
         // _createActionMethodsGetter(serviceClass),
-        _createPropertiesGetter(domainClass),
+        _createPropertiesGetter(domainClass, propertyClasses),
       ];
 
   /// e.g. List<ActionMethodPresentation> get actionMethods => [allCustomers];
@@ -59,13 +72,15 @@ class DomainClassPresentationFactory extends CodeFactory {
   //       type: Type.ofList(genericType: ActionMethodPresentationType()),
   //     );
 
-  Method _createPropertiesGetter(DomainClassSource domainClass) =>
+  Method _createPropertiesGetter(
+    DomainClassSource domainClass,
+    List<Class> propertyClasses,
+  ) =>
       Method.getter(
         'properties',
-        _createPropertiesGetterBody(domainClass),
+        _createPropertiesGetterBody(propertyClasses),
         annotations: [Annotation.override()],
-         type: Type.ofList(genericType: PropertyPresentationType()),
-       
+        type: Type.ofList(genericType: PropertyPresentationType()),
       );
 
   // Expression _createActionMethodsGetterBody(DomainClassSource domainClass) =>
@@ -73,20 +88,12 @@ class DomainClassPresentationFactory extends CodeFactory {
   //         .map((actionMethod) => Expression.ofVariable(actionMethod.methodName))
   //         .toList());
 
-  Expression _createPropertiesGetterBody(DomainClassSource domainClass) =>
-      Expression.ofList(domainClass.properties
-          .map((property) => Expression.ofVariable(property.propertyName))
+  Expression _createPropertiesGetterBody(List<Class> propertyClasses) =>
+      Expression.ofList(propertyClasses
+          .map((propertyClass) =>
+              Expression.callConstructor(Type(_className(propertyClass))))
           .toList());
 
-  List<Field> _createPropertyFields(DomainClassSource domainClass) {
-    final presentationFactory = PropertyPresentationFactory();
-    var fields = <Field>[];
-    var order = 0;
-    for (var property in domainClass.properties) {
-      order += 100;
-      var field = presentationFactory.create(property, order);
-      fields.add(field);
-    }
-    return fields;
-  }
+  String _className(Class propertyClass) =>
+      CodeFormatter().unFormatted(propertyClass.name);
 }
