@@ -31,7 +31,7 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   final double order;
 
   final IconData icon;
-  
+
   /// Returns information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
@@ -57,6 +57,10 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
 
   final ActionMethodResultProcessor<RESULT_TYPE> resultProcessor;
 
+  /// TODO final ExecutionMode executionMode
+
+  /// TODO final PARAMETER_TYPE? Function() parameterFactoryFunction
+  
   ActionMethodPresentation({
     required this.name,
     required this.description,
@@ -69,5 +73,4 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
     this.resultType,
     required this.resultProcessor,
   });
-
 }
