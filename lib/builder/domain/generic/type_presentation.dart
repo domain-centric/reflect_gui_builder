@@ -18,7 +18,7 @@ class LibraryMemberPresentation {
   /// Examples:
   /// * dart:core
   /// * package:my_package/by_directory/my_lib.dart
-  final Uri libraryUri;
+  final String libraryUri;
 
   /// A [Uri] to the library member: ([libraryUri]/[libraryMemberPath])
   /// Examples:
@@ -52,8 +52,8 @@ class ClassPresentation extends LibraryMemberPresentation {
   final String className;
 
   ClassPresentation(
-      {required Uri libraryUri, required this.className, this.genericType})
-      : super(libraryUri: libraryUri, libraryMemberPath: className);
+      {required super.libraryUri, required this.className, this.genericType})
+      : super(libraryMemberPath: className);
 
   @override
   String toString() {

@@ -60,7 +60,7 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   /// TODO final ExecutionMode executionMode
 
   /// TODO final PARAMETER_TYPE? Function() parameterFactoryFunction
-  
+
   ActionMethodPresentation({
     required this.name,
     required this.description,

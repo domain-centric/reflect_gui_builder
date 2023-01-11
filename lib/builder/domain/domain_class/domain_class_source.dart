@@ -97,14 +97,14 @@ class DomainSourceFactory extends SourceFactory {
         PropertySourceFactory().hasProperty(element);
   }
 
-    Translatable _createName(ClassElement domainClassElement) => Translatable(
+  Translatable _createName(ClassElement domainClassElement) => Translatable(
       key: _createNameKey(domainClassElement),
       englishText: _createNameText(domainClassElement));
 
   String _createNameKey(ClassElement domainClassElement) =>
       '${domainClassElement.asLibraryMemberPath}.name';
   String _createNameText(ClassElement domainClassElement) =>
-     domainClassElement.name.titleCase;
+      domainClassElement.name.titleCase;
 
   Translatable _createDescription(ClassElement domainClassElement) =>
       Translatable(

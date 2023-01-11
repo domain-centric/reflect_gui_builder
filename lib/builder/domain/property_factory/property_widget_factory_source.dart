@@ -48,8 +48,8 @@ class PropertyWidgetFactorySourceFactory
     for (var element in elements) {
       _validatePropertyWidgetFactoryElement(field, element);
 
-      var superClass = findSuperClass(element,
-          propertyWidgetFactoryLibraryUri, propertyWidgetFactoryName);
+      var superClass = findSuperClass(
+          element, propertyWidgetFactoryLibraryUri, propertyWidgetFactoryName);
       var types = superClass!.typeArguments;
       if (types.isEmpty) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');

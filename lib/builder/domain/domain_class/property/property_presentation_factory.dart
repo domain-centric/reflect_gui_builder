@@ -2,6 +2,7 @@ import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:recase/recase.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
@@ -33,6 +34,7 @@ class PropertyPresentationFactory {
         _createTranslatableField('description', property.description),
         _createOrderField(order),
         _createVisibleField(),
+        _createTypeField(property),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -52,6 +54,30 @@ class PropertyPresentationFactory {
       modifier: Modifier.final$,
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
+
+  _createTypeField(PropertySource property) => Field(
+        'type',
+        modifier: Modifier.final$,
+        annotations: [Annotation.override()],
+        value: _createTypeConstructorCall(property),
+      );
+
+  Expression _createTypeConstructorCall(PropertySource property) =>
+      Expression.callConstructor(_createClassPresentationType(property),
+          parameterValues: _createTypeConstructorCallParameterValues());
+
+  ParameterValues _createTypeConstructorCallParameterValues() {
+    //TODO return correct type
+    return ParameterValues([
+      ParameterValue.named('libraryUri', Expression.ofString('dart:core')),
+      ParameterValue.named('className', Expression.ofString('String')),
+    ]);
+  }
+
+  Type _createClassPresentationType(PropertySource property) => Type(
+      'ClassPresentation',
+      libraryUri:
+          'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart'); //TODO return correct type
 }
 
 class PropertyPresentationType extends Type {

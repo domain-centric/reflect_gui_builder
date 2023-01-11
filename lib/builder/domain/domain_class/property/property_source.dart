@@ -22,7 +22,7 @@ class PropertySource extends LibraryMemberSource {
     required this.name,
     required this.description,
     required this.type,
-  }): super(libraryMemberPath: '$className.$propertyName');
+  }) : super(libraryMemberPath: '$className.$propertyName');
 
   @override
   String toString() => ToStringBuilder('$PropertySource')

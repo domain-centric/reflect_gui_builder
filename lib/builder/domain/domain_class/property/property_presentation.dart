@@ -1,8 +1,7 @@
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/item/item.dart';
-import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory_source.dart';
-
+import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart';
 
 /// Implementations of a [PropertyPresentation] class are
 /// generated classes that contain [Property] information for the
@@ -12,11 +11,8 @@ import 'package:reflect_gui_builder/builder/domain/property_factory/property_wid
 /// * int: when it is a [Dart] [int] type
 /// * Person: when it is a [DomainClass]
 /// * List<Person>: a [Collection] of [DomainClass]es
-abstract class PropertyPresentation<TYPE>
-    extends DynamicItem {
-
+abstract class PropertyPresentation<TYPE> extends DynamicItem {
   ClassPresentation get type;
 
-  PropertyWidgetFactorySource get widgetFactory;
-
+  PropertyWidgetFactory get widgetFactory;
 }
