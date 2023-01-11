@@ -44,9 +44,8 @@ class PresentationOutputPathFactory {
   String createOutputClassName(String inputClassName) =>
       '\$${presentationSuffix.removeFirst(inputClassName)}Presentation';
 
-  AssetId createOutputAssetId(Uri importUri) {
-    //AssetId assetIdInput = ImportAssetId(importUri);
-    AssetId assetIdInput = AssetId.resolve(importUri);
+  AssetId createOutputAssetId(String importUri) {
+    AssetId assetIdInput = AssetId.resolve(Uri.parse(importUri));
     return _expectedOutput(builder, assetIdInput);
   }
 
@@ -60,10 +59,10 @@ class PresentationOutputPathFactory {
   ///
   /// build_extensions:
   ///    ^lib/{{}}.dart:
-  ///      - lib/{{}}_presentation.dart
+  ///      - lib/{{}}.presentation.dart
   ///
   /// converts: package:my_app/..../person/person_domain.dart
-  /// to:       package:my_app/..../person/person_domain_presentation.dart
+  /// to:       package:my_app/..../person/person_domain.presentation.dart
   ///
   /// Example2:
   ///
@@ -76,8 +75,8 @@ class PresentationOutputPathFactory {
   ///
   /// Note that the build_to parameter defines if the files will be written in
   /// the cache or source folder.
-  Uri createOutputUri(Uri importUriInput) {
-    var outputAssetId = createOutputAssetId(importUriInput);
+  Uri createOutputUri(String inputUri) {
+    var outputAssetId = createOutputAssetId(inputUri);
     var outputUri = outputAssetId.uri;
     return outputUri;
   }

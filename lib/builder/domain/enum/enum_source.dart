@@ -73,7 +73,7 @@ class EnumSourceFactory extends SourceFactory {
         actionMethods: []); //TODO);
   }
 
-  EnumSource? _findExistingEnum(Uri libraryUri, String className) {
+  EnumSource? _findExistingEnum(String libraryUri, String className) {
     var enums = context.applicationPresentation.enums;
     var existingEnum = enums.firstWhereOrNull((enumSource) =>
         enumSource.libraryUri == libraryUri &&

@@ -94,7 +94,7 @@ class PropertySourceFactory {
     String propertyType = field.type.toString(); //TODO use TypeSourceFactory
     var widgetFactory = _createWidgetFactory();
     return PropertySource(
-      libraryUri: field.enclosingElement.source!.uri,
+      libraryUri: field.enclosingElement.source!.uri.toString(),
       className: field.enclosingElement.name!,
       propertyName: field.displayName,
       propertyType: propertyType,
@@ -105,8 +105,7 @@ class PropertySourceFactory {
   }
 
   ClassSource _createWidgetFactory() => ClassSource(
-      libraryUri: Uri.parse(
-          'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart'),
+      libraryUri: 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart',
       className: 'StringWidgetFactory');
 
   bool _isValidProperty(FieldElement field) =>

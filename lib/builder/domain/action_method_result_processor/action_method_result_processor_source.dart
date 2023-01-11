@@ -13,8 +13,8 @@ class ActionMethodResultProcessorSource extends ClassSource {
   final ClassSource? resultType;
 
   ActionMethodResultProcessorSource(
-      {required Uri libraryUri, required String className, this.resultType})
-      : super(libraryUri: libraryUri, className: className);
+      {required super.libraryUri, required String className, this.resultType})
+      : super( className: className);
 
   /// returns true if the result type is supported
   /// by the [ActionMethodResultProcessorSource]
@@ -55,7 +55,7 @@ class ActionMethodResultProcessorSourceFactory
       _validate(field, element);
 
       var processor = ActionMethodResultProcessorSource(
-          libraryUri: element.library.source.uri,
+          libraryUri: element.library.source.uri.toString(),
           className: element.name,
           resultType: _createResultType(element));
 

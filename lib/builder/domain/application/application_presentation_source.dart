@@ -133,10 +133,10 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
     );
   }
 
-  _createLibraryUri(ClassElement applicationPresentationElement) =>
-      applicationPresentationElement.library.source.uri;
+  String _createLibraryUri(ClassElement applicationPresentationElement) =>
+      applicationPresentationElement.library.source.uri.toString();
 
-  _createClassName(ClassElement applicationPresentationElement) =>
+  String _createClassName(ClassElement applicationPresentationElement) =>
       applicationPresentationElement.name;
 
   Translatable _createName(ClassElement applicationPresentationElement) =>

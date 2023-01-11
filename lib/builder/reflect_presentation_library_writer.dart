@@ -18,7 +18,7 @@ class ReflectPresentationLibraryWriter extends Builder {
       }
 
       var inputLibrary = await buildStep.inputLibrary;
-      var inputLibraryUri = inputLibrary.source.uri;
+      var inputLibraryUri = inputLibrary.source.uri.toString();
       var generatedLibrary =
           generatedLibraries.inputUrisAndLibraries[inputLibraryUri.toString()];
 
@@ -33,7 +33,7 @@ class ReflectPresentationLibraryWriter extends Builder {
     }
   }
 
-  AssetId _createOutputAssetId(Uri inputLibraryUri) {
+  AssetId _createOutputAssetId(String inputLibraryUri) {
     var outputPathFactory = PresentationOutputPathFactory(this);
     var outputAssetId = outputPathFactory.createOutputAssetId(inputLibraryUri);
     return outputAssetId;

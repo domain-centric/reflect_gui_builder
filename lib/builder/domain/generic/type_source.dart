@@ -21,21 +21,21 @@ class LibraryMemberSource {
   /// * MyEnum.myValue
   final String libraryMemberPath;
 
-  /// A [Uri] to the library
+  /// A Uri to the library
   /// Examples:
   /// * dart:core
   /// * package:my_package/by_directory/my_lib.dart
-  final Uri libraryUri;
+  final String libraryUri;
 
   /// A [Uri] to the library member: ([libraryUri]/[libraryMemberPath])
   /// Examples:
   /// * dart:core/String
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
-  final Uri libraryMemberUri;
+  final String libraryMemberUri;
 
   LibraryMemberSource(
       {required this.libraryMemberPath, required this.libraryUri})
-      : libraryMemberUri = Uri.parse('$libraryUri/$libraryMemberPath');
+      : libraryMemberUri = '$libraryUri/$libraryMemberPath';
 
   @override
   bool operator ==(Object other) =>
@@ -131,7 +131,7 @@ class TypeSourceFactory {
       .getDisplayString(withNullability: false)
       .replaceFirst(noneLetterSuffix, '');
 
-  static Uri libraryUri(InterfaceElement element) => element.library.source.uri;
+  static String libraryUri(InterfaceElement element) => element.library.source.uri.toString();
 
   List<ClassSource> _genericTypes(InterfaceType type) {
     var genericTypes = <ClassSource>[];

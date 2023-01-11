@@ -12,8 +12,8 @@ class ActionMethodParameterProcessorSource extends ClassSource {
   final ClassSource? parameterType;
 
   ActionMethodParameterProcessorSource(
-      {required Uri libraryUri, required String className, this.parameterType})
-      : super(libraryUri: libraryUri, className: className);
+      {required super.libraryUri, required String className, this.parameterType})
+      : super(className: className);
 
   /// returns true if the parameter type is supported
   /// by the [ActionMethodParameterProcessorSource]
@@ -56,7 +56,7 @@ class ActionMethodParameterProcessorSourceFactory
       _validate(field, element);
 
       var processor = ActionMethodParameterProcessorSource(
-          libraryUri: element.library.source.uri,
+          libraryUri: element.library.source.uri.toString(),
           className: element.name,
           parameterType: _createParameterType(element, field));
 
@@ -85,7 +85,7 @@ class ActionMethodParameterProcessorSourceFactory
       return null;
     }
     var parameterType = ClassSource(
-        libraryUri: genericElement.library!.source.uri,
+        libraryUri: genericElement.library!.source.uri.toString(),
         className: genericElement.name!);
     return parameterType;
   }

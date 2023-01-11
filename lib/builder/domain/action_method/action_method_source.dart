@@ -102,7 +102,7 @@ class ActionMethodSourceFactory extends SourceFactory {
     }
 
     return ActionMethodSource(
-        libraryUri: methodElement.library.source.uri,
+        libraryUri: methodElement.library.source.uri.toString(),
         className: methodElement.enclosingElement.name!,
         methodName: methodElement.name,
         name: _createName(methodElement),
