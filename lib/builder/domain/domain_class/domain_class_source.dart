@@ -50,8 +50,10 @@ class DomainClassSource extends ClassSource {
 /// See [SourceClassFactory]
 class DomainSourceFactory extends SourceFactory {
   final SourceContext context;
-
-  DomainSourceFactory(this.context);
+  final PropertySourceFactory propertySourceFactory;
+  
+  DomainSourceFactory(this.context)
+      : propertySourceFactory = PropertySourceFactory(context);
 
   /// Creates a [DomainClassSource] if it is a [DomainClass]. Note that it will
   /// return an existing [DomainClassSource] if one was already created.
@@ -67,7 +69,7 @@ class DomainSourceFactory extends SourceFactory {
       return existingDomainClass;
     }
 
-    var properties = PropertySourceFactory().create(element as ClassElement);
+    var properties = propertySourceFactory.create(element as ClassElement);
     return DomainClassSource(
       libraryUri: libraryUri,
       className: className,
@@ -94,7 +96,7 @@ class DomainSourceFactory extends SourceFactory {
         !element.asLibraryMemberPath.startsWith('dart:') &&
         !element.asLibraryMemberPath
             .startsWith('package:reflect_gui_builder/builder/domain') &&
-        PropertySourceFactory().hasProperty(element);
+        propertySourceFactory.hasProperty(element);
   }
 
   Translatable _createName(ClassElement domainClassElement) => Translatable(

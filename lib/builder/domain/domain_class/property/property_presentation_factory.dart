@@ -2,12 +2,14 @@ import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:recase/recase.dart';
-import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class PropertyPresentationFactory {
+  
+  PropertyPresentationFactory();
+
   List<Class> createClasses(DomainClassSource domainClass) {
     var classes = <Class>[];
     var order = 0;
@@ -65,18 +67,19 @@ class PropertyPresentationFactory {
       );
 
   Expression _createTypeConstructorCall(PropertySource property) =>
-      Expression.callConstructor(_createClassPresentationType(property),
-          parameterValues: _createTypeConstructorCallParameterValues());
+      Expression.callConstructor(_createClassPresentationType(),
+          parameterValues: _createTypeConstructorCallParameterValues(property));
 
-  ParameterValues _createTypeConstructorCallParameterValues() {
+  ParameterValues _createTypeConstructorCallParameterValues(PropertySource property) {
     //TODO return correct type using TypeFactory
     return ParameterValues([
-      ParameterValue.named('libraryUri', Expression.ofString('dart:core')),
-      ParameterValue.named('className', Expression.ofString('String')),
+      ParameterValue.named('libraryUri', Expression.ofString(property.propertyType.libraryUri)),
+      ParameterValue.named('className', Expression.ofString(property.propertyType.className)),
+      ///TODO recursively: ParameterValue.named('genericType', ...etc
     ]);
   }
 
-  Type _createClassPresentationType(PropertySource property) => Type(
+  Type _createClassPresentationType() => Type(
       'ClassPresentation',
       libraryUri:
           'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart');

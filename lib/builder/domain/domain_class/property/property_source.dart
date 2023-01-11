@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
@@ -11,7 +12,7 @@ import 'package:recase/recase.dart';
 class PropertySource extends LibraryMemberSource {
   final String className;
   final String propertyName;
-  final String propertyType;
+  final ClassSource propertyType;
   final Translatable name;
   final Translatable description;
   final ClassSource widgetFactory;
@@ -37,6 +38,10 @@ class PropertySource extends LibraryMemberSource {
 
 /// See [SourceClassFactory]
 class PropertySourceFactory {
+  final SourceContext context;
+
+  PropertySourceFactory(this.context);
+
   List<PropertySource> create(ClassElement element) {
     print('=>$element'); //TODO why is this called so often???
     var allFields = _findAllFields(element.thisType);
@@ -91,7 +96,7 @@ class PropertySourceFactory {
         key: '$libraryMemberPath.description',
         englishText: field.name.sentenceCase);
 
-    String propertyType = field.type.toString(); //TODO use TypeSourceFactory
+    var propertyType = TypeSourceFactory(context).create(field.type as InterfaceType);
     var widgetFactory = _createWidgetFactory();
     return PropertySource(
       libraryUri: field.enclosingElement.source!.uri.toString(),
