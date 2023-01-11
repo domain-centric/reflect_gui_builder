@@ -1,3 +1,6 @@
+## Generated for the presentation layer
+*.presentation.dart
+
 # Miscellaneous
 *.class
 *.log
