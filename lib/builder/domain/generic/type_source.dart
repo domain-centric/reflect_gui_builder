@@ -62,10 +62,10 @@ class ClassSource extends LibraryMemberSource {
   final String className;
 
   ClassSource(
-      {required Uri libraryUri,
+      {required super.libraryUri,
       required this.className,
       this.genericTypes = const []})
-      : super(libraryUri: libraryUri, libraryMemberPath: className);
+      : super(libraryMemberPath: className);
 
   Set<ClassSource> get usedTypes {
     var usedTypes = <ClassSource>{};

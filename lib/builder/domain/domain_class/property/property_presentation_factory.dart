@@ -2,7 +2,8 @@ import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:recase/recase.dart';
-import 'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
@@ -35,6 +36,7 @@ class PropertyPresentationFactory {
         _createOrderField(order),
         _createVisibleField(),
         _createTypeField(property),
+        _createWidgetFactoryField(property),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -67,7 +69,7 @@ class PropertyPresentationFactory {
           parameterValues: _createTypeConstructorCallParameterValues());
 
   ParameterValues _createTypeConstructorCallParameterValues() {
-    //TODO return correct type
+    //TODO return correct type using TypeFactory
     return ParameterValues([
       ParameterValue.named('libraryUri', Expression.ofString('dart:core')),
       ParameterValue.named('className', Expression.ofString('String')),
@@ -77,7 +79,14 @@ class PropertyPresentationFactory {
   Type _createClassPresentationType(PropertySource property) => Type(
       'ClassPresentation',
       libraryUri:
-          'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart'); //TODO return correct type
+          'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart');
+
+  _createWidgetFactoryField(PropertySource property) => Field('widgetFactory',
+      modifier: Modifier.final$,
+      annotations: [Annotation.override()],
+      value: Expression.callConstructor(
+          TypeFactory().create(property.widgetFactory),
+          isConst: true));
 }
 
 class PropertyPresentationType extends Type {

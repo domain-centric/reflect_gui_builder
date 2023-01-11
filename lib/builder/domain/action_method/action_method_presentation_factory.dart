@@ -60,7 +60,7 @@ class ActionMethodPresentationFactory {
   Expression _createParameterProcessorConstructorCall(
           ActionMethodSource actionMethod) =>
       Expression.callConstructor(
-        TypeFactory.create(actionMethod.parameterProcessor),
+        TypeFactory().create(actionMethod.parameterProcessor),
         isConst: true,
       );
 
@@ -71,7 +71,7 @@ class ActionMethodPresentationFactory {
   Expression _createResultProcessorConstructorCall(
       ActionMethodSource actionMethod) {
     return Expression.callConstructor(
-      TypeFactory.create(actionMethod.resultProcessor),
+      TypeFactory().create(actionMethod.resultProcessor),
       isConst: true,
     );
   }

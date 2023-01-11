@@ -11,17 +11,19 @@ import 'package:recase/recase.dart';
 class PropertySource extends LibraryMemberSource {
   final String className;
   final String propertyName;
+  final String propertyType;
   final Translatable name;
   final Translatable description;
-  final String type;
+  final ClassSource widgetFactory;
 
   PropertySource({
     required super.libraryUri,
     required this.className,
     required this.propertyName,
+    required this.propertyType,
     required this.name,
     required this.description,
-    required this.type,
+    required this.widgetFactory,
   }) : super(libraryMemberPath: '$className.$propertyName');
 
   @override
@@ -29,7 +31,7 @@ class PropertySource extends LibraryMemberSource {
       .add('libraryMemberPath', libraryMemberPath)
       .add('name', name)
       .add('description', description)
-      .add('type', type)
+      .add('type', propertyType)
       .toString();
 }
 
@@ -88,15 +90,24 @@ class PropertySourceFactory {
     Translatable description = Translatable(
         key: '$libraryMemberPath.description',
         englishText: field.name.sentenceCase);
-    String type = field.type.toString();
+
+    String propertyType = field.type.toString(); //TODO use TypeSourceFactory
+    var widgetFactory = _createWidgetFactory();
     return PropertySource(
-        libraryUri: field.enclosingElement.source!.uri,
-        className: field.enclosingElement.name!,
-        propertyName: field.displayName,
-        name: name,
-        description: description,
-        type: type);
+      libraryUri: field.enclosingElement.source!.uri,
+      className: field.enclosingElement.name!,
+      propertyName: field.displayName,
+      propertyType: propertyType,
+      name: name,
+      description: description,
+      widgetFactory: widgetFactory,
+    );
   }
+
+  ClassSource _createWidgetFactory() => ClassSource(
+      libraryUri: Uri.parse(
+          'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart'),
+      className: 'StringWidgetFactory');
 
   bool _isValidProperty(FieldElement field) =>
       field.isPublic && field.getter != null; //TODO verify if type is supported

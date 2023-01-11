@@ -97,7 +97,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
           modifier: Modifier.final$,
           annotations: [Annotation.override()],
           value: Expression.callConstructor(
-            TypeFactory.create(serviceClass),
+            TypeFactory().create(serviceClass),
             isConst: true,
           ));
 }
