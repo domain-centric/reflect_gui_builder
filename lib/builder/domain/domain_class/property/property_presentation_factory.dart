@@ -27,7 +27,7 @@ class PropertyPresentationFactory {
         fields: _createFields(property, order),
       );
 
-  String _createClassName(PropertySource property) => '\$'
+  String _createClassName(PropertySource property) => 
       '${property.className}'
       '${property.propertyName.pascalCase}'
       'Presentation';

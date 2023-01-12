@@ -42,7 +42,7 @@ class PresentationOutputPathFactory {
   /// * End with the Presentation suffix to indicate it is a class
   ///   in the presentation layer
   String createOutputClassName(String inputClassName) =>
-      '\$${presentationSuffix.removeFirst(inputClassName)}Presentation';
+      '${presentationSuffix.removeFirst(inputClassName)}Presentation';
 
   AssetId createOutputAssetId(String importUri) {
     AssetId assetIdInput = AssetId.resolve(Uri.parse(importUri));
