@@ -11,20 +11,29 @@ class ServiceClassPresentationFactory extends CodeFactory {
 
   @override
   void populate() {
-    int index = 0;
+    int order = 0;
     for (var serviceClass in application.serviceClasses) {
-      index += 100;
+      order += 100;
       var librarySourceUri = serviceClass.libraryUri.toString();
-      var classToAdd = _createClass(serviceClass, index);
-      generatedLibraries.addClass(librarySourceUri, classToAdd);
+      var classes = _createClasses(serviceClass, order);
+      generatedLibraries.addClasses(librarySourceUri, classes);
     }
   }
 
-  Class _createClass(ServiceClassSource serviceClass, int index) => Class(
+  List<Class> _createClasses(ServiceClassSource serviceClassSource, int order) {
+    var actionMethodClasses =
+        ActionMethodPresentationFactory().createClasses(serviceClassSource);
+    var serviceClass =
+        _createServiceClass(serviceClassSource, order, actionMethodClasses);
+    return [serviceClass, ...actionMethodClasses];
+  }
+
+  Class _createServiceClass(ServiceClassSource serviceClass, int order,
+          List<Class> actionMethodClasses) =>
+      Class(
         _createClassName(serviceClass),
         superClass: _createSuperClass(),
-        fields: _createFields(serviceClass, index),
-        methods: _createMethods(serviceClass),
+        fields: _createFields(serviceClass, order, actionMethodClasses),
       );
 
   String _createClassName(ServiceClassSource serviceClass) =>
@@ -34,13 +43,15 @@ class ServiceClassPresentationFactory extends CodeFactory {
       libraryUri:
           'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart');
 
-  List<Field> _createFields(ServiceClassSource serviceClass, int index) => [
+  List<Field> _createFields(ServiceClassSource serviceClass, int index,
+          List<Class> actionMethodClasses) =>
+      [
         _createTranslatableField('name', serviceClass.name),
         _createTranslatableField('description', serviceClass.description),
         _createOrderField(index),
         _createVisibleField(),
         _createServiceObjectField(serviceClass),
-        ..._createActionMethodFields(serviceClass),
+        _createActionMethodsField(actionMethodClasses),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -61,36 +72,24 @@ class ServiceClassPresentationFactory extends CodeFactory {
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
 
-  List<Method> _createMethods(ServiceClassSource serviceClass) => [
-        _createActionMethodsGetter(serviceClass),
-      ];
-
   /// e.g. List<ActionMethodPresentation> get actionMethods => [allCustomers];
 
-  Method _createActionMethodsGetter(ServiceClassSource serviceClass) =>
-      Method.getter(
+  Field _createActionMethodsField(List<Class> actionMethodClasses) => Field(
         'actionMethods',
-        _createActionMethodsGetterBody(serviceClass),
         annotations: [Annotation.override()],
+        modifier: Modifier.final$,
         type: Type.ofList(genericType: ActionMethodPresentationType()),
+        value: _createActionMethodsFieldValue(actionMethodClasses),
       );
 
-  Expression _createActionMethodsGetterBody(ServiceClassSource serviceClass) =>
-      Expression.ofList(serviceClass.actionMethods
-          .map((actionMethod) => Expression.ofVariable(actionMethod.methodName))
+  Expression _createActionMethodsFieldValue(List<Class> actionMethodClasses) =>
+      Expression.ofList(actionMethodClasses
+          .map((actionMethodClass) =>
+              Expression.callConstructor(Type(_className(actionMethodClass))))
           .toList());
 
-  List<Field> _createActionMethodFields(ServiceClassSource serviceClass) {
-    final presentationFactory = ActionMethodPresentationFactory();
-    var fields = <Field>[];
-    var order = 0;
-    for (var actionMethod in serviceClass.actionMethods) {
-      order += 100;
-      var field = presentationFactory.create(actionMethod, order);
-      fields.add(field);
-    }
-    return fields;
-  }
+  String _className(Class actionMethodClass) =>
+      CodeFormatter().unFormatted(actionMethodClass.name);
 
   Field _createServiceObjectField(ServiceClassSource serviceClass) =>
       Field('serviceObject',

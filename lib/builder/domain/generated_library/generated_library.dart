@@ -17,6 +17,13 @@ class GeneratedLibraries {
     lib.classes!.add(classToAdd);
   }
 
+  void addClasses(String librarySourceUri, List<Class> classes) {
+    for (var classToAdd in classes) {
+      addClass(librarySourceUri, classToAdd);
+    }
+  }
+
+
   Library library(String inputUri) {
     var normalizedPath = _normalize(inputUri);
     var library = inputUrisAndLibraries[normalizedPath];
@@ -47,6 +54,8 @@ class GeneratedLibraries {
           ///TODO]
         ])
       ];
+
+
 
   // Map<AssetId, String> get outputAssetIdsAndLibraries =>
   //     inputUrisAndLibraries.map((inputUri, library) =>

@@ -13,9 +13,7 @@ class DomainClassPresentationFactory extends CodeFactory {
     for (var domainClass in application.domainClasses) {
       var librarySourceUri = domainClass.libraryUri.toString();
       var classes = _createClasses(domainClass);
-      for (var aClass in classes) {
-        generatedLibraries.addClass(librarySourceUri, aClass);
-      }
+      generatedLibraries.addClasses(librarySourceUri, classes);
     }
   }
 
@@ -31,8 +29,7 @@ class DomainClassPresentationFactory extends CodeFactory {
       Class(
         _createClassName(domainClass),
         superClass: _createSuperClass(),
-        fields: _createFields(domainClass),
-        methods: _createMethods(domainClass, propertyClasses),
+        fields: _createFields(domainClass, propertyClasses),
       );
 
   String _createClassName(DomainClassSource domainClass) =>
@@ -42,9 +39,12 @@ class DomainClassPresentationFactory extends CodeFactory {
       libraryUri:
           'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation.dart');
 
-  List<Field> _createFields(DomainClassSource domainClass) => [
+  List<Field> _createFields(
+          DomainClassSource domainClass, List<Class> propertyClasses) =>
+      [
         _createTranslatableField('name', domainClass.name),
         _createTranslatableField('description', domainClass.description),
+        _createPropertiesField(domainClass, propertyClasses),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -52,15 +52,6 @@ class DomainClassPresentationFactory extends CodeFactory {
           modifier: Modifier.final$,
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
-
-  List<Method> _createMethods(
-    DomainClassSource domainClass,
-    List<Class> propertyClasses,
-  ) =>
-      [
-        // _createActionMethodsGetter(serviceClass),
-        _createPropertiesGetter(domainClass, propertyClasses),
-      ];
 
   /// e.g. List<ActionMethodPresentation> get actionMethods => [allCustomers];
 
@@ -72,23 +63,22 @@ class DomainClassPresentationFactory extends CodeFactory {
   //       type: Type.ofList(genericType: ActionMethodPresentationType()),
   //     );
 
-  Method _createPropertiesGetter(
+  Field _createPropertiesField(
     DomainClassSource domainClass,
     List<Class> propertyClasses,
   ) =>
-      Method.getter(
-        'properties',
-        _createPropertiesGetterBody(propertyClasses),
-        annotations: [Annotation.override()],
-        type: Type.ofList(genericType: PropertyPresentationType()),
-      );
+      Field('properties',
+          annotations: [Annotation.override()],
+          modifier: Modifier.final$,
+          type: Type.ofList(genericType: PropertyPresentationType()),
+          value: _createPropertiesFieldValue(propertyClasses));
 
   // Expression _createActionMethodsGetterBody(DomainClassSource domainClass) =>
   //     Expression.ofList(domainClass.actionMethods
   //         .map((actionMethod) => Expression.ofVariable(actionMethod.methodName))
   //         .toList());
 
-  Expression _createPropertiesGetterBody(List<Class> propertyClasses) =>
+  Expression _createPropertiesFieldValue(List<Class> propertyClasses) =>
       Expression.ofList(propertyClasses
           .map((propertyClass) =>
               Expression.callConstructor(Type(_className(propertyClass))))

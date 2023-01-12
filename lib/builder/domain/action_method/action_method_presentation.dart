@@ -16,32 +16,21 @@ import '../item/item.dart';
 /// * int: when it is a [Dart] [int] type
 /// * Person: when it is a [DomainClass]
 /// * List<Person>: a [Collection] of [DomainClass]es
-class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
+abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
     extends DynamicItem {
-  @override
-  final Translatable name;
-
-  @override
-  final Translatable description;
-
-  @override
-  final bool visible;
-
-  @override
-  final double order;
-
-  final IconData icon;
+ 
+   IconData get icon;
 
   /// Returns information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
   /// * it could contain information on a [DomainClass] or [Enum].
-  final ClassPresentation? parameterType;
+   ClassPresentation? parameterType;
 
-  final ActionMethodParameterProcessor<PARAMETER_TYPE> parameterProcessor;
+   ActionMethodParameterProcessor<PARAMETER_TYPE> get parameterProcessor;
 
   /// returns a optional function that can create a parameter
-  final PARAMETER_TYPE Function()? parameterFactory;
+   PARAMETER_TYPE Function()? parameterFactory;
 
   // /// Starts the [ActionMethod] process (e.g. when clicking on a menu button)
   // /// It:
@@ -53,24 +42,12 @@ class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   /// It:
   /// * is null when the [ActionMethod] has no result (void)
   /// * it could contain information on a [DomainClass] or [Enum].
-  final ClassPresentation? resultType;
+  ClassPresentation? resultType;
 
-  final ActionMethodResultProcessor<RESULT_TYPE> resultProcessor;
+  ActionMethodResultProcessor<RESULT_TYPE> get resultProcessor;
 
   /// TODO final ExecutionMode executionMode
 
   /// TODO final PARAMETER_TYPE? Function() parameterFactoryFunction
 
-  ActionMethodPresentation({
-    required this.name,
-    required this.description,
-    required this.visible,
-    required this.order,
-    required this.icon,
-    this.parameterType,
-    required this.parameterProcessor,
-    this.parameterFactory,
-    this.resultType,
-    required this.resultProcessor,
-  });
 }
