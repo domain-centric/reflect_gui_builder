@@ -23,7 +23,6 @@ class GeneratedLibraries {
     }
   }
 
-
   Library library(String inputUri) {
     var normalizedPath = _normalize(inputUri);
     var library = inputUrisAndLibraries[normalizedPath];
@@ -54,8 +53,6 @@ class GeneratedLibraries {
           ///TODO]
         ])
       ];
-
-
 
   // Map<AssetId, String> get outputAssetIdsAndLibraries =>
   //     inputUrisAndLibraries.map((inputUri, library) =>

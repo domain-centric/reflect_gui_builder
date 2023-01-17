@@ -24,11 +24,11 @@ class LibraryMemberPresentation {
   /// Examples:
   /// * dart:core/String
   /// * package:my_package/by_directory/my_lib.dart/MyClass.myField
-  final Uri libraryMemberUri;
+  final String libraryMemberUri;
 
   LibraryMemberPresentation(
       {required this.libraryMemberPath, required this.libraryUri})
-      : libraryMemberUri = Uri.parse('$libraryUri/$libraryMemberPath');
+      : libraryMemberUri = '$libraryUri/$libraryMemberPath';
 
   @override
   bool operator ==(Object other) =>
@@ -48,18 +48,67 @@ class LibraryMemberPresentation {
 
 /// See [PresentationClass]
 class ClassPresentation extends LibraryMemberPresentation {
-  final ClassPresentation? genericType;
+  final List<ClassPresentation> genericTypes;
   final String className;
 
-  ClassPresentation(
-      {required super.libraryUri, required this.className, this.genericType})
-      : super(libraryMemberPath: className);
+  ClassPresentation({
+    required super.libraryUri,
+    required this.className,
+    this.genericTypes = const [],
+  }) : super(libraryMemberPath: className);
 
   @override
   String toString() {
     return ToStringBuilder(runtimeType.toString())
         .add('libraryMemberUri', libraryMemberUri)
-        .add('genericType', genericType)
+        .add('genericTypes', genericTypes)
         .toString();
   }
+}
+
+class DartCore extends ClassPresentation {
+  DartCore(String className, {List<ClassPresentation> genericTypes = const []})
+      : super(
+            libraryUri: 'dart:core',
+            className: className,
+            genericTypes: genericTypes);
+
+  DartCore.bool() : this('bool');
+
+  DartCore.int() : this('int');
+
+  DartCore.bigInt() : this('BigInt');
+
+  DartCore.double() : this('double');
+
+  DartCore.num() : this('num');
+
+  DartCore.dateTime() : this('DateTime');
+
+  DartCore.duration() : this('Duration');
+
+  DartCore.string() : this('String');
+
+  DartCore.symbol() : this('Symbol');
+
+  DartCore.uri() : this('Uri');
+
+  DartCore.object() : this('Object');
+
+  DartCore.iterable({ClassPresentation? genericType})
+      : this('Iterable',
+            genericTypes: genericType == null ? [] : [genericType]);
+
+  DartCore.iterator({ClassPresentation? genericType})
+      : this('Iterator',
+            genericTypes: genericType == null ? [] : [genericType]);
+
+  DartCore.list({ClassPresentation? genericType})
+      : this('List', genericTypes: genericType == null ? [] : [genericType]);
+
+  DartCore.set({ClassPresentation? genericType})
+      : this('Set', genericTypes: genericType == null ? [] : [genericType]);
+
+  DartCore.map(ClassPresentation keyType, ClassPresentation valueType)
+      : this('Map', genericTypes: [keyType, valueType]);
 }

@@ -8,6 +8,12 @@ import 'package:reflect_gui_builder/builder/domain/presentation_output_path/pres
 /// by the preceding [ReflectPresentationLibraryBuilder]:
 
 class ReflectPresentationLibraryWriter extends Builder {
+  late final PresentationOutputPathFactory outputPathFactory;
+
+  ReflectPresentationLibraryWriter() {
+    outputPathFactory = PresentationOutputPathFactory(this);
+  }
+
   @override
   Future<FutureOr<void>> build(BuildStep buildStep) async {
     try {
@@ -34,7 +40,6 @@ class ReflectPresentationLibraryWriter extends Builder {
   }
 
   AssetId _createOutputAssetId(String inputLibraryUri) {
-    var outputPathFactory = PresentationOutputPathFactory(this);
     var outputAssetId = outputPathFactory.createOutputAssetId(inputLibraryUri);
     return outputAssetId;
   }

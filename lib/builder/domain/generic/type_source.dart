@@ -70,6 +70,7 @@ class ClassSource extends LibraryMemberSource {
   Set<ClassSource> get usedTypes {
     var usedTypes = <ClassSource>{};
     usedTypes.add(this);
+    // TODO remove? Generic types are added by DomainClass.usedTypes, of ServiceClass.usedTypes etc
     for (var genericType in genericTypes) {
       usedTypes.addAll(genericType.usedTypes);
     }
@@ -131,7 +132,8 @@ class TypeSourceFactory {
       .getDisplayString(withNullability: false)
       .replaceFirst(noneLetterSuffix, '');
 
-  static String libraryUri(InterfaceElement element) => element.library.source.uri.toString();
+  static String libraryUri(InterfaceElement element) =>
+      element.library.source.uri.toString();
 
   List<ClassSource> _genericTypes(InterfaceType type) {
     var genericTypes = <ClassSource>[];

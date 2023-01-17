@@ -6,6 +6,9 @@ class Person {
   List<EmailAddress> get eMailAddresses => [];
 }
 
-class EmailAddress {}
+class EmailAddress {
+  String category = '';
+  String eMailAddress = '';
+}
 
 enum Gender { male, female, other, unknown }

@@ -6,7 +6,11 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class DomainClassPresentationFactory extends CodeFactory {
-  DomainClassPresentationFactory(super.context);
+  final PropertyPresentationFactory propertyPresentationFactory;
+
+  DomainClassPresentationFactory(super.context)
+      : propertyPresentationFactory =
+            PropertyPresentationFactory(context.outputPathFactory);
 
   @override
   void populate() {
@@ -19,7 +23,7 @@ class DomainClassPresentationFactory extends CodeFactory {
 
   List<Class> _createClasses(DomainClassSource domainClassSource) {
     var propertyClasses =
-        PropertyPresentationFactory().createClasses(domainClassSource);
+        propertyPresentationFactory.createClasses(domainClassSource);
     var domainClass = _createDomainClass(domainClassSource, propertyClasses);
     return [domainClass, ...propertyClasses];
   }
@@ -29,8 +33,22 @@ class DomainClassPresentationFactory extends CodeFactory {
       Class(
         _createClassName(domainClass),
         superClass: _createSuperClass(),
+        constructors: _createConstructors(domainClass),
         fields: _createFields(domainClass, propertyClasses),
       );
+
+  List<Constructor> _createConstructors(DomainClassSource domainClass) => [
+        Constructor(Type(_createClassName(domainClass)),
+            initializers: Initializers(
+                constructorCall: ConstructorCall(
+                    super$: true,
+                    parameterValues: ParameterValues([
+                      ParameterValue.named('libraryUri',
+                          Expression.ofString(domainClass.libraryUri)),
+                      ParameterValue.named('className',
+                          Expression.ofString(domainClass.className)),
+                    ]))))
+      ];
 
   String _createClassName(DomainClassSource domainClass) =>
       outputPathFactory.createOutputClassName(domainClass.className);

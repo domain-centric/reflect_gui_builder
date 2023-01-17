@@ -3,12 +3,15 @@ import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_sou
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_source.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
+import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class PropertyPresentationFactory {
-  
-  PropertyPresentationFactory();
+  final ClassPresentationFactory classPresentationFactory;
+
+  PropertyPresentationFactory(PresentationOutputPathFactory outputPathFactory)
+      : classPresentationFactory = ClassPresentationFactory(outputPathFactory);
 
   List<Class> createClasses(DomainClassSource domainClass) {
     var classes = <Class>[];
@@ -27,8 +30,7 @@ class PropertyPresentationFactory {
         fields: _createFields(property, order),
       );
 
-  String _createClassName(PropertySource property) => 
-      '${property.className}'
+  String _createClassName(PropertySource property) => '${property.className}'
       '${property.propertyName.pascalCase}'
       'Presentation';
 
@@ -59,30 +61,10 @@ class PropertyPresentationFactory {
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
 
-  _createTypeField(PropertySource property) => Field(
-        'type',
-        modifier: Modifier.final$,
-        annotations: [Annotation.override()],
-        value: _createTypeConstructorCall(property),
-      );
-
-  Expression _createTypeConstructorCall(PropertySource property) =>
-      Expression.callConstructor(_createClassPresentationType(),
-          parameterValues: _createTypeConstructorCallParameterValues(property));
-
-  ParameterValues _createTypeConstructorCallParameterValues(PropertySource property) {
-    //TODO return correct type using TypeFactory
-    return ParameterValues([
-      ParameterValue.named('libraryUri', Expression.ofString(property.propertyType.libraryUri)),
-      ParameterValue.named('className', Expression.ofString(property.propertyType.className)),
-      ///TODO recursively: ParameterValue.named('genericType', ...etc
-    ]);
-  }
-
-  Type _createClassPresentationType() => Type(
-      'ClassPresentation',
-      libraryUri:
-          'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart');
+  _createTypeField(PropertySource property) => Field('type',
+      modifier: Modifier.final$,
+      annotations: [Annotation.override()],
+      value: classPresentationFactory.create(property.propertyType));
 
   _createWidgetFactoryField(PropertySource property) => Field('widgetFactory',
       modifier: Modifier.final$,

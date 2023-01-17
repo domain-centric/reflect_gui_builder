@@ -24,7 +24,7 @@ class ReflectPresentationLibraryBuilder extends Builder {
       var library = await buildStep.inputLibrary;
 
       if (libraryToInclude(library)) {
-        print('--${library.source}');
+        // print('--${library.source}');
 
         var generatedLibraries =
             await buildStep.fetchResource<GeneratedLibraries>(resource);
@@ -54,30 +54,6 @@ class ReflectPresentationLibraryBuilder extends Builder {
       }
     }
   }
-
-  // void _populateWithApplicationPresentation(
-  //     ApplicationPresentationSource applicationPresentationSource,
-  //     GeneratedLibraries generatedLibraries) {
-  //   var presentationFactory = GeneratedApplicationPresentationFactory(
-  //       applicationPresentationSource, generatedLibraries);
-  //   presentationFactory.populate();
-  // }
-
-  // void _populateWithServiceClassPresentations(
-  //     ApplicationPresentationSource applicationPresentationSource,
-  //     GeneratedLibraries generatedLibraries) {
-  //   var presentationFactory = ServiceClassPresentationFactory(
-  //       applicationPresentationSource, generatedLibraries);
-  //   presentationFactory.populate();
-  // }
-
-  // File _createOutputFile(AssetId outputAssetId) {
-  //   var assetUri = outputAssetId.uri;
-  //   var projectDirectory = Directory.current.path;
-  //   var filePath = [projectDirectory, 'lib', ...assetUri.pathSegments.skip(1)]
-  //       .join(Platform.pathSeparator);
-  //   return File(filePath);
-  // }
 
   @override
   Map<String, List<String>> get buildExtensions => {

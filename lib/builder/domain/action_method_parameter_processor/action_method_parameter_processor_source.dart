@@ -12,7 +12,9 @@ class ActionMethodParameterProcessorSource extends ClassSource {
   final ClassSource? parameterType;
 
   ActionMethodParameterProcessorSource(
-      {required super.libraryUri, required String className, this.parameterType})
+      {required super.libraryUri,
+      required String className,
+      this.parameterType})
       : super(className: className);
 
   /// returns true if the parameter type is supported

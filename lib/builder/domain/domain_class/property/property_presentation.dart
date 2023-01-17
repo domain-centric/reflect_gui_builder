@@ -15,4 +15,20 @@ abstract class PropertyPresentation<TYPE> extends DynamicItem {
   ClassPresentation get type;
 
   PropertyWidgetFactory get widgetFactory;
+
+// TODO make TableConfig<TYPE> for a ResponsiveFlowGridTable
+
+// TableConfig.minColumns
+// TableConfig.maxColumns
+// TableConfig.toolBar (widget, can be null)
+// TableConfig.rowWidgetFactory (is used when all visible columns do not fit, e.g. a narrow but higher widget, default puts all must show column widgets from widgetFactories)
+// TableConfig.emptyWidgetFactory (is used when there are no rows, can be null)
+// TableConfig.columns
+
+// TableColumn.header (widget, can be null)
+// TableColumn.order=double
+// TableColumn.span=int
+// TableColumn.visible=always or never or ifFits(priority=1)
+// TableColumn.widgetFactory= (default implementation for dart types int, double, string, bool, enum???, domainObject??? etc)
+
 }

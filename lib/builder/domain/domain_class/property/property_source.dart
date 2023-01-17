@@ -43,7 +43,8 @@ class PropertySourceFactory {
   PropertySourceFactory(this.context);
 
   List<PropertySource> create(ClassElement element) {
-    print('=>$element'); //TODO why is this called so often???
+    //print('=>$element');
+    //TODO why is this called so often???
     var allFields = _findAllFields(element.thisType);
     var properties = <PropertySource>[];
     for (var field in allFields) {
@@ -96,7 +97,8 @@ class PropertySourceFactory {
         key: '$libraryMemberPath.description',
         englishText: field.name.sentenceCase);
 
-    var propertyType = TypeSourceFactory(context).create(field.type as InterfaceType);
+    var propertyType =
+        TypeSourceFactory(context).create(field.type as InterfaceType);
     var widgetFactory = _createWidgetFactory();
     return PropertySource(
       libraryUri: field.enclosingElement.source!.uri.toString(),
@@ -110,7 +112,8 @@ class PropertySourceFactory {
   }
 
   ClassSource _createWidgetFactory() => ClassSource(
-      libraryUri: 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart',
+      libraryUri:
+          'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart',
       className: 'StringWidgetFactory');
 
   bool _isValidProperty(FieldElement field) =>

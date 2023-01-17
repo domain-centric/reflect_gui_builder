@@ -45,13 +45,30 @@ class DomainClassSource extends ClassSource {
 
   @override
   int get hashCode => libraryMemberPath.hashCode ^ libraryUri.hashCode;
+
+  /// Finds all the [ClassSource]s that are used in this [ActionMethod].
+  /// It will also get [ClassSource]s used inside the
+  /// DomainClass [ActionMethod]s and the [ActionMethod]s inside its [Property]s
+  ///
+  /// TODO: Be aware for never ending round trips.
+  @override
+  Set<ClassSource> get usedTypes {
+    var usedTypes = <ClassSource>{};
+    usedTypes.add(this);
+    for (var property in properties) {
+      usedTypes.addAll(property.propertyType.usedTypes);
+    }
+
+    /// TODO add actionMethods.usedTypes???
+    return usedTypes;
+  }
 }
 
 /// See [SourceClassFactory]
 class DomainSourceFactory extends SourceFactory {
   final SourceContext context;
   final PropertySourceFactory propertySourceFactory;
-  
+
   DomainSourceFactory(this.context)
       : propertySourceFactory = PropertySourceFactory(context);
 

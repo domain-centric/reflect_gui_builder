@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
-import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 
 import '../generic/type_presentation.dart';
 import '../item/item.dart';
@@ -18,19 +17,18 @@ import '../item/item.dart';
 /// * List<Person>: a [Collection] of [DomainClass]es
 abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
     extends DynamicItem {
- 
-   IconData get icon;
+  IconData get icon;
 
   /// Returns information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
   /// * it could contain information on a [DomainClass] or [Enum].
-   ClassPresentation? parameterType;
+  ClassPresentation? parameterType;
 
-   ActionMethodParameterProcessor<PARAMETER_TYPE> get parameterProcessor;
+  ActionMethodParameterProcessor<PARAMETER_TYPE> get parameterProcessor;
 
   /// returns a optional function that can create a parameter
-   PARAMETER_TYPE Function()? parameterFactory;
+  PARAMETER_TYPE Function()? parameterFactory;
 
   // /// Starts the [ActionMethod] process (e.g. when clicking on a menu button)
   // /// It:

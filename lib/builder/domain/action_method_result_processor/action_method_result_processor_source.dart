@@ -14,7 +14,7 @@ class ActionMethodResultProcessorSource extends ClassSource {
 
   ActionMethodResultProcessorSource(
       {required super.libraryUri, required String className, this.resultType})
-      : super( className: className);
+      : super(className: className);
 
   /// returns true if the result type is supported
   /// by the [ActionMethodResultProcessorSource]
