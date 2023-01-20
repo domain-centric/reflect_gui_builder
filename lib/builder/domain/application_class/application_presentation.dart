@@ -5,11 +5,11 @@ import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder
 /// It is used by the [ReflectPresentationLibraryBuilder] so that it knows how and which
 ///  [PresentationClass]es are to be generated.
 abstract class ApplicationPresentation {
-  /// Returns the [PropertyWidgetFactory]s that are to be used in the application.
+  /// Returns the [ValueWidgetFactory]s that are to be used in the application.
   /// The order is the order of processing (order of importance)!
   /// This must be a literal [List] without logic.
   /// e.g.: [StringWidgetFactory, IntWidgetFactory, ...]
-  List<Type> get propertyWidgetFactories;
+  List<Type> get valueWidgetFactories;
 
   /// Returns the [ActionMethodParameterProcessor]s that are to be used in the application.
   /// The order is the order of processing (order of importance)!

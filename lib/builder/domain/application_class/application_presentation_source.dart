@@ -18,14 +18,14 @@ import 'package:reflect_gui_builder/builder/domain/action_method_result_processo
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
-import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory_source.dart';
+import 'package:reflect_gui_builder/builder/domain/value_widget_factory/value_widget_factory_source.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 
 /// Contains information from an [ApplicationPresentation] class source code.
 /// See [SourceClass]
 class ApplicationPresentationSource extends ClassSource {
   final List<ServiceClassSource> serviceClasses = [];
-  final List<PropertyWidgetFactorySource> propertyWidgetFactories = [];
+  final List<ValueWidgetFactorySource> valueWidgetFactories = [];
   final List<ActionMethodParameterProcessorSource>
       actionMethodParameterProcessors = [];
   final List<ActionMethodResultProcessorSource> actionMethodResultProcessors =
@@ -74,7 +74,7 @@ class ApplicationPresentationSource extends ClassSource {
         .add('titleImagePath', titleImagePath)
         .add('homePage', homePage)
         .add('documentation', documentation)
-        .add('propertyWidgetFactories', propertyWidgetFactories)
+        .add('valueWidgetFactories', valueWidgetFactories)
         .add('actionMethodParameterProcessors', actionMethodParameterProcessors)
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
         .add('serviceClasses', serviceClasses)
@@ -108,8 +108,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
 
     var context = SourceContext(
         builder, applicationPresentationElement, applicationPresentationSource);
-    PropertyWidgetFactorySourceFactory(context)
-        .populateApplicationPresentation();
+    ValueWidgetFactorySourceFactory(context).populateApplicationPresentation();
     ActionMethodParameterProcessorSourceFactory(context)
         .populateApplicationPresentation();
     ActionMethodResultProcessorSourceFactory(context)

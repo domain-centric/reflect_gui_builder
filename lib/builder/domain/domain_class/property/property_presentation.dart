@@ -1,7 +1,7 @@
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/item/item.dart';
-import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/value_widget_factory/value_widget_factory.dart';
 
 /// Implementations of a [PropertyPresentation] class are
 /// generated classes that contain [Property] information for the
@@ -14,7 +14,7 @@ import 'package:reflect_gui_builder/builder/domain/property_factory/property_wid
 abstract class PropertyPresentation<TYPE> extends DynamicItem {
   ClassPresentation get type;
 
-  PropertyWidgetFactory get widgetFactory;
+  ValueWidgetFactory get widgetFactory;
 
 // TODO make TableConfig<TYPE> for a ResponsiveFlowGridTable
 

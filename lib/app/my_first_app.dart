@@ -3,12 +3,12 @@ import 'package:reflect_gui_builder/app/person/service/person_service.dart'
 
 import '../builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 import '../builder/domain/action_method_result_processor/action_method_result_processor.dart';
-import '../builder/domain/property_factory/property_widget_factory.dart';
+import '../builder/domain/value_widget_factory/value_widget_factory.dart';
 import '../builder/domain/application_class/application_presentation.dart';
 
 class MyFirstApp extends ApplicationPresentation {
   @override
-  List<Type> propertyWidgetFactories = [
+  List<Type> valueWidgetFactories = [
     // TODO: Move to [ApplicationPresentation]
     StringWidgetFactory,
     IntWidgetFactory,

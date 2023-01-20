@@ -6,7 +6,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
-import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory_source.dart';
+import 'package:reflect_gui_builder/builder/domain/value_widget_factory/value_widget_factory_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:recase/recase.dart';
 
@@ -124,10 +124,10 @@ class PropertySourceFactory {
         className: widgetFactory.className);
   }
 
-  PropertyWidgetFactorySource? _findWidgetFactory(ClassSource propertyType) {
-    var widgetFactories = context.application.propertyWidgetFactories;
+  ValueWidgetFactorySource? _findWidgetFactory(ClassSource propertyType) {
+    var widgetFactories = context.application.valueWidgetFactories;
     return widgetFactories.firstWhereOrNull(
-        (widgetFactory) => supported(widgetFactory.propertyType, propertyType));
+        (widgetFactory) => supported(widgetFactory.valueType, propertyType));
   }
 
   bool _isValidProperty(FieldElement field) =>
