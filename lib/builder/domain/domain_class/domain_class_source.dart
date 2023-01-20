@@ -6,7 +6,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 
 /// Contains information on a [DomainClass] source code.

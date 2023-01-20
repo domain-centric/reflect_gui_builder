@@ -4,7 +4,7 @@ import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../application/application_presentation_source.dart';
+import '../application_class/application_presentation_source.dart';
 import '../generic/source_factory.dart';
 
 /// Contains information from an [PropertyWidgetFactory] source code.

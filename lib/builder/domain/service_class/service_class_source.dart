@@ -7,7 +7,7 @@ import 'package:plural_noun/plural_noun.dart';
 import '../action_method/action_method_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../application/application_presentation_source.dart';
+import '../application_class/application_presentation_source.dart';
 import '../generic/source_factory.dart';
 
 /// Contains information on a [ServiceClass]s source code.

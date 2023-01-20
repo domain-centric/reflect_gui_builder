@@ -27,7 +27,7 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
 
   Type _createSuperClass() => Type('GeneratedApplicationPresentation',
       libraryUri:
-          'package:reflect_gui_builder/builder/domain/application/generated_application_presentation.dart');
+          'package:reflect_gui_builder/builder/domain/application_class/generated_application_presentation.dart');
 
   List<Field> _createFields() => [
         _createTranslatableField('name', application.name),

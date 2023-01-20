@@ -9,18 +9,17 @@ import 'package:reflect_gui_builder/builder/domain/action_method/action_method_s
 import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:yaml/yaml.dart';
-
-import '../action_method_parameter_processor/action_method_parameter_processor_source.dart';
-import '../action_method_result_processor/action_method_result_processor_source.dart';
-import '../domain_class/domain_class_source.dart';
-import '../generic/to_string.dart';
-import '../generic/type_source.dart';
-import '../property_factory/property_widget_factory_source.dart';
-import '../service_class/service_class_source.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor_source.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor_source.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
+import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory_source.dart';
+import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 
 /// Contains information from an [ApplicationPresentation] class source code.
 /// See [SourceClass]
@@ -96,7 +95,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
       !element.isAbstract &&
       hasSuperClass(
           element,
-          'package:reflect_gui_builder/builder/domain/application/application_presentation.dart',
+          'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart',
           'ApplicationPresentation') &&
       hasNamelessConstructorWithoutParameters(element);
 

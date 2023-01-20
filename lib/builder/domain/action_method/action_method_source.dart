@@ -9,7 +9,7 @@ import '../action_method_parameter_processor/action_method_parameter_processor_s
 import '../action_method_result_processor/action_method_result_processor_source.dart';
 import '../generic/to_string.dart';
 import '../generic/type_source.dart';
-import '../application/application_presentation_source.dart';
+import '../application_class/application_presentation_source.dart';
 import '../generic/source_factory.dart';
 
 /// See [SourceClass]

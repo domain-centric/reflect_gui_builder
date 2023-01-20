@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:build/build.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 

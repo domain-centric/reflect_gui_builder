@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
-import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
