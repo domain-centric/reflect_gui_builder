@@ -63,10 +63,10 @@ class IntWidgetFactory extends PropertyWidgetFactory<int> {
   //TODO add validation result text
 }
 
-
-class ListWidgetFactory extends PropertyWidgetFactory<List<
+class ListWidgetFactory extends PropertyWidgetFactory<
+    List<
 //
-Object>> {
+        Object>> {
   const ListWidgetFactory();
 
   @override
@@ -88,7 +88,6 @@ Object>> {
   //TODO link value to Text  including unit of measurement, and formatter (e.g. thousands separator)
   //TODO add validation result text
 }
-
 
 class EnumWidgetFactory extends PropertyWidgetFactory<Enum> {
   const EnumWidgetFactory();

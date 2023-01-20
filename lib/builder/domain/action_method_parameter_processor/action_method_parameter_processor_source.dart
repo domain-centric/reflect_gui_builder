@@ -62,12 +62,10 @@ class ActionMethodParameterProcessorSourceFactory
           className: element.name,
           parameterType: _createParameterType(element, field));
 
-      context.application.actionMethodParameterProcessors
-          .add(processor);
+      context.application.actionMethodParameterProcessors.add(processor);
     }
 
-    if (context
-        .application.actionMethodParameterProcessors.isEmpty) {
+    if (context.application.actionMethodParameterProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }

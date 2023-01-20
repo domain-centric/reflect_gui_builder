@@ -59,8 +59,7 @@ class ActionMethodResultProcessorSourceFactory
           className: element.name,
           resultType: _createResultType(element));
 
-      context.application.actionMethodResultProcessors
-          .add(processor);
+      context.application.actionMethodResultProcessors.add(processor);
     }
 
     if (context.application.actionMethodResultProcessors.isEmpty) {

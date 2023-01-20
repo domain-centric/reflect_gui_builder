@@ -101,7 +101,7 @@ class PropertySourceFactory {
 
     var propertyType = _createPropertyType(field);
     var widgetFactory = _createWidgetFactory(propertyType);
-    
+
     return PropertySource(
       libraryUri: field.enclosingElement.source!.uri.toString(),
       className: field.enclosingElement.name!,
@@ -131,8 +131,8 @@ class PropertySourceFactory {
   }
 
   bool _isValidProperty(FieldElement field) =>
-      field.isPublic &&
-      field.getter != null && _fieldTypeSupported(field);
+      field.isPublic && field.getter != null && _fieldTypeSupported(field);
 
-  bool _fieldTypeSupported(FieldElement field) => _findWidgetFactory(_createPropertyType(field)) != null;
+  bool _fieldTypeSupported(FieldElement field) =>
+      _findWidgetFactory(_createPropertyType(field)) != null;
 }

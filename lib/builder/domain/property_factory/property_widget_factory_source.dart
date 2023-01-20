@@ -57,8 +57,8 @@ class PropertyWidgetFactorySourceFactory
       }
       var propertyWidgetFactoryType =
           context.typeFactory.create(element.thisType);
-      var propertyType = context.typeFactory
-          .create(types.first as InterfaceType);
+      var propertyType =
+          context.typeFactory.create(types.first as InterfaceType);
 
       var widgetFactory =
           PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);

@@ -42,8 +42,8 @@ class ReflectPresentationLibraryBuilder extends Builder {
         var application =
             sourceFactory.create(this, topElement as ClassElement);
         //log.info('\n$applicationPresentationSource');
-        CodeFactoryContext context = CodeFactoryContext(
-            this, generatedLibraries, application);
+        CodeFactoryContext context =
+            CodeFactoryContext(this, generatedLibraries, application);
 
         GeneratedApplicationPresentationFactory(context).populate();
         ServiceClassPresentationFactory(context).populate();
