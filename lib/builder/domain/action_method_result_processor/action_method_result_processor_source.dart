@@ -59,18 +59,17 @@ class ActionMethodResultProcessorSourceFactory
           className: element.name,
           resultType: _createResultType(element));
 
-      context.applicationPresentation.actionMethodResultProcessors
+      context.application.actionMethodResultProcessors
           .add(processor);
     }
 
-    if (context.applicationPresentation.actionMethodResultProcessors.isEmpty) {
+    if (context.application.actionMethodResultProcessors.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No ActionMethodResultProcessors found.');
     }
   }
 
   ClassSource? _createResultType(Element element) {
-    //}, FieldElement field) {
     var superClass = findSuperClass(element as InterfaceElement,
         actionMethodResultProcessorLibraryUri, actionMethodResultProcessorName);
     var types = superClass!.typeArguments;

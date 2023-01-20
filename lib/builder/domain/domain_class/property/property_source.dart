@@ -1,10 +1,12 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:collection/collection.dart';
 import 'package:reflect_gui_builder/builder/domain/application/application_presentation_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
+import 'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:recase/recase.dart';
 
@@ -97,9 +99,9 @@ class PropertySourceFactory {
         key: '$libraryMemberPath.description',
         englishText: field.name.sentenceCase);
 
-    var propertyType =
-        TypeSourceFactory(context).create(field.type as InterfaceType);
-    var widgetFactory = _createWidgetFactory();
+    var propertyType = _createPropertyType(field);
+    var widgetFactory = _createWidgetFactory(propertyType);
+    
     return PropertySource(
       libraryUri: field.enclosingElement.source!.uri.toString(),
       className: field.enclosingElement.name!,
@@ -111,11 +113,26 @@ class PropertySourceFactory {
     );
   }
 
-  ClassSource _createWidgetFactory() => ClassSource(
-      libraryUri:
-          'package:reflect_gui_builder/builder/domain/property_factory/property_widget_factory.dart',
-      className: 'StringWidgetFactory');
+  ClassSource _createPropertyType(FieldElement field) =>
+      TypeSourceFactory(context).create(field.type as InterfaceType);
+
+  ClassSource _createWidgetFactory(ClassSource propertyType) {
+    var widgetFactory = _findWidgetFactory(propertyType);
+
+    return ClassSource(
+        libraryUri: widgetFactory!.libraryUri,
+        className: widgetFactory.className);
+  }
+
+  PropertyWidgetFactorySource? _findWidgetFactory(ClassSource propertyType) {
+    var widgetFactories = context.application.propertyWidgetFactories;
+    return widgetFactories.firstWhereOrNull(
+        (widgetFactory) => supported(widgetFactory.propertyType, propertyType));
+  }
 
   bool _isValidProperty(FieldElement field) =>
-      field.isPublic && field.getter != null; //TODO verify if type is supported
+      field.isPublic &&
+      field.getter != null && _fieldTypeSupported(field);
+
+  bool _fieldTypeSupported(FieldElement field) => _findWidgetFactory(_createPropertyType(field)) != null;
 }

@@ -115,12 +115,12 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodParameterProcessorSource? _findParameterProcessorFor(
           ClassSource? parameterType) =>
-      context.applicationPresentation.actionMethodParameterProcessors
+      context.application.actionMethodParameterProcessors
           .firstWhereOrNull((processor) => processor.supports(parameterType));
 
   ActionMethodResultProcessorSource? _findResultProcessorFor(
           ClassSource? resultType) =>
-      context.applicationPresentation.actionMethodResultProcessors
+      context.application.actionMethodResultProcessors
           .firstWhereOrNull((processor) => processor.supports(resultType));
 
   ClassSource? _createParameterType(MethodElement methodElement) {

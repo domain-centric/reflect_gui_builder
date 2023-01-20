@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 
 import '../generic/to_string.dart';
@@ -54,22 +55,18 @@ class PropertyWidgetFactorySourceFactory
       if (types.isEmpty) {
         throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
       }
-      var genericElement = types.first.element;
-      if (genericElement == null) {
-        throw ('${field.asLibraryMemberPath}: $element must have a generic type.');
-      }
       var propertyWidgetFactoryType =
           context.typeFactory.create(element.thisType);
       var propertyType = context.typeFactory
-          .create((genericElement as InterfaceElement).thisType);
+          .create(types.first as InterfaceType);
 
-      var factory =
+      var widgetFactory =
           PropertyWidgetFactorySource(propertyWidgetFactoryType, propertyType);
 
-      context.applicationPresentation.propertyWidgetFactories.add(factory);
+      context.application.propertyWidgetFactories.add(widgetFactory);
     }
 
-    if (context.applicationPresentation.propertyWidgetFactories.isEmpty) {
+    if (context.application.propertyWidgetFactories.isEmpty) {
       throw Exception(
           '${field.asLibraryMemberPath}: No PropertyWidgetFactories found.');
     }

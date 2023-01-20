@@ -57,7 +57,7 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
   final SourceContext context;
   ServiceClassSourceFactory(this.context);
 
-  /// populates the [applicationPresentation] with created [ServiceClassSource]s
+  /// populates the [application] with created [ServiceClassSource]s
   /// and all their sub classes
   @override
   void populateApplicationPresentation() {
@@ -74,10 +74,10 @@ class ServiceClassSourceFactory extends ReflectGuiConfigPopulateFactory {
           description: _createDescription(element),
           serviceClass: context.typeFactory.create(element.thisType),
           actionMethods: actionMethods);
-      context.applicationPresentation.serviceClasses.add(serviceClassSource);
+      context.application.serviceClasses.add(serviceClassSource);
     }
 
-    if (context.applicationPresentation.serviceClasses.isEmpty) {
+    if (context.application.serviceClasses.isEmpty) {
       throw Exception('${field.asLibraryMemberPath}: may not be empty!');
     }
   }

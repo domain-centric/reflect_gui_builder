@@ -138,8 +138,10 @@ class TypeSourceFactory {
   List<ClassSource> _genericTypes(InterfaceType type) {
     var genericTypes = <ClassSource>[];
     for (var typeArgument in type.typeArguments) {
-      var genericType = create(typeArgument as InterfaceType);
-      genericTypes.add(genericType);
+      if (typeArgument is InterfaceType) {
+        var genericType = create(typeArgument);
+        genericTypes.add(genericType);
+      }
     }
     return genericTypes;
   }

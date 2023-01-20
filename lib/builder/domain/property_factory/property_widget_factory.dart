@@ -62,3 +62,53 @@ class IntWidgetFactory extends PropertyWidgetFactory<int> {
   //TODO link value to Text  including unit of measurement, and formatter (e.g. thousands separator)
   //TODO add validation result text
 }
+
+
+class ListWidgetFactory extends PropertyWidgetFactory<List<
+//
+Object>> {
+  const ListWidgetFactory();
+
+  @override
+  Widget createEditableFormField() => const TextField();
+
+  //TODO link value to TextField including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO label
+  //TODO add validation result text
+
+  @override
+  Widget createReadOnlyFormField() => const Text('');
+
+  //TODO link value to Text including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO add label
+  //TODO add validation result text
+
+  @override
+  Widget createTableCellField() => const Text('');
+  //TODO link value to Text  including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO add validation result text
+}
+
+
+class EnumWidgetFactory extends PropertyWidgetFactory<Enum> {
+  const EnumWidgetFactory();
+
+  @override
+  Widget createEditableFormField() => const TextField();
+
+  //TODO link value to TextField including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO label
+  //TODO add validation result text
+
+  @override
+  Widget createReadOnlyFormField() => const Text('');
+
+  //TODO link value to Text including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO add label
+  //TODO add validation result text
+
+  @override
+  Widget createTableCellField() => const Text('');
+  //TODO link value to Text  including unit of measurement, and formatter (e.g. thousands separator)
+  //TODO add validation result text
+}

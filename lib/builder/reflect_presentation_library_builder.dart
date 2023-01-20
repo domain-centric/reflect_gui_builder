@@ -24,8 +24,6 @@ class ReflectPresentationLibraryBuilder extends Builder {
       var library = await buildStep.inputLibrary;
 
       if (libraryToInclude(library)) {
-        // print('--${library.source}');
-
         var generatedLibraries =
             await buildStep.fetchResource<GeneratedLibraries>(resource);
 
@@ -41,12 +39,11 @@ class ReflectPresentationLibraryBuilder extends Builder {
     var sourceFactory = ApplicationPresentationSourceFactory();
     for (var topElement in library.topLevelElements) {
       if (sourceFactory.isValidApplicationPresentationElement(topElement)) {
-        var applicationPresentationSource =
+        var application =
             sourceFactory.create(this, topElement as ClassElement);
         //log.info('\n$applicationPresentationSource');
-
         CodeFactoryContext context = CodeFactoryContext(
-            this, generatedLibraries, applicationPresentationSource);
+            this, generatedLibraries, application);
 
         GeneratedApplicationPresentationFactory(context).populate();
         ServiceClassPresentationFactory(context).populate();

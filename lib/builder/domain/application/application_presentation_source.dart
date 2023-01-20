@@ -116,7 +116,7 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
     ActionMethodResultProcessorSourceFactory(context)
         .populateApplicationPresentation();
     ServiceClassSourceFactory(context).populateApplicationPresentation();
-    return context.applicationPresentation;
+    return context.application;
   }
 
   ApplicationPresentationSource _createApplicationPresentationSource(
@@ -226,14 +226,14 @@ class ApplicationPresentationSourceFactory extends SourceFactory {
 
 abstract class ReflectGuiConfigPopulateFactory extends SourceFactory {
   /// add objects that contain information on source code
-  /// to the [applicationPresentation] tree
+  /// to the [application] tree
   void populateApplicationPresentation();
 }
 
 /// All information needed to create a [ApplicationPresentationSource]
 class SourceContext {
   final ClassElement applicationPresentationElement;
-  late ApplicationPresentationSource applicationPresentation;
+  late ApplicationPresentationSource application;
   late TypeSourceFactory typeFactory;
   late EnumSourceFactory enumSourceFactory;
   late DomainSourceFactory domainSourceFactory;
@@ -242,7 +242,7 @@ class SourceContext {
   SourceContext(
     Builder builder,
     this.applicationPresentationElement,
-    this.applicationPresentation,
+    this.application,
   ) {
     typeFactory = TypeSourceFactory(this);
     domainSourceFactory = DomainSourceFactory(this);

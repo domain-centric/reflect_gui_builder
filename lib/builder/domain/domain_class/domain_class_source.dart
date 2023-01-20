@@ -98,7 +98,7 @@ class DomainSourceFactory extends SourceFactory {
 
   DomainClassSource? _findExistingDomainClass(
       String libraryUri, String className) {
-    var domainClasses = context.applicationPresentation.domainClasses;
+    var domainClasses = context.application.domainClasses;
     var existingDomainClass = domainClasses.firstWhereOrNull((domainClass) =>
         domainClass.libraryUri == libraryUri &&
         domainClass.libraryMemberPath == className);

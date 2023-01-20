@@ -12,6 +12,8 @@ class MyFirstApp extends ApplicationPresentation {
     // TODO: Move to [ApplicationPresentation]
     StringWidgetFactory,
     IntWidgetFactory,
+    ListWidgetFactory,
+    EnumWidgetFactory,
   ];
 
   @override
