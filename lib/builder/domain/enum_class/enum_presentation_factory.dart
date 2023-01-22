@@ -35,7 +35,6 @@ class EnumPresentationFactory extends CodeFactory {
         superClass: _createSuperClass(),
         constructors: _createConstructors(enumSource),
         fields: _createFields(enumSource, propertyClasses),
-        methods: _createMethods(enumSource),
       );
 
   List<Constructor> _createConstructors(EnumSource enumSource) => [
@@ -61,9 +60,17 @@ class EnumPresentationFactory extends CodeFactory {
   List<Field> _createFields(
           EnumSource enumSource, List<Class> actionMethodClasses) =>
       [
-        _createTranslatableFields(enumSource, 'names', enumSource.names),
+        _createValuesField(enumSource),
         _createTranslatableFields(
-            enumSource, 'descriptions', enumSource.descriptions),
+          enumSource,
+          'names',
+          enumSource.names,
+        ),
+        _createTranslatableFields(
+          enumSource,
+          'descriptions',
+          enumSource.descriptions,
+        ),
         _createActionMethodsField(actionMethodClasses),
       ];
 
@@ -97,15 +104,13 @@ class EnumPresentationFactory extends CodeFactory {
   String _className(Class propertyClass) =>
       CodeFormatter().unFormatted(propertyClass.name);
 
-  _createMethods(EnumSource enumSource) => [_createValuesGetter(enumSource)];
-
-  Method _createValuesGetter(EnumSource enumSource) => Method.getter(
+  Field _createValuesField(EnumSource enumSource) => Field(
         'values',
-        _createValuesGetterBody(enumSource),
         annotations: [Annotation.override()],
-        type: Type.ofList(genericType: TypeFactory().create(enumSource)),
+        modifier: Modifier.final$,
+        value: _createValuesFieldValue(enumSource),
       );
 
-  Expression _createValuesGetterBody(EnumSource enumSource) =>
+  Expression _createValuesFieldValue(EnumSource enumSource) =>
       Expression.ofType(TypeFactory().create(enumSource)).getProperty('values');
 }
