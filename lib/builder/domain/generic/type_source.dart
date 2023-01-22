@@ -1,10 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:reflect_gui_builder/builder/domain/enum_class/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/to_string.dart';
-
-import '../domain_class/domain_class_source.dart';
-import '../enum/enum_source.dart';
-import '../application_class/application_presentation_source.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation_source.dart';
 
 /// Contains information on a library member from its source code.
 /// Implementations are normally created by [ReflectGuiConfigPopulateFactory] that converts

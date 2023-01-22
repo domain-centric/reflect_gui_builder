@@ -6,7 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:fluent_regex/fluent_regex.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
-import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
+import 'package:reflect_gui_builder/builder/domain/enum_class/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/build_logger.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/source.dart';
 import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
@@ -53,7 +53,7 @@ class ApplicationPresentationSource extends ClassSource {
       usedTypes.whereType<DomainClassSource>().toSet();
 
   /// Find's all [Enum]s in the [ServiceClass]es
-  Set<EnumSource> get enums => usedTypes.whereType<EnumSource>().toSet();
+  Set<EnumSource> get enumClasses => usedTypes.whereType<EnumSource>().toSet();
 
   @override
   Set<ClassSource> get usedTypes {
@@ -79,7 +79,7 @@ class ApplicationPresentationSource extends ClassSource {
         .add('actionMethodResultProcessors', actionMethodResultProcessors)
         .add('serviceClasses', serviceClasses)
         .add('domainClasses', domainClasses)
-        .add('enums', enums)
+        .add('enums', enumClasses)
         .toString();
   }
 }

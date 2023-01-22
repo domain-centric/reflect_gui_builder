@@ -2,15 +2,14 @@ import 'package:dart_code/dart_code.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
-import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class ActionMethodPresentationFactory {
-  List<Class> createClasses(ServiceClassSource serviceClass) {
+  List<Class> createClasses(List<ActionMethodSource> actionMethods) {
     var classes = <Class>[];
     var order = 0;
-    for (var actionMethod in serviceClass.actionMethods) {
+    for (var actionMethod in actionMethods) {
       order += 100;
       var generatedClass = create(actionMethod, order);
       classes.add(generatedClass);

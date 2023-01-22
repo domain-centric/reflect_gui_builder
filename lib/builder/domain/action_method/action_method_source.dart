@@ -70,7 +70,7 @@ class ActionMethodSourceFactory extends SourceFactory {
 
   ActionMethodSourceFactory(this.context);
 
-  List<ActionMethodSource> createAll(InterfaceElement element) {
+  List<ActionMethodSource> createAll(InterfaceOrAugmentationElement element) {
     var actionMethods = <ActionMethodSource>[];
     for (var methodElement in element.methods) {
       var actionMethod = _create(methodElement);

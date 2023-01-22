@@ -1,7 +1,7 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_source.dart';
-import 'package:reflect_gui_builder/builder/domain/enum/enum_source.dart';
+import 'package:reflect_gui_builder/builder/domain/enum_class/enum_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_source.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
@@ -9,7 +9,7 @@ import 'package:reflect_gui_builder/builder/domain/service_class/service_class_s
 class TypeFactory {
   Type create(ClassSource classSource) => Type(
         classSource.className,
-        libraryUri: classSource.libraryUri.toString(),
+        libraryUri: classSource.libraryUri,
       );
 }
 

@@ -62,7 +62,7 @@ class DomainClassPresentationFactory extends CodeFactory {
       [
         _createTranslatableField('name', domainClass.name),
         _createTranslatableField('description', domainClass.description),
-        _createPropertiesField(domainClass, propertyClasses),
+        _createPropertiesField(propertyClasses),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -71,18 +71,7 @@ class DomainClassPresentationFactory extends CodeFactory {
           annotations: [Annotation.override()],
           value: TranslatableConstructorCall(translatable));
 
-  /// e.g. List<ActionMethodPresentation> get actionMethods => [allCustomers];
-
-  // Method _createActionMethodsGetter(DomainClassSource domainClass) =>
-  //     Method.getter(
-  //       'actionMethods',
-  //       _createActionMethodsGetterBody(domainClass),
-  //       annotations: [Annotation.override()],
-  //       type: Type.ofList(genericType: ActionMethodPresentationType()),
-  //     );
-
   Field _createPropertiesField(
-    DomainClassSource domainClass,
     List<Class> propertyClasses,
   ) =>
       Field('properties',
@@ -90,11 +79,6 @@ class DomainClassPresentationFactory extends CodeFactory {
           modifier: Modifier.final$,
           type: Type.ofList(genericType: PropertyPresentationType()),
           value: _createPropertiesFieldValue(propertyClasses));
-
-  // Expression _createActionMethodsGetterBody(DomainClassSource domainClass) =>
-  //     Expression.ofList(domainClass.actionMethods
-  //         .map((actionMethod) => Expression.ofVariable(actionMethod.methodName))
-  //         .toList());
 
   Expression _createPropertiesFieldValue(List<Class> propertyClasses) =>
       Expression.ofList(propertyClasses

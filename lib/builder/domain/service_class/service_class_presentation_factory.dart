@@ -21,8 +21,8 @@ class ServiceClassPresentationFactory extends CodeFactory {
   }
 
   List<Class> _createClasses(ServiceClassSource serviceClassSource, int order) {
-    var actionMethodClasses =
-        ActionMethodPresentationFactory().createClasses(serviceClassSource);
+    var actionMethodClasses = ActionMethodPresentationFactory()
+        .createClasses(serviceClassSource.actionMethods);
     var serviceClass =
         _createServiceClass(serviceClassSource, order, actionMethodClasses);
     return [serviceClass, ...actionMethodClasses];

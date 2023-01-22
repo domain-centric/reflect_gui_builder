@@ -53,8 +53,7 @@ class IntWidgetFactory extends ValueWidgetFactory<int> {
 
 }
 
-class ListWidgetFactory extends ValueWidgetFactory<
-    List<Object>> {
+class ListWidgetFactory extends ValueWidgetFactory<List<Object>> {
   const ListWidgetFactory();
 
   @override
