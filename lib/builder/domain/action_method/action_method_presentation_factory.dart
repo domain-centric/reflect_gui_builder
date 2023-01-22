@@ -44,6 +44,8 @@ class ActionMethodPresentationFactory {
         if (actionMethod.parameterType != null)
           _createParameterTypeField(actionMethod),
         _createParameterProcessorField(actionMethod),
+        if (actionMethod.resultType != null)
+          _createResultTypeField(actionMethod),
         _createResultProcessorField(actionMethod),
       ];
 
@@ -83,6 +85,12 @@ class ActionMethodPresentationFactory {
         TypeFactory().create(actionMethod.parameterProcessor),
         isConst: true,
       );
+
+  Field _createResultTypeField(ActionMethodSource actionMethod) =>
+      Field('resultType',
+          modifier: Modifier.final$,
+          annotations: [Annotation.override()],
+          value: classPresentationFactory.create(actionMethod.resultType!));
 
   Field _createResultProcessorField(ActionMethodSource actionMethod) =>
       Field('resultProcessor',
