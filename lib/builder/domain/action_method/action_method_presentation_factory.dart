@@ -2,10 +2,17 @@ import 'package:dart_code/dart_code.dart';
 import 'package:recase/recase.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_source.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
+import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class ActionMethodPresentationFactory {
+  final ClassPresentationFactory classPresentationFactory;
+
+  ActionMethodPresentationFactory(
+      PresentationOutputPathFactory outputPathFactory)
+      : classPresentationFactory = ClassPresentationFactory(outputPathFactory);
+
   List<Class> createClasses(List<ActionMethodSource> actionMethods) {
     var classes = <Class>[];
     var order = 0;
@@ -34,6 +41,8 @@ class ActionMethodPresentationFactory {
         _createOrderField(order),
         _createVisibleField(),
         _createIconField(actionMethod),
+        if (actionMethod.parameterType != null)
+          _createParameterTypeField(actionMethod),
         _createParameterProcessorField(actionMethod),
         _createResultProcessorField(actionMethod),
       ];
@@ -55,6 +64,12 @@ class ActionMethodPresentationFactory {
       modifier: Modifier.final$,
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
+
+  Field _createParameterTypeField(ActionMethodSource actionMethod) =>
+      Field('parameterType',
+          modifier: Modifier.final$,
+          annotations: [Annotation.override()],
+          value: classPresentationFactory.create(actionMethod.parameterType!));
 
   Field _createParameterProcessorField(ActionMethodSource actionMethod) =>
       Field('parameterProcessor',

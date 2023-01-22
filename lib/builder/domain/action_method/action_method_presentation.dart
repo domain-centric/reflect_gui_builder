@@ -22,8 +22,9 @@ abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   /// Returns information on the [ActionMethod]s parameter type.
   /// It:
   /// * is null when the [ActionMethod] has no parameter
-  /// * it could contain information on a [DomainClass] or [Enum].
-  ClassPresentation? parameterType;
+  /// * otherwise it is a [ClassPresentation] representing the type,
+  ///   potentially with presentation information on a [DomainClass] or [Enum].
+  ClassPresentation? get parameterType => null;
 
   ActionMethodParameterProcessor<PARAMETER_TYPE> get parameterProcessor;
 
@@ -39,8 +40,9 @@ abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   /// Returns information on the [ActionMethod]s result type.
   /// It:
   /// * is null when the [ActionMethod] has no result (void)
-  /// * it could contain information on a [DomainClass] or [Enum].
-  ClassPresentation? resultType;
+  /// * otherwise it is a [ClassPresentation] representing the type,
+  ///   potentially with presentation information on a [DomainClass] or [Enum].
+  ClassPresentation? get resultType => null;
 
   ActionMethodResultProcessor<RESULT_TYPE> get resultProcessor;
 

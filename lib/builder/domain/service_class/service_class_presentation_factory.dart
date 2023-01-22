@@ -7,7 +7,12 @@ import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
 
 class ServiceClassPresentationFactory extends CodeFactory {
-  ServiceClassPresentationFactory(CodeFactoryContext context) : super(context);
+  final ActionMethodPresentationFactory actionMethodPresentationFactory;
+
+  ServiceClassPresentationFactory(CodeFactoryContext context)
+      : actionMethodPresentationFactory =
+            ActionMethodPresentationFactory(context.outputPathFactory),
+        super(context);
 
   @override
   void populate() {
@@ -21,7 +26,7 @@ class ServiceClassPresentationFactory extends CodeFactory {
   }
 
   List<Class> _createClasses(ServiceClassSource serviceClassSource, int order) {
-    var actionMethodClasses = ActionMethodPresentationFactory()
+    var actionMethodClasses = actionMethodPresentationFactory
         .createClasses(serviceClassSource.actionMethods);
     var serviceClass =
         _createServiceClass(serviceClassSource, order, actionMethodClasses);

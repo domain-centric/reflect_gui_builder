@@ -10,7 +10,8 @@ class EnumPresentationFactory extends CodeFactory {
   final ActionMethodPresentationFactory actionMethodPresentationFactory;
 
   EnumPresentationFactory(super.context)
-      : actionMethodPresentationFactory = ActionMethodPresentationFactory();
+      : actionMethodPresentationFactory =
+            ActionMethodPresentationFactory(context.outputPathFactory);
 
   @override
   void populate() {
