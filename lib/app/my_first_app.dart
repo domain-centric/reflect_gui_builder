@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:reflect_gui_builder/app/my_first_app.presentation.dart';
 import 'package:reflect_gui_builder/app/person/service/person_service.dart'
     as i1;
+import 'package:reflect_gui_builder/gui/gui.dart';
 
 import '../builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
 import '../builder/domain/action_method_result_processor/action_method_result_processor.dart';
@@ -38,4 +41,16 @@ class MyFirstApp extends ApplicationPresentation {
   List<Type> serviceClasses = [
     i1.PersonService,
   ];
+
+  @override
+  ThemeData get lightTheme =>
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.light);
+
+  @override
+  ThemeData get darkTheme =>
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark);
+}
+
+void main() {
+  runApp(ReflectGuiApplication(MyFirstAppPresentation()));
 }

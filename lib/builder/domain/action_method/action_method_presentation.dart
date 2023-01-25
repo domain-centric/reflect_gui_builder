@@ -46,6 +46,13 @@ abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
 
   ActionMethodResultProcessor<RESULT_TYPE> get resultProcessor;
 
+  /// parameterType    parameterFactory  parameter needed
+  ///   null              null                false
+  ///   null              !null               false
+  ///   !null             null                true
+  ///   !null             !null               false
+  bool get parameterNeeded => parameterType != null && parameterFactory == null;
+
   /// TODO final ExecutionMode executionMode
 
   /// TODO final PARAMETER_TYPE? Function() parameterFactoryFunction

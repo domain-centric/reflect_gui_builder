@@ -4,11 +4,18 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Flutter (tool\\reflect_gui_builder.dart)",
             "type": "dart",
             "request": "launch",
             "program": "tool\\reflect_gui_builder.dart"
+        },
+        {
+            "name": "Flutter (lib\\app\\my_first_app.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib\\app\\my_first_app.dart"
         }
     ]
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/reflect_presentation_library_builder.dart';
 
@@ -27,4 +28,10 @@ abstract class ApplicationPresentation {
   /// This must be a literal [List] without logic.
   /// e.g.: [ProductService, ShoppingCartService]
   List<Type> get serviceClasses;
+
+  ThemeData get lightTheme =>
+      ThemeData(primarySwatch: Colors.blue, brightness: Brightness.light);
+
+  ThemeData get darkTheme =>
+      ThemeData(primarySwatch: Colors.blue, brightness: Brightness.dark);
 }

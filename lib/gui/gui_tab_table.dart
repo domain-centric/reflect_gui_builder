@@ -1,0 +1,124 @@
+import 'package:flutter/material.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
+
+import 'package:reflect_gui_builder/gui/gui_tab.dart' as reflect_tab;
+
+class TableExampleTab extends reflect_tab.Tab {
+  final ActionMethodPresentation actionMethod;
+
+  TableExampleTab(this.actionMethod, {Key? key}) : super(key: key);
+
+  final List<_Row> _rows = [
+    for (int i = 1; i < 100; i++) _Row('Cell A$i', 'CellB$i', 'CellC$i', i),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(padding: const EdgeInsets.all(16), children: [
+      DataTable(
+        //header: Text('Header Text'),
+        //rowsPerPage: 4,
+        columns: const [
+          DataColumn(label: Text('Header A')),
+          DataColumn(label: Text('Header B')),
+          DataColumn(label: Text('Header C')),
+          DataColumn(label: Text('Header D')),
+        ],
+        rows: _rows
+            .map((row) => DataRow(cells: [
+                  DataCell(Text(row.valueA)),
+                  DataCell(Text(row.valueB)),
+                  DataCell(Text(row.valueC)),
+                  DataCell(Text(row.valueD.toString()))
+                ]))
+            .toList(),
+      ),
+    ]);
+  }
+
+  ///Table tabs can be closed directly because they do not have unsaved state
+  ///(unlike an editable form)
+  @override
+  bool get canCloseDirectly => true;
+
+  @override
+  reflect_tab.TabCloseResult get close => throw UnimplementedError();
+
+  @override
+  IconData get iconData => Icons.table_chart_sharp;
+
+  @override
+  String get title => actionMethod.name.englishText;
+}
+
+class _Row {
+  _Row(
+    this.valueA,
+    this.valueB,
+    this.valueC,
+    this.valueD,
+  );
+
+  final String valueA;
+  final String valueB;
+  final String valueC;
+  final int valueD;
+
+  bool selected = false;
+}
+
+class TableExampleTabFactory implements reflect_tab.TabFactory {
+  @override
+  reflect_tab.Tab create(ActionMethodPresentation actionMethod) {
+    return TableExampleTab(actionMethod);
+  }
+}
+// class _DataSource extends DataTableSource {
+//   _DataSource(this.context) {
+//     _rows = <_Row>[
+//       _Row('Cell A1', 'CellB1', 'CellC1', 1),
+//       _Row('Cell A2', 'CellB2', 'CellC2', 2),
+//       _Row('Cell A3', 'CellB3', 'CellC3', 3),
+//       _Row('Cell A4', 'CellB4', 'CellC4', 4),
+//     ];
+//   }
+//
+//   final BuildContext context;
+//   List<_Row> _rows;
+//
+//   int _selectedCount = 0;
+//
+//   @override
+//   DataRow getRow(int index) {
+//     assert(index >= 0);
+//     if (index >= _rows.length) return null;
+//     final row = _rows[index];
+//     return DataRow.byIndex(
+//       index: index,
+//       selected: row.selected,
+//       onSelectChanged: (value) {
+//         if (row.selected != value) {
+//           _selectedCount += value ? 1 : -1;
+//           assert(_selectedCount >= 0);
+//           row.selected = value;
+//           notifyListeners();
+//         }
+//       },
+//       cells: [
+//         DataCell(Text(row.valueA)),
+//         DataCell(Text(row.valueB)),
+//         DataCell(Text(row.valueC)),
+//         DataCell(Text(row.valueD.toString())),
+//       ],
+//     );
+//   }
+//
+//   @override
+//   int get rowCount => _rows.length;
+//
+//   @override
+//   bool get isRowCountApproximate => false;
+//
+//   @override
+//   int get selectedRowCount => _selectedCount;
+// }

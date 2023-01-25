@@ -1,3 +1,5 @@
+import 'package:flutter/src/material/theme_data.dart';
+import 'package:reflect_gui_builder/app/my_first_app.dart';
 import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart';
@@ -49,4 +51,8 @@ abstract class GeneratedApplicationPresentation {
   String? get version;
 
   List<ServiceClassPresentation> get serviceClasses;
+
+  ThemeData get lightTheme;
+
+  ThemeData get darkTheme;
 }
