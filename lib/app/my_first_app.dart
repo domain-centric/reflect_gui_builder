@@ -4,10 +4,10 @@ import 'package:reflect_gui_builder/app/person/service/person_service.dart'
     as i1;
 import 'package:reflect_gui_builder/gui/gui.dart';
 
-import '../builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
-import '../builder/domain/action_method_result_processor/action_method_result_processor.dart';
-import '../builder/domain/value_widget_factory/value_widget_factory.dart';
-import '../builder/domain/application_class/application_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_parameter_processor/action_method_parameter_processor.dart';
+import 'package:reflect_gui_builder/builder/domain/action_method_result_processor/action_method_result_processor.dart';
+import 'package:reflect_gui_builder/builder/domain/value_widget_factory/value_widget_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 
 class MyFirstApp extends ApplicationPresentation {
   @override

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/enum_class/enum_presentation_factory.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';

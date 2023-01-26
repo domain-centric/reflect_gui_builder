@@ -1,5 +1,6 @@
 import 'package:dart_code/dart_code.dart';
 import 'package:reflect_gui_builder/builder/domain/generic/code_factory.dart';
+import 'package:reflect_gui_builder/builder/domain/generic/type_code.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_source.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/translatable_code.dart';
@@ -20,6 +21,7 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
         _className,
         superClass: _createSuperClass(),
         fields: _createFields(),
+        methods: _createMethods(),
       );
 
   String get _className =>
@@ -98,6 +100,20 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
       libraryUri: libraryUri,
     );
   }
+
+  List<Method> _createMethods() => [
+        _createThemeGetter('lightTheme' ),
+        _createThemeGetter('darkTheme'),
+      ];
+
+  Method _createThemeGetter(
+          String getterName) =>
+      Method.getter(
+        getterName,
+        Expression.callConstructor(TypeFactory().create(application))
+            .getProperty(getterName),
+        annotations: [Annotation.override()],
+      );
 }
 
 class UriConstructorCall extends Expression {

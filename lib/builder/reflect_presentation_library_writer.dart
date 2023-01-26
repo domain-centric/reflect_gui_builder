@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:build/build.dart';
-import 'package:reflect_gui_builder/builder/domain/application_class/application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/generated_library/generated_library.dart';
 import 'package:reflect_gui_builder/builder/domain/presentation_output_path/presentation_output_path.dart';
 
@@ -20,7 +19,7 @@ class ReflectPresentationLibraryWriter extends Builder {
       var generatedLibraries =
           await buildStep.fetchResource<GeneratedLibraries>(resource);
       if (generatedLibraries.isEmpty) {
-        throw ('No class found that extends $ApplicationPresentation');
+        throw ('No class found that extends ApplicationPresentation');
       }
 
       var inputLibrary = await buildStep.inputLibrary;
