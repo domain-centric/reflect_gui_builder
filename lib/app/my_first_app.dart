@@ -50,7 +50,3 @@ class MyFirstApp extends ApplicationPresentation {
   ThemeData get darkTheme =>
       ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark);
 }
-
-void main() {
-  runApp(ReflectGuiApplication(MyFirstAppPresentation()));
-}
