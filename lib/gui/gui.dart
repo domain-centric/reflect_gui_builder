@@ -41,8 +41,8 @@ class ReflectMaterialApp extends StatelessWidget {
       title: Provider.of<GeneratedApplicationPresentation>(context)
           .name
           .englishText,
-      // theme: reflectGuiApplication.applicationPresentation.lightTheme,
-      // darkTheme: reflectGuiApplication.applicationPresentation.darkTheme,
+      theme: reflectGuiApplication.applicationPresentation.lightTheme,
+      darkTheme: reflectGuiApplication.applicationPresentation.darkTheme,
       home: const Home(),
     );
   }

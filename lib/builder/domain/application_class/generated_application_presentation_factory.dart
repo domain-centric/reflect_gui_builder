@@ -13,11 +13,13 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
   @override
   void populate() {
     var librarySourceUri = application.libraryUri.toString();
-    var classToAdd = _createClass();
-    generatedLibraries.addClass(librarySourceUri, classToAdd);
+    var applicationPresentation = _createApplicationPresentationClass();
+    generatedLibraries.addClass(librarySourceUri, applicationPresentation);
+    var mainFunction = _createMainFunction();
+    generatedLibraries.addFunction(librarySourceUri, mainFunction);
   }
 
-  _createClass() => Class(
+  _createApplicationPresentationClass() => Class(
         _className,
         superClass: _createSuperClass(),
         fields: _createFields(),
@@ -27,9 +29,11 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
   String get _className =>
       outputPathFactory.createOutputClassName(application.className);
 
-  Type _createSuperClass() => Type('GeneratedApplicationPresentation',
-      libraryUri:
-          'package:reflect_gui_builder/builder/domain/application_class/generated_application_presentation.dart');
+  Type _createSuperClass() {
+    var libraryUri =
+        'package:reflect_gui_builder/builder/domain/application_class/generated_application_presentation.dart';
+    return Type('GeneratedApplicationPresentation', libraryUri: libraryUri);
+  }
 
   List<Field> _createFields() => [
         _createTranslatableField('name', application.name),
@@ -102,18 +106,32 @@ class GeneratedApplicationPresentationFactory extends CodeFactory {
   }
 
   List<Method> _createMethods() => [
-        _createThemeGetter('lightTheme' ),
+        _createThemeGetter('lightTheme'),
         _createThemeGetter('darkTheme'),
       ];
 
-  Method _createThemeGetter(
-          String getterName) =>
-      Method.getter(
+  Method _createThemeGetter(String getterName) => Method.getter(
         getterName,
         Expression.callConstructor(TypeFactory().create(application))
             .getProperty(getterName),
         annotations: [Annotation.override()],
       );
+
+  DartFunction _createMainFunction() =>
+      DartFunction.main(_createMainFunctionBody());
+
+  Statement _createMainFunctionBody() => Statement([
+        FunctionCall('runApp',
+            libraryUri: 'package:flutter/material.dart',
+            parameterValues: ParameterValues([
+              ParameterValue(Expression.callConstructor(
+                  Type('ReflectGuiApplication',
+                      libraryUri: 'package:reflect_gui_builder/gui/gui.dart'),
+                  parameterValues: ParameterValues([
+                    ParameterValue(Expression.callConstructor(Type(_className)))
+                  ])))
+            ]))
+      ]);
 }
 
 class UriConstructorCall extends Expression {

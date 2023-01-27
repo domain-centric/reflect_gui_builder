@@ -12,6 +12,11 @@ class GeneratedLibraries {
 
   String _normalize(String path) => path.toLowerCase();
 
+  addFunction(String librarySourceUri, DartFunction function) {
+    var lib = library(librarySourceUri);
+    lib.functions!.add(function);
+  }
+
   addClass(String librarySourceUri, Class classToAdd) {
     var lib = library(librarySourceUri);
     lib.classes!.add(classToAdd);
@@ -36,6 +41,7 @@ class GeneratedLibraries {
   Library _createLibrary(String inputUris) {
     return Library(
       classes: [],
+      functions: [],
       docComments: _createComments(inputUris),
     );
   }
