@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
+import 'package:reflect_gui_builder/gui/gui_tab.dart';
+import 'package:reflect_gui_builder/gui/gui_tab_form.dart';
 
 const dialogIcon = Icons.crop_7_5;
 const formIcon = Icons.table_rows_sharp;
@@ -42,7 +45,7 @@ class EditEnumInDialog extends ActionMethodParameterProcessor<Enum> {
 
   @override
   void process(
-    Object context,
+    BuildContext context,
     Object actionMethodOwner,
     ActionMethodPresentation actionMethod,
     Object actionMethodParameter,
@@ -60,14 +63,14 @@ class EditDomainObjectParameterInForm
 
   @override
   void process(
-    Object context,
+    BuildContext context,
     Object actionMethodOwner,
     ActionMethodPresentation actionMethod,
     Object actionMethodParameter,
   ) {
-    // Tabs tabs = Provider.of<Tabs>(context, listen: false);
-    //   FormExampleTab formTab = FormExampleTab(actionMethod);
-    //   tabs.add(formTab);
+    Tabs tabs = Provider.of<Tabs>(context, listen: false);
+    FormExampleTab formTab = FormExampleTab(actionMethod);
+    tabs.add(formTab);
     //TODO put in form OK button:  actionMethod.resultProcessor.process(context, domainObject);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reflect_gui_builder/app/person/service/person_service.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/application_class/generated_application_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart';
@@ -239,7 +240,7 @@ class TabsIcon extends StatelessWidget {
                     border: Border.all(
                         color: Theme.of(context)
                             .primaryTextTheme
-                            .bodyText1!
+                            .bodyLarge!
                             .color!,
                         width: 2),
                     borderRadius: const BorderRadius.all(Radius.circular(10))),
@@ -323,13 +324,14 @@ class MainMenu extends StatelessWidget {
   const MainMenu({Key? key, required this.isDrawerMenu}) : super(key: key);
 
   onTab(BuildContext context, ActionMethodPresentation actionMethod) {
-//TODO
-// if (actionMethod.parameterFactory!=null) {
-//   var parameter=actionMethod.parameterFactory!();
-//   actionMethod.parameterProcessor.process(context, actionMethodOwner, actionMethod, parameter);
-// } else {
-//   actionMethod.parameterProcessor.process(context, actionMethodOwner, actionMethod, void);
-// }
+    if (actionMethod.parameterFactory != null) {
+      var parameter = actionMethod.parameterFactory!();
+      actionMethod.parameterProcessor
+          .process(context, const PersonService(), actionMethod, parameter);
+    } else {
+      actionMethod.parameterProcessor
+          .process(context, const PersonService(), actionMethod, null);
+    }
 
     if (isDrawerMenu) {
       Navigator.pop(context); //Hide Drawer
@@ -345,7 +347,7 @@ class MainMenu extends StatelessWidget {
               Provider.of<GeneratedApplicationPresentation>(context)
                   .name
                   .englishText,
-              style: Theme.of(context).primaryTextTheme.headline6),
+              style: Theme.of(context).primaryTextTheme.titleLarge),
         ),
         body: ListView(
           // Important: Remove any padding from the ListView.

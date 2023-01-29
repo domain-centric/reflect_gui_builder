@@ -132,8 +132,10 @@ class ActionMethodSourceFactory extends SourceFactory {
     }
   }
 
-  ClassSource? _createResultType(MethodElement methodElement) =>
-      context.typeFactory.create(methodElement.returnType as InterfaceType);
+  ClassSource? _createResultType(MethodElement methodElement) => methodElement
+          .returnType.isVoid
+      ? null
+      : context.typeFactory.create(methodElement.returnType as InterfaceType);
 
   Translatable _createName(MethodElement methodElement) => Translatable(
       key: _createNameKey(methodElement),

@@ -56,5 +56,4 @@ abstract class ActionMethodPresentation<RESULT_TYPE, PARAMETER_TYPE>
   /// TODO final ExecutionMode executionMode
 
   /// TODO final PARAMETER_TYPE? Function() parameterFactoryFunction
-
 }

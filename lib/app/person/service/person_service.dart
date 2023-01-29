@@ -26,4 +26,8 @@ class PersonService {
 
   List<Person> customersByGender(Gender genderToFind) =>
       allCustomers().where((person) => person.gender == genderToFind).toList();
+
+  void createCustomer(Person person) {
+    ///TODO store person in the database
+  }
 }

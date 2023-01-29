@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
+import 'package:reflect_gui_builder/gui/gui_tab.dart';
+import 'package:reflect_gui_builder/gui/gui_tab_table.dart';
 
 const dialogIcon = Icons.crop_7_5;
 const formIcon = Icons.table_rows_sharp;
@@ -102,8 +105,8 @@ class ShowListInTableTab extends ActionMethodResultProcessor<
       [Object? actionMethodParameter]) {
     // TODO: implement call
     /// TODO: use [ActionMethodReflection.resultDomainReflection]
-    // var tabs = Provider.of<Tabs>(context, listen: false);
-    // var tableTab = TableExampleTab(actionMethodInfo); // TODO pass collection
-    // tabs.add(tableTab);
+    var tabs = Provider.of<Tabs>(context, listen: false);
+    var tableTab = TableExampleTab(actionMethod); // TODO pass collection
+    tabs.add(tableTab);
   }
 }

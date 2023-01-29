@@ -30,5 +30,4 @@ abstract class PropertyPresentation<TYPE> extends DynamicItem {
 // TableColumn.span=int
 // TableColumn.visible=always or never or ifFits(priority=1)
 // TableColumn.widgetFactory= (default implementation for dart types int, double, string, bool, enum???, domainObject??? etc)
-
 }

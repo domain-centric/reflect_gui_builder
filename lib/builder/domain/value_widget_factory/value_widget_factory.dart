@@ -31,7 +31,6 @@ class StringWidgetFactory extends ValueWidgetFactory<String> {
   //TODO link value to Text
   //TODO add label
   //TODO add validation result text
-
 }
 
 class IntWidgetFactory extends ValueWidgetFactory<int> {
@@ -50,7 +49,6 @@ class IntWidgetFactory extends ValueWidgetFactory<int> {
   //TODO link value to Text including unit of measurement, and formatter (e.g. thousands separator)
   //TODO add label
   //TODO add validation result text
-
 }
 
 class ListWidgetFactory extends ValueWidgetFactory<List<Object>> {
@@ -69,7 +67,6 @@ class ListWidgetFactory extends ValueWidgetFactory<List<Object>> {
   //TODO link value to Text including unit of measurement, and formatter (e.g. thousands separator)
   //TODO add label
   //TODO add validation result text
-
 }
 
 class EnumWidgetFactory extends ValueWidgetFactory<Enum> {
@@ -88,5 +85,4 @@ class EnumWidgetFactory extends ValueWidgetFactory<Enum> {
   //TODO link value to Text including unit of measurement, and formatter (e.g. thousands separator)
   //TODO add label
   //TODO add validation result text
-
 }
