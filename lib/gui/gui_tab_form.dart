@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation.dart';
 import 'package:reflect_gui_builder/gui/gui_tab.dart' as gui_tab;
 import 'package:reflect_gui_builder/gui/gui_tab_form_example.dart';
+import 'package:reflect_gui_builder/gui/scroll_view_with_scroll_bar.dart';
+import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 
 ///Forms:
 // ======
@@ -99,14 +102,19 @@ import 'package:reflect_gui_builder/gui/gui_tab_form_example.dart';
 // streams
 // ?DataTableSource?
 ///
-class FormExampleTab extends gui_tab.Tab {
+class FormTab extends gui_tab.Tab {
   final ActionMethodPresentation actionMethod;
+  final DomainClassPresentation domainClassPresentation;
 
-  const FormExampleTab(this.actionMethod, {Key? key}) : super(key: key);
+  const FormTab({
+    required this.actionMethod,
+    required this.domainClassPresentation,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const FormExamplePage();
+    return  FormContent(domainClassPresentation);
   }
 
   @override
@@ -124,9 +132,115 @@ class FormExampleTab extends gui_tab.Tab {
   String get title => actionMethod.name.englishText;
 }
 
-class FormExampleTabFactory implements gui_tab.TabFactory {
+class FormContent extends StatelessWidget {
+  final DomainClassPresentation domainClassPresentation;
+  const FormContent(this.domainClassPresentation, {Key? key}) : super(key: key);
+
   @override
-  gui_tab.Tab create(ActionMethodPresentation actionMethod) {
-    return FormExampleTab(actionMethod);
+  Widget build(BuildContext context) => ScrollViewWithScrollBar(
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: ResponsiveFormGrid(domainClassPresentation),
+        ),
+      );
+}
+
+class ResponsiveFormGrid extends StatelessWidget {
+  final DomainClassPresentation domainClassPresentation;
+  const ResponsiveFormGrid(this.domainClassPresentation, {Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ResponsiveLayoutGrid(
+      maxNumberOfColumns: maxNumberOfColumns,
+      children: [
+        ..._createFields(),
+        _createButtonBarGutter(),
+        _createCancelButton(
+            context, CellPosition.nextRow(rowAlignment: RowAlignment.right)),
+        _createSubmitButton(context, CellPosition.nextColumn()),
+      ],
+    );
+
+  ResponsiveLayoutCell _createGroupBar(String title) => ResponsiveLayoutCell(
+        position: CellPosition.nextRow(),
+        columnSpan: ColumnSpan.remainingWidth(),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.grey,
+          child: Center(
+            child: Text(title,
+                style: const TextStyle(color: Colors.white, fontSize: 18)),
+          ),
+        ),
+      );
+
+  ResponsiveLayoutCell _createTextField({
+    required String label,
+    required CellPosition position,
+    ColumnSpan columnSpan = const ColumnSpan.size(2),
+    int maxLines = 1,
+  }) =>
+      ResponsiveLayoutCell(
+        position: position,
+        columnSpan: columnSpan,
+        child: Column(children: [
+          Align(alignment: Alignment.topLeft, child: Text(label)),
+          TextFormField(
+            maxLines: maxLines,
+            decoration: const InputDecoration(
+              filled: true,
+              isDense: true,
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
+              disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
+            ),
+          ),
+        ]),
+      );
+
+  ResponsiveLayoutCell _createSubmitButton(
+      BuildContext context, CellPosition position) {
+    return ResponsiveLayoutCell(
+        position: position,
+        child: ElevatedButton(
+          onPressed: () {
+            //TODO call Tab.close
+          },
+          child: const Center(
+              child:
+                  Padding(padding: EdgeInsets.all(16), child: Text('Submit'))),
+        ));
+  }
+
+  ResponsiveLayoutCell _createCancelButton(
+      BuildContext context, CellPosition position) {
+    return ResponsiveLayoutCell(
+        position: position,
+        child: OutlinedButton(
+          onPressed: () {
+            //TODO call Tab.close
+          },
+          child: const Center(
+              child:
+                  Padding(padding: EdgeInsets.all(16), child: Text('Cancel'))),
+        ));
+  }
+
+  _createButtonBarGutter() => ResponsiveLayoutCell(
+        position: CellPosition.nextRow(),
+        child: const SizedBox(height: 8),
+      );
+
+  List<Widget> _createFields() {
+    var fields = <Widget>[];
+    for (var property in domainClassPresentation.properties) {
+      var field = property.widgetFactory.createEditableValue();
+      fields.add(field);
+    }
+    return fields;
   }
 }

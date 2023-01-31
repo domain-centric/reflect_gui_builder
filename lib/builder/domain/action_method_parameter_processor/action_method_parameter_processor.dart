@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method.dart';
 import 'package:reflect_gui_builder/builder/domain/action_method/action_method_presentation.dart';
+import 'package:reflect_gui_builder/builder/domain/domain_class/domain_class_presentation.dart';
 import 'package:reflect_gui_builder/gui/gui_tab.dart';
 import 'package:reflect_gui_builder/gui/gui_tab_form.dart';
 
@@ -69,7 +70,11 @@ class EditDomainObjectParameterInForm
     Object actionMethodParameter,
   ) {
     Tabs tabs = Provider.of<Tabs>(context, listen: false);
-    FormExampleTab formTab = FormExampleTab(actionMethod);
+    FormTab formTab = FormTab(
+      actionMethod: actionMethod,
+      domainClassPresentation:
+          actionMethod.parameterType as DomainClassPresentation,
+    );
     tabs.add(formTab);
     //TODO put in form OK button:  actionMethod.resultProcessor.process(context, domainObject);
   }

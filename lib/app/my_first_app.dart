@@ -38,9 +38,12 @@ class MyFirstApp extends ApplicationPresentation {
     PersonService,
   ];
 
+var material2Light=ThemeData(primarySwatch: Colors.red, );
+var material2Dark=ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark );
+var material3Light=ThemeData( useMaterial3: true, colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red, backgroundColor: Colors.white));
+var material3Dark=ThemeData( useMaterial3: true, colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red, backgroundColor: Colors.black, brightness: Brightness.dark));
   @override
-  ThemeData get lightTheme =>
-      ThemeData(primarySwatch: Colors.red, brightness: Brightness.light);
+  ThemeData get lightTheme =>material2Light;
 
   @override
   ThemeData get darkTheme =>
