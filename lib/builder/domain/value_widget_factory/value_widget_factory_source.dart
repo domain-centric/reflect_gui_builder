@@ -79,12 +79,13 @@ class ValueWidgetFactorySourceFactory extends ReflectGuiConfigPopulateFactory {
     if (valueWidgetFactory.isAbstract) {
       throw ('${field.asLibraryMemberPath}: $valueWidgetFactory may not be abstract.');
     }
-    if (!hasNamelessConstructorWithoutParameters(valueWidgetFactory)) {
-      throw ('${field.asLibraryMemberPath}: $valueWidgetFactory does not have a nameless constructor without parameters.');
-    }
-    if (!hasConstNamelessConstructorWithoutParameters(valueWidgetFactory)) {
-      throw ('${field.asLibraryMemberPath}: $valueWidgetFactory must be immutable and therefore must have a constant constructor.');
-    }
+    //TODO remove???
+    // if (!hasNamelessConstructorWithoutParameters(valueWidgetFactory)) {
+    //   throw ('${field.asLibraryMemberPath}: $valueWidgetFactory does not have a nameless constructor without parameters.');
+    // }
+    // if (!hasConstNamelessConstructorWithoutParameters(valueWidgetFactory)) {
+    //   throw ('${field.asLibraryMemberPath}: $valueWidgetFactory must be immutable and therefore must have a constant constructor.');
+    // }
 
     if (!hasSuperClass(valueWidgetFactory, valueWidgetFactoryLibraryUri,
         valueWidgetFactoryName)) {

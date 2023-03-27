@@ -28,6 +28,7 @@ class PropertyPresentationFactory {
         _createClassName(property),
         superClass: PropertyPresentationType(),
         fields: _createFields(property, order),
+        methods: _createMethods(property),
       );
 
   String _createClassName(PropertySource property) => '${property.className}'
@@ -40,7 +41,6 @@ class PropertyPresentationFactory {
         _createOrderField(order),
         _createVisibleField(),
         _createTypeField(property),
-        _createWidgetFactoryField(property),
       ];
 
   Field _createTranslatableField(String fieldName, Translatable translatable) =>
@@ -61,17 +61,21 @@ class PropertyPresentationFactory {
       annotations: [Annotation.override()],
       value: Expression.ofBool(true));
 
-  _createTypeField(PropertySource property) => Field('type',
+  Field _createTypeField(PropertySource property) => Field('type',
       modifier: Modifier.final$,
       annotations: [Annotation.override()],
       value: classPresentationFactory.create(property.propertyType));
 
-  _createWidgetFactoryField(PropertySource property) => Field('widgetFactory',
-      modifier: Modifier.final$,
-      annotations: [Annotation.override()],
-      value: Expression.callConstructor(
-          TypeFactory().create(property.widgetFactory),
-          isConst: true));
+  List<Method> _createMethods(PropertySource property) =>
+      [_createWidgetFactoryGetter(property)];
+
+  Method _createWidgetFactoryGetter(PropertySource property) => Method.getter(
+        'widgetFactory',
+        Expression.callConstructor(TypeFactory().create(property.widgetFactory),
+            parameterValues:
+                ParameterValues([ParameterValue(Expression.ofThis())])),
+        annotations: [Annotation.override()],
+      );
 }
 
 class PropertyPresentationType extends Type {
