@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reflect_gui_builder/builder/domain/domain_class/property/property_presentation.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 
@@ -36,11 +37,14 @@ class StringWidgetFactory extends ValueWidgetFactory<String> {
   @override
   Widget createEditableValue() => ResponsiveLayoutCell(
         columnSpan: const ColumnSpan.size(2),
+        //TODO add column span
+        //TODO add position e.g. {CellPositionNextRow}
         child: Column(
           children: [
             PropertyLabel(property),
-             TextField(
-              controller: TextEditingController(text: "Nils ten Hoeve"),//TODO link to field
+            TextField(
+              controller: TextEditingController(
+                  text: "Nils ten Hoeve"), //TODO link to field
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
@@ -71,8 +75,38 @@ class StringWidgetFactory extends ValueWidgetFactory<String> {
 class IntWidgetFactory extends ValueWidgetFactory<int> {
   const IntWidgetFactory(super.property);
 
+// See ... for numeral input
   @override
-  Widget createEditableValue() => const TextField();
+  Widget createEditableValue() => ResponsiveLayoutCell(
+        columnSpan: const ColumnSpan.size(2),
+        //TODO add colum n span
+        child: Column(
+          children: [
+            PropertyLabel(property),
+            TextField(
+              controller:
+                  TextEditingController(text: "123"), //TODO link to field
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                isDense: true,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+// for below version 2 use this:  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+// for version 2 and greater you can also use this
+                FilteringTextInputFormatter.digitsOnly
+              ],
+            ),
+            //TODO add action method context menu button
+            //TODO add password
+            //TODO add description
+            //TODO add suffix (e.g. unit of measurement)
+            //TODO add validation result text
+          ],
+        ),
+      );
 
   //TODO link value to TextField including unit of measurement, and formatter (e.g. thousands separator)
   //TODO label
