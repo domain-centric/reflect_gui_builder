@@ -12,6 +12,10 @@ import 'package:reflect_gui_builder/builder/domain/value_widget_factory/value_wi
 /// * Person: when it is a [DomainClass]
 /// * List<Person>: a [Collection] of [DomainClass]es
 abstract class PropertyPresentation<TYPE> extends DynamicItem {
+
+  /// [type] examples:
+  /// * [DartCore] (e.g. int, list<T>, etc)
+  /// * [DomainClassPresentation] 
   ClassPresentation get type;
 
   ValueWidgetFactory get widgetFactory;

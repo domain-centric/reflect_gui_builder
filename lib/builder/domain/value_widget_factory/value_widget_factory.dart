@@ -75,7 +75,6 @@ class StringWidgetFactory extends ValueWidgetFactory<String> {
 class IntWidgetFactory extends ValueWidgetFactory<int> {
   const IntWidgetFactory(super.property);
 
-// See ... for numeral input
   @override
   Widget createEditableValue() => ResponsiveLayoutCell(
         columnSpan: const ColumnSpan.size(2),
