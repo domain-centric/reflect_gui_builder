@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022. By Nils ten Hoeve. See LICENSE file in project.
  */
-
+///TODO remove this file. This was an example for create gui_tab_form.dart
 import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/gui/scroll_view_with_scroll_bar.dart';
 import 'package:responsive_layout_grid/responsive_layout_grid.dart';
@@ -30,66 +30,66 @@ class ResponsiveFormGrid extends StatelessWidget {
           _createGroupBar('Participant'),
           _createTextField(
             label: 'Given name',
-            position: CellPosition.nextRow(),
+            position:  CellPosition.nextRow(),
           ),
           _createTextField(
             label: 'Family name',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
             label: 'Date of birth',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
               label: 'Remarks (e.g. medicines and allergies)',
-              position: CellPosition.nextRow(),
-              columnSpan: const ColumnSpan.size(3),
+              position:  CellPosition.nextRow(),
+              columnSpan:  const ColumnSpan.size(3),
               maxLines: 5),
           _createGroupBar('Home Address'),
           _createTextField(
-              label: 'Street', position: CellPosition.nextRow(), maxLines: 2),
+              label: 'Street', position:  CellPosition.nextRow(), maxLines: 2),
           _createTextField(
             label: 'City',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
             label: 'Region',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
             label: 'Postal code',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
             label: 'Country',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createGroupBar('Consent'),
           _createTextField(
             label: 'Given name of parent or guardian',
-            position: CellPosition.nextRow(),
+            position:  CellPosition.nextRow(),
           ),
           _createTextField(
             label: 'Family name of parent or guardian',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createTextField(
             label: 'Phone number of parent or guardian',
-            position: CellPosition.nextRow(),
+            position:  CellPosition.nextRow(),
           ),
           _createTextField(
             label: 'Second phone number in case of emergency',
-            position: CellPosition.nextColumn(),
+            position:  CellPosition.nextColumn(),
           ),
           _createButtonBarGutter(),
           _createCancelButton(
-              context, CellPosition.nextRow(rowAlignment: RowAlignment.right)),
-          _createSubmitButton(context, CellPosition.nextColumn()),
+              context,  CellPosition.nextRow(rowAlignment: RowAlignment.right)),
+          _createSubmitButton(context,  CellPosition.nextColumn()),
         ],
       );
 
   ResponsiveLayoutCell _createGroupBar(String title) => ResponsiveLayoutCell(
-        position: CellPosition.nextRow(),
+        position:  CellPosition.nextRow(),
         columnSpan: ColumnSpan.remainingWidth(),
         child: Container(
           padding: const EdgeInsets.all(8),
@@ -156,7 +156,7 @@ class ResponsiveFormGrid extends StatelessWidget {
         ));
   }
 
-  _createButtonBarGutter() => ResponsiveLayoutCell(
+  _createButtonBarGutter() =>  ResponsiveLayoutCell(
         position: CellPosition.nextRow(),
         child: const SizedBox(height: 8),
       );

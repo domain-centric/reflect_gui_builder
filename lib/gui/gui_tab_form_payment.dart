@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:reflect_gui_builder/app/person/domain/domain_objects.dart';
-
+///TODO remove this file. This was an example for create gui_tab_form.dart
 /// Form widgets are stateful widgets
 class PaymentForm extends StatefulWidget {
   const PaymentForm({Key? key}) : super(key: key);

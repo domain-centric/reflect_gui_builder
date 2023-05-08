@@ -26,19 +26,17 @@ class PropertyLabel extends StatelessWidget {
 }
 
 class StringWidgetFactory extends ValueWidgetFactory<String> {
-  final finalField = '';
+  final ColumnSpan columnSpan;
+  CellPosition position = CellPosition.nextRow();
 
-  // late String lateField;
-  static String staticField = '';
-  static const String constField = '';
-
-  const StringWidgetFactory(super.property);
+  StringWidgetFactory(super.property,
+      {this.columnSpan = const ColumnSpan.size(2), CellPosition? cellPosition})
+      : position = cellPosition ?? CellPosition.nextRow();
 
   @override
   Widget createEditableValue() => ResponsiveLayoutCell(
-        columnSpan: const ColumnSpan.size(2),
-        //TODO add column span
-        //TODO add position e.g. {CellPositionNextRow}
+        columnSpan: columnSpan,
+        position: position,
         child: Column(
           children: [
             PropertyLabel(property),

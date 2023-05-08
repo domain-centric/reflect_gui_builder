@@ -34,8 +34,8 @@ import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 // It is recommended to reduce/specify a smaller width where possible (TODO link)
 //
 // Grouping
-// ?next to eachother (flow layout)?
-// ?checkboxes / radiobuttons?
+// ?next to each other (flow layout)?
+// ?checkboxes / radio buttons?
 // ?named?
 //
 // Textfield
@@ -62,12 +62,12 @@ import 'package:responsive_layout_grid/responsive_layout_grid.dart';
 // String
 // Char?
 //
-// Numberfield
+// Number field
 // =========
 // annotations:
 // obscure
 // length
-// keyboardtype
+// keyboard type
 // validation
 // width
 // formatting
@@ -151,56 +151,58 @@ class ResponsiveFormGrid extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ResponsiveLayoutGrid(
-      maxNumberOfColumns: maxNumberOfColumns,
-      children: [
-        ..._createFields(),
-        _createButtonBarGutter(),
-        _createCancelButton(
-            context, CellPosition.nextRow(rowAlignment: RowAlignment.right)),
-        _createSubmitButton(context, CellPosition.nextColumn()),
-      ],
-    );
+  Widget build(BuildContext context) => Form(
+    child: ResponsiveLayoutGrid(
+        maxNumberOfColumns: maxNumberOfColumns,
+        children: [
+          ..._createFields(),
+          _createButtonBarGutter(),
+          _createCancelButton(
+              context,  CellPosition.nextRow(rowAlignment: RowAlignment.right)),
+          _createSubmitButton(context,  CellPosition.nextColumn()),
+        ],
+      ),
+  );
 
-  ResponsiveLayoutCell _createGroupBar(String title) => ResponsiveLayoutCell(
-        position: CellPosition.nextRow(),
-        columnSpan: ColumnSpan.remainingWidth(),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          color: Colors.grey,
-          child: Center(
-            child: Text(title,
-                style: const TextStyle(color: Colors.white, fontSize: 18)),
-          ),
-        ),
-      );
+  // ResponsiveLayoutCell _createGroupBar(String title) => ResponsiveLayoutCell(
+  //       position: CellPosition.nextRow(),
+  //       columnSpan: ColumnSpan.remainingWidth(),
+  //       child: Container(
+  //         padding: const EdgeInsets.all(8),
+  //         color: Colors.grey,
+  //         child: Center(
+  //           child: Text(title,
+  //               style: const TextStyle(color: Colors.white, fontSize: 18)),
+  //         ),
+  //       ),
+  //     );
 
-  ResponsiveLayoutCell _createTextField({
-    required String label,
-    required CellPosition position,
-    ColumnSpan columnSpan = const ColumnSpan.size(2),
-    int maxLines = 1,
-  }) =>
-      ResponsiveLayoutCell(
-        position: position,
-        columnSpan: columnSpan,
-        child: Column(children: [
-          Align(alignment: Alignment.topLeft, child: Text(label)),
-          TextFormField(
-            maxLines: maxLines,
-            decoration: const InputDecoration(
-              filled: true,
-              isDense: true,
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
-              disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent, width: 0)),
-            ),
-          ),
-        ]),
-      );
+  // ResponsiveLayoutCell _createTextField({
+  //   required String label,
+  //   required CellPosition position,
+  //   ColumnSpan columnSpan = const ColumnSpan.size(2),
+  //   int maxLines = 1,
+  // }) =>
+  //     ResponsiveLayoutCell(
+  //       position: position,
+  //       columnSpan: columnSpan,
+  //       child: Column(children: [
+  //         Align(alignment: Alignment.topLeft, child: Text(label)),
+  //         TextFormField(
+  //           maxLines: maxLines,
+  //           decoration: const InputDecoration(
+  //             filled: true,
+  //             isDense: true,
+  //             border: OutlineInputBorder(
+  //                 borderSide: BorderSide(color: Colors.transparent, width: 0)),
+  //             enabledBorder: OutlineInputBorder(
+  //                 borderSide: BorderSide(color: Colors.transparent, width: 0)),
+  //             disabledBorder: OutlineInputBorder(
+  //                 borderSide: BorderSide(color: Colors.transparent, width: 0)),
+  //           ),
+  //         ),
+  //       ]),
+  //     );
 
   ResponsiveLayoutCell _createSubmitButton(
       BuildContext context, CellPosition position) {
@@ -230,7 +232,7 @@ class ResponsiveFormGrid extends StatelessWidget {
         ));
   }
 
-  _createButtonBarGutter() => ResponsiveLayoutCell(
+  _createButtonBarGutter() =>  ResponsiveLayoutCell(
         position: CellPosition.nextRow(),
         child: const SizedBox(height: 8),
       );
