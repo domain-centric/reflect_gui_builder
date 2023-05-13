@@ -390,6 +390,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  scaffold_responsive:
+    dependency: "direct main"
+    description:
+      name: scaffold_responsive
+      sha256: e3a7527fe9ea2583f4e16577b5a3f817871a54f042c1d9d1519fc17490e38fa7
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   shelf:
     dependency: transitive
     description:

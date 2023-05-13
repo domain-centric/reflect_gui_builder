@@ -6,6 +6,7 @@ import 'package:reflect_gui_builder/builder/domain/application_class/generated_a
 import 'package:reflect_gui_builder/builder/domain/service_class/service_class_presentation.dart';
 import 'package:reflect_gui_builder/builder/domain/translation/reflect_translatables.dart';
 import 'package:reflect_gui_builder/gui/gui_tab.dart' as reflect_tabs;
+import 'package:scaffold_responsive/scaffold_responsive.dart';
 
 const tabletWidthBreakpoint = 720.0;
 const desktopWidthBreakpoint = 1200.0;
@@ -44,25 +45,120 @@ class ReflectMaterialApp extends StatelessWidget {
           .englishText,
       theme: reflectGuiApplication.applicationPresentation.lightTheme,
       darkTheme: reflectGuiApplication.applicationPresentation.darkTheme,
-      home: const Home(),
+      home: const MainScaffold(),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({
-    Key? key,
-  }) : super(key: key);
+class MainScaffold extends StatelessWidget {
+  static final ResponsiveMenuController menuController =
+      ResponsiveMenuController();
+
+  const MainScaffold({super.key});
+
+  @override
+  Widget build(BuildContext context) => ResponsiveScaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: menuController.toggle,
+        ),
+        title: const ApplicationTitle(),
+        actions: [
+          if (Provider.of<reflect_tabs.Tabs>(context).length > 1)
+            const TabsIcon(),
+        ],
+      ),
+      menu:  MainMenu(menuController),
+      menuController: menuController,
+      body: const Body());
+}
+
+class Body extends StatelessWidget {
+  const Body({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (_, dimensions) {
-      if (dimensions.maxWidth >= desktopWidthBreakpoint) {
-        return const WideScaffold();
-      } else {
-        return const NarrowScaffold();
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      child: const TabContainer(),
+    );
+  }
+}
+
+class MainMenu extends StatelessWidget {
+  final ResponsiveMenuController menuController;
+
+  const MainMenu(
+    this.menuController, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+          child: ListView(
+            children: createChildren(context),
+          ),
+        );
+  }
+
+  List<Widget> createChildren(BuildContext context) {
+    List<ServiceClassPresentation> serviceClasses =
+        Provider.of<GeneratedApplicationPresentation>(context).serviceClasses;
+
+    List<Widget> children = [];
+
+    for (ServiceClassPresentation serviceClass in serviceClasses) {
+      children.add(createServiceObjectTile(serviceClass));
+      for (ActionMethodPresentation actionMethod in serviceClass.actionMethods
+          .where((actionMethod) => !actionMethod.parameterNeeded)) {
+        children.add(createActionMethodTile(actionMethod, context));
       }
-    });
+    }
+    return children;
+  }
+
+  Widget createServiceObjectTile(ServiceClassPresentation serviceClassInfo) {
+    return SizedBox(
+        height: 35,
+        child: ListTile(
+            title: Text(serviceClassInfo.name.englishText.toUpperCase(),
+                style: const TextStyle(fontWeight: FontWeight.bold))));
+  }
+
+  ListTile createActionMethodTile(
+      ActionMethodPresentation actionMethod, BuildContext context) {
+    return ListTile(
+      leading: Icon(actionMethod.icon),
+      //TODO of actionMethod.icon=null then
+      // Container(
+      //   width: 18,
+      //   height: 18,
+      // ),
+      title: Transform(
+          //remove extra space between leading and title
+          transform: Matrix4.translationValues(-20, 0.0, 0.0),
+          child: Text(
+            actionMethod.name.englishText,
+          )),
+      onTap: () => {onTab(context, actionMethod)},
+    );
+  }
+
+  onTab(BuildContext context, ActionMethodPresentation actionMethod) {
+    if (actionMethod.parameterFactory != null) {
+      var parameter = actionMethod.parameterFactory!();
+      actionMethod.parameterProcessor
+          .process(context, const PersonService(), actionMethod, parameter);
+    } else {
+      actionMethod.parameterProcessor
+          .process(context, const PersonService(), actionMethod, null);
+    }
+
+    menuController.closeIfNeeded();
   }
 }
 
@@ -152,73 +248,6 @@ class TabHeader extends StatelessWidget {
   }
 }
 
-class NarrowScaffold extends StatelessWidget {
-  const NarrowScaffold({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    reflect_tabs.Tabs tabs = Provider.of<reflect_tabs.Tabs>(context);
-    return Scaffold(
-        appBar: AppBar(
-          title: const ApplicationTitle(),
-          actions: [
-            if (tabs.length > 1) const TabsIcon(),
-          ],
-        ),
-        drawer: const Drawer(
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
-            child: MainMenu(
-          isDrawerMenu: true,
-        )),
-        body: Container(
-          constraints: const BoxConstraints.expand(),
-          child: const TabContainer(),
-        ));
-  }
-}
-
-class WideScaffold extends StatelessWidget {
-  const WideScaffold({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    reflect_tabs.Tabs tabs = Provider.of<reflect_tabs.Tabs>(context);
-    return Scaffold(
-        appBar: AppBar(
-          title: const ApplicationTitle(),
-          //Text(ReflectFramework().reflection.applicationInfo.title),
-          leading: InkWell(
-            onTap: () {}, //TODO add
-            child: const Icon(
-              Icons.menu, // add custom icons also
-            ),
-          ),
-          actions: [
-            if (tabs.length > 1) const TabsIcon(),
-          ],
-        ),
-        body: Center(
-          child: Row(
-            children: const [
-              SizedBox(
-                width: sideMenuWidth,
-                child: MainMenu(
-                  isDrawerMenu: false,
-                ),
-              ),
-              VerticalDivider(thickness: 3),
-              Expanded(
-                child: TabContainer(),
-              ),
-            ],
-          ),
-        ));
-  }
-}
 
 class TabsIcon extends StatelessWidget {
   const TabsIcon({
@@ -315,96 +344,6 @@ class TabsIcon extends StatelessWidget {
             ],
           );
         });
-  }
-}
-
-class MainMenu extends StatelessWidget {
-  final bool isDrawerMenu;
-
-  const MainMenu({Key? key, required this.isDrawerMenu}) : super(key: key);
-
-  onTab(BuildContext context, ActionMethodPresentation actionMethod) {
-    if (actionMethod.parameterFactory != null) {
-      var parameter = actionMethod.parameterFactory!();
-      actionMethod.parameterProcessor
-          .process(context, const PersonService(), actionMethod, parameter);
-    } else {
-      actionMethod.parameterProcessor
-          .process(context, const PersonService(), actionMethod, null);
-    }
-
-    if (isDrawerMenu) {
-      Navigator.pop(context); //Hide Drawer
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (isDrawerMenu) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-              Provider.of<GeneratedApplicationPresentation>(context)
-                  .name
-                  .englishText,
-              style: Theme.of(context).primaryTextTheme.titleLarge),
-        ),
-        body: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: createChildren(context),
-        ),
-      );
-    } else {
-      return ListView(
-        // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
-        children: createChildren(context),
-      );
-    }
-  }
-
-  List<Widget> createChildren(BuildContext context) {
-    List<ServiceClassPresentation> serviceClasses =
-        Provider.of<GeneratedApplicationPresentation>(context).serviceClasses;
-
-    List<Widget> children = [];
-
-    for (ServiceClassPresentation serviceClass in serviceClasses) {
-      children.add(createServiceObjectTile(serviceClass));
-      for (ActionMethodPresentation actionMethod in serviceClass.actionMethods
-          .where((actionMethod) => !actionMethod.parameterNeeded)) {
-        children.add(createActionMethodTile(actionMethod, context));
-      }
-    }
-    return children;
-  }
-
-  Widget createServiceObjectTile(ServiceClassPresentation serviceClassInfo) {
-    return SizedBox(
-        height: 35,
-        child: ListTile(
-            title: Text(serviceClassInfo.name.englishText.toUpperCase(),
-                style: const TextStyle(fontWeight: FontWeight.bold))));
-  }
-
-  ListTile createActionMethodTile(
-      ActionMethodPresentation actionMethod, BuildContext context) {
-    return ListTile(
-      leading: Icon(actionMethod.icon),
-      //TODO of actionMethod.icon=null then
-      // Container(
-      //   width: 18,
-      //   height: 18,
-      // ),
-      title: Transform(
-          //remove extra space between leading and title
-          transform: Matrix4.translationValues(-20, 0.0, 0.0),
-          child: Text(
-            actionMethod.name.englishText,
-          )),
-      onTap: () => {onTab(context, actionMethod)},
-    );
   }
 }
 
